@@ -1,0 +1,33 @@
+<mat-toolbar color="primary" class="app-header">
+  <button
+    mat-icon-button
+    (click)="onMenuToggle()"
+    aria-label="Toggle sidenav"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="app-title">demo-app-1</span>
+  <span class="spacer"></span>
+  <div>
+    <button
+      mat-icon-button
+      (click)="toggleTheme()"
+      [aria-label]="'Toggle ' + (currentTheme() === 'light' ? 'dark' : 'light') + ' mode'"
+    >
+      <mat-icon>{{ getThemeIcon() }}</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Notifications">
+      <mat-icon>notifications</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      (click)="onSettingsToggle()"
+      aria-label="Settings"
+    >
+      <mat-icon>settings</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="User account">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>

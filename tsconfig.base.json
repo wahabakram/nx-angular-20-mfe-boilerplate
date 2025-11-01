@@ -1,0 +1,39 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "webcomponents/Routes": [
+        "apps/webcomponents/src/app/remote-entry/entry.routes.ts"
+      ],
+      "webcomponents/Button": ["apps/webcomponents/src/app/button/button.ts"],
+      "webcomponents/Footer": [
+        "apps/webcomponents/src/app/layouts/footer/footer.ts"
+      ],
+      "webcomponents/Header": [
+        "apps/webcomponents/src/app/layouts/header/header.ts"
+      ],
+      "webcomponents/SettingsDrawer": [
+        "apps/webcomponents/src/app/layouts/settings-drawer/settings-drawer.ts"
+      ],
+      "webcomponents/Sidenav": [
+        "apps/webcomponents/src/app/layouts/sidenav/sidenav.ts"
+      ],
+      "@ng-mf/components": ["libs/shared/components/src/index.ts"],
+      "@ng-mf/theme": ["libs/shared/ui-theme/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

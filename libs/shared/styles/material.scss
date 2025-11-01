@@ -1,0 +1,106 @@
+@use '@angular/material' as mat;
+@use 'themes/_theme-colors' as default-theme;
+@use 'themes/cupcake' as cupcake-theme;
+@use 'themes/synthwave' as synthwave-theme;
+@use 'themes/forest' as forest-theme;
+@use 'themes/aqua' as aqua-theme;
+@use 'themes/sunset' as sunset-theme;
+@use 'themes/retro' as retro-theme;
+@use 'themes/cyberpunk' as cyberpunk-theme;
+@use 'themes/valentine' as valentine-theme;
+@use 'themes/dracula' as dracula-theme;
+@use 'themes/business' as business-theme;
+@use 'themes/nord' as nord-theme;
+@use 'themes/night' as night-theme;
+@use 'themes/coffee' as coffee-theme;
+
+// Include the common styles for Angular Material (core styles)
+@include mat.core();
+
+// Helper mixin to generate light and dark themes for each color scheme
+// Only generates color-related styles, not structural component styles
+@mixin generate-theme($name, $primary-palette, $tertiary-palette) {
+  // Light theme
+  $light-theme: mat.define-theme((
+    color: (
+      theme-type: light,
+      primary: $primary-palette,
+      tertiary: $tertiary-palette,
+    ),
+  ));
+
+  // Dark theme
+  $dark-theme: mat.define-theme((
+    color: (
+      theme-type: dark,
+      primary: $primary-palette,
+      tertiary: $tertiary-palette,
+    ),
+  ));
+
+  // Apply light theme - only color overrides
+  html.theme-#{$name}:not(.dark-theme) {
+    @include mat.all-component-colors($light-theme);
+  }
+
+  // Apply dark theme - only color overrides
+  html.theme-#{$name}.dark-theme {
+    @include mat.all-component-colors($dark-theme);
+  }
+}
+
+// Apply the default theme by default
+$default-light: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: default-theme.$primary-palette,
+    tertiary: default-theme.$tertiary-palette,
+  ),
+  typography: (
+    brand-family: 'Roboto',
+    plain-family: 'Roboto',
+  ),
+  density: (
+    scale: 0,
+  ),
+));
+
+$default-dark: mat.define-theme((
+  color: (
+    theme-type: dark,
+    primary: default-theme.$primary-palette,
+    tertiary: default-theme.$tertiary-palette,
+  ),
+  typography: (
+    brand-family: 'Roboto',
+    plain-family: 'Roboto',
+  ),
+  density: (
+    scale: 0,
+  ),
+));
+
+html {
+  @include mat.all-component-themes($default-light);
+  @include mat.form-field-density(-8);
+}
+
+html.dark-theme {
+  @include mat.all-component-colors($default-dark);
+}
+
+// Generate all custom themes
+@include generate-theme('cupcake', cupcake-theme.$primary-palette, cupcake-theme.$tertiary-palette);
+@include generate-theme('synthwave', synthwave-theme.$primary-palette, synthwave-theme.$tertiary-palette);
+@include generate-theme('forest', forest-theme.$primary-palette, forest-theme.$tertiary-palette);
+@include generate-theme('aqua', aqua-theme.$primary-palette, aqua-theme.$tertiary-palette);
+@include generate-theme('sunset', sunset-theme.$primary-palette, sunset-theme.$tertiary-palette);
+@include generate-theme('retro', retro-theme.$primary-palette, retro-theme.$tertiary-palette);
+@include generate-theme('cyberpunk', cyberpunk-theme.$primary-palette, cyberpunk-theme.$tertiary-palette);
+@include generate-theme('valentine', valentine-theme.$primary-palette, valentine-theme.$tertiary-palette);
+@include generate-theme('dracula', dracula-theme.$primary-palette, dracula-theme.$tertiary-palette);
+@include generate-theme('business', business-theme.$primary-palette, business-theme.$tertiary-palette);
+@include generate-theme('nord', nord-theme.$primary-palette, nord-theme.$tertiary-palette);
+@include generate-theme('night', night-theme.$primary-palette, night-theme.$tertiary-palette);
+@include generate-theme('coffee', coffee-theme.$primary-palette, coffee-theme.$tertiary-palette);
+

@@ -1,0 +1,9 @@
+@reference 'tailwindcss';
+
+.sidenav-header {
+  @apply p-4 border-b border-gray-200;
+
+  h2 {
+    @apply text-xl font-semibold m-0;
+  }
+}

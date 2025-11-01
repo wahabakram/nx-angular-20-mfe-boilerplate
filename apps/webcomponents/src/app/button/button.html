@@ -1,0 +1,12 @@
+<button 
+  mat-raised-button 
+  [color]="color()" 
+  [disabled]="disabled()"
+  (click)="onClick()"
+  class="custom-button"
+>
+  @if (icon()) {
+    <mat-icon>{{ icon() }}</mat-icon>
+  }
+  <span>{{ label() }}</span>
+</button>

@@ -1,0 +1,13 @@
+@reference 'tailwindcss';
+
+.app-header {
+  @apply sticky top-0 z-10 shadow-md;
+
+  .app-title {
+    @apply text-xl font-semibold;
+  }
+
+  .spacer {
+    @apply flex-1;
+  }
+}

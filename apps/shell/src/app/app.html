@@ -1,0 +1,26 @@
+<mat-drawer-container class="app-container" [hasBackdrop]="true">
+  <!-- Left Drawer (Navigation) -->
+  <mat-drawer #drawer [mode]="'side'" (backdropClick)="drawer.close()" class="app-sidenav">
+    <ng-container #sidenav />
+  </mat-drawer>
+
+  <!-- Main Content -->
+  <mat-drawer-content class="app-sidenav-content">
+    <!-- Header -->
+    <ng-container #header />
+
+    <!-- Content Area -->
+    <main class="app-content">
+      <router-outlet />
+    </main>
+
+    <!-- Footer -->
+    <ng-container #footer />
+  </mat-drawer-content>
+
+  <!-- Right Drawer (Settings) -->
+  <mat-drawer #settingsDrawer [mode]="'over'" position="end" (backdropClick)="settingsDrawer.close()"
+    class="app-settings-drawer">
+    <ng-container *ngComponentOutlet="settingsComponent; inputs: { appTitle: title }" />
+  </mat-drawer>
+</mat-drawer-container>

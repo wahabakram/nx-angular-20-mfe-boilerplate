@@ -1,0 +1,119 @@
+<div class="settings-drawer-container">
+  <div class="settings-header">
+    <mat-icon>settings</mat-icon>
+    <h2>Settings</h2>
+  </div>
+
+  <mat-divider />
+
+  <!-- Theme Selection -->
+  <div class="settings-section">
+    <div class="settings-section-title">
+      <mat-icon>palette</mat-icon>
+      <h3>Color Theme</h3>
+    </div>
+    <p class="settings-description">Choose your preferred color palette</p>
+    
+    <div class="theme-grid">
+      @for (theme of themeService.availableThemes; track theme.name) {
+        <button
+          mat-ripple
+          class="theme-card"
+          [class.selected]="currentTheme() === theme.name"
+          (click)="onThemeChange(theme.name)"
+        >
+          <div class="theme-preview">
+            <div class="color-bar" [style.background]="theme.colors.primary"></div>
+            <div class="color-bar" [style.background]="theme.colors.secondary"></div>
+          </div>
+          <div class="theme-info">
+            <div class="theme-name">{{ theme.displayName }}</div>
+            <div class="theme-description">{{ theme.description }}</div>
+          </div>
+          @if (currentTheme() === theme.name) {
+            <mat-icon class="check-icon-corner">check_circle</mat-icon>
+          }
+        </button>
+      }
+    </div>
+  </div>
+
+  <mat-divider />
+
+  <!-- Layout Configuration -->
+  <div class="settings-section">
+    <div class="settings-section-title">
+      <mat-icon>view_compact</mat-icon>
+      <h3>Layout Density</h3>
+    </div>
+    <p class="settings-description">Adjust spacing and component density</p>
+    
+    <mat-button-toggle-group
+      [value]="currentLayout()"
+      (change)="onLayoutChange($event.value)"
+    >
+      <mat-button-toggle value="compact">
+        <span>
+            <!-- <mat-icon>view_compact</mat-icon> -->
+            Compact
+        </span>
+      </mat-button-toggle>
+      <mat-button-toggle value="comfortable">
+        <span>
+            <!-- <mat-icon>view_comfortable</mat-icon> -->
+            Comfortable
+        </span>
+      </mat-button-toggle>
+      <mat-button-toggle value="spacious">
+        <span>
+            <!-- <mat-icon>view_stream</mat-icon> -->
+            Spacious
+        </span>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <mat-divider />
+
+  <!-- Font Size Configuration -->
+  <div class="settings-section">
+    <div class="settings-section-title">
+      <mat-icon>text_fields</mat-icon>
+      <h3>Font Size</h3>
+    </div>
+    <p class="settings-description">Adjust the base font size</p>
+    
+    <div class="slider-container">
+      <div class="slider-labels">
+        <span class="slider-label">XS</span>
+        <span class="slider-label">Small</span>
+        <span class="slider-label">Medium</span>
+        <span class="slider-label">Large</span>
+        <span class="slider-label">XL</span>
+        <span class="slider-label">2XL</span>
+      </div>
+      <mat-slider 
+        min="0" 
+        max="5" 
+        step="1" 
+        discrete
+        [displayWith]="formatFontSizeLabel"
+        class="font-size-slider"
+      >
+        <input 
+          matSliderThumb 
+          [value]="fontSizeValue()" 
+          (valueChange)="onFontSizeSliderChange($event)"
+        />
+      </mat-slider>
+    </div>
+  </div>
+
+  <mat-divider />
+
+  <!-- Info Section -->
+  <div class="settings-section settings-info">
+    <mat-icon>info</mat-icon>
+    <p>Settings are saved locally and will persist across sessions. Use the theme toggle in the header to switch between light and dark modes.</p>
+  </div>
+</div>

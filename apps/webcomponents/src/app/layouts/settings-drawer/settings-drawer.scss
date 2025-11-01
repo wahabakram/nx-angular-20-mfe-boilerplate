@@ -1,0 +1,129 @@
+@reference 'tailwindcss';
+
+.settings-drawer-container {
+  @apply p-4 h-full overflow-y-auto;
+}
+
+.settings-header {
+  @apply flex items-center gap-3 mb-4;
+
+  h2 {
+    @apply text-2xl font-semibold m-0;
+  }
+}
+
+.settings-section {
+  @apply py-4;
+
+  .settings-section-title {
+    @apply flex items-center gap-2 mb-2;
+
+    mat-icon {
+      @apply text-xl;
+    }
+
+    h3 {
+      @apply text-lg font-semibold m-0;
+    }
+  }
+
+  .settings-description {
+    @apply text-sm text-gray-600 mb-3;
+  }
+
+  // .settings-toggle-group {
+  //   @apply flex flex-col w-full;
+
+
+    // &.vertical-toggle {
+    //   mat-button-toggle {
+    //     @apply flex items-center justify-center gap-3 p-4;
+        
+    //     mat-icon {
+    //       @apply text-xl;
+    //     }
+
+    //     span {
+    //       @apply flex-1 text-left;
+    //     }
+    //   }
+    // }
+  // }
+}
+
+.theme-grid {
+  @apply grid grid-cols-2 gap-3;
+}
+
+.theme-card {
+  @apply relative flex flex-col gap-2 p-3 rounded-lg border-2 border-gray-200 cursor-pointer transition-all duration-200;
+  background: transparent;
+  
+  &:hover {
+    @apply border-gray-300 shadow-md;
+  }
+
+  &.selected {
+    border-color: var(--mat-sys-primary);
+    @apply shadow-lg;
+  }
+
+  .theme-preview {
+    @apply flex gap-1 h-8 rounded overflow-hidden;
+
+    .color-bar {
+      @apply flex-1;
+    }
+  }
+
+  .theme-info {
+    @apply flex flex-col gap-1;
+
+    .theme-name {
+      @apply text-sm font-semibold;
+    }
+
+    .theme-description {
+      @apply text-xs text-gray-600;
+    }
+  }
+
+  .check-icon {
+    @apply absolute top-2 right-2 text-lg;
+    color: var(--mat-sys-primary);
+  }
+
+  .check-icon-corner {
+    @apply absolute bottom-2 right-2 text-xl;
+    color: var(--mat-sys-primary);
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+  }
+}
+
+.settings-info {
+  @apply flex items-start gap-2 text-sm text-gray-600;
+
+  mat-icon {
+    @apply text-base mt-0.5 overflow-visible;
+  }
+
+  p {
+    @apply m-0;
+  }
+}
+
+mat-divider {
+  @apply my-2;
+}
+
+.slider-container {
+  @apply flex flex-col gap-2;
+
+  .slider-labels {
+    @apply flex justify-between text-xs text-gray-600 mb-1;
+  }
+
+  .font-size-slider {
+    @apply w-full;
+  }
+}
