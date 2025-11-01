@@ -21,6 +21,6 @@
   <!-- Right Drawer (Settings) -->
   <mat-drawer #settingsDrawer [mode]="'over'" position="end" (backdropClick)="settingsDrawer.close()"
     class="app-settings-drawer">
-    <ng-container *ngComponentOutlet="settingsComponent; inputs: { appTitle: title }" />
+    <ng-container #settings />
   </mat-drawer>
 </mat-drawer-container>

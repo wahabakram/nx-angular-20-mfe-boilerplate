@@ -41,40 +41,10 @@ export class App implements OnInit {
   settings = viewChild.required('settings', { read: ViewContainerRef });
 
   protected buttonComponent: Type<unknown> | null = null;
-  // protected headerComponent: Type<unknown> | null = null;
-  // protected sidenavComponent: Type<unknown> | null = null;
   protected settingsComponent: Type<unknown> | null = null;
   protected isLoading = true;
-  protected buttonInputs: Record<string, unknown> = {};
-  protected headerInputs: Record<string, unknown> = {};
-  private clickSubject = new Subject<void>();
 
   async ngOnInit() {
-    // Subscribe to click events from the remote button
-    this.clickSubject.subscribe(() => this.onButtonClick());
-
-    // Button component
-    try {
-      const module = await loadRemote<typeof import('webcomponents/Button')>(
-        'webcomponents/Button'
-      );
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      this.buttonComponent = (module as any).Button;
-
-      // Set up inputs with Subject as click handler
-      this.buttonInputs = {
-        label: 'Click Remote Button',
-        icon: 'rocket_launch',
-        color: 'primary',
-        clickHandler: this.clickSubject,
-      };
-
-      this.isLoading = false;
-    } catch (error) {
-      console.error('Failed to load remote button:', error);
-      this.isLoading = false;
-    }
-
     // Footer component
     await this.loadFooterComponent();
 
@@ -85,15 +55,7 @@ export class App implements OnInit {
     await this.loadSidenavComponent();
 
     // Settings component
-    try {
-      const settingsModule = await loadRemote<
-        typeof import('webcomponents/SettingsDrawer')
-      >('webcomponents/SettingsDrawer');
-      this.settingsComponent = (settingsModule as any).SettingsDrawer;
-      // You can use settingsComponent as needed
-    } catch (error) {
-      console.error('Failed to load remote settings:', error);
-    }
+    await this.loadSettingsComponent();
   }
 
   onButtonClick(): void {
@@ -149,6 +111,21 @@ export class App implements OnInit {
       });
     } catch (error) {
       console.error('Failed to load remote header:', error);
+    }
+  }
+
+  async loadSettingsComponent(): Promise<void> {
+    try {
+      const settingsComponent = (
+        (await loadRemote<typeof import('webcomponents/SettingsDrawer')>(
+          'webcomponents/SettingsDrawer'
+        )) as any
+      ).SettingsDrawer;
+      this.settings()?.createComponent(settingsComponent, {
+        bindings: [],
+      });
+    } catch (error) {
+      console.error('Failed to load remote settings:', error);
     }
   }
 }
