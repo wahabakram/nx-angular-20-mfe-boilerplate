@@ -1,13 +1,6 @@
-@reference 'tailwindcss';
+/* Tailwind utilities moved inline into the header template.
+   Avoid using @apply per Tailwind CSS v4 recommendations.
+   Keep this file intentionally minimal for any non-Tailwind/CSS-variable rules.
+*/
 
-.app-header {
-  @apply sticky top-0 z-10 shadow-md;
-
-  .app-title {
-    @apply text-xl font-semibold;
-  }
-
-  .spacer {
-    @apply flex-1;
-  }
-}
+/* Add specific non-utility rules here only if necessary. */

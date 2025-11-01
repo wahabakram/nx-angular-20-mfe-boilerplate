@@ -1,52 +1,52 @@
-<div class="settings-drawer-container">
-  <div class="settings-header">
-    <mat-icon>settings</mat-icon>
-    <h2>Settings</h2>
+<div class="p-4 h-full overflow-y-auto">
+  <div class="flex items-center gap-3 mb-4">
+    <mat-icon class="text-lg">settings</mat-icon>
+    <h2 class="text-2xl font-semibold m-0">Settings</h2>
   </div>
 
-  <mat-divider />
+  <mat-divider class="my-2" />
 
   <!-- Theme Selection -->
-  <div class="settings-section">
-    <div class="settings-section-title">
-      <mat-icon>palette</mat-icon>
-      <h3>Color Theme</h3>
+  <div class="py-4">
+    <div class="flex items-center gap-2 mb-2">
+      <mat-icon class="text-xl">palette</mat-icon>
+      <h3 class="text-lg font-semibold m-0">Color Theme</h3>
     </div>
-    <p class="settings-description">Choose your preferred color palette</p>
+    <p class="text-sm text-gray-600 mb-3">Choose your preferred color palette</p>
     
-    <div class="theme-grid">
+    <div class="grid grid-cols-2 gap-3">
       @for (theme of themeService.availableThemes; track theme.name) {
         <button
           mat-ripple
-          class="theme-card"
-          [class.selected]="currentTheme() === theme.name"
+          class="relative flex flex-col gap-2 p-3 rounded-lg border-2 border-gray-200 cursor-pointer transition-all duration-200 bg-transparent hover:border-gray-300 hover:shadow-md"
+          [ngClass]="{ 'border-[color:var(--mat-sys-primary)] shadow-lg': currentTheme() === theme.name }"
           (click)="onThemeChange(theme.name)"
         >
-          <div class="theme-preview">
-            <div class="color-bar" [style.background]="theme.colors.primary"></div>
-            <div class="color-bar" [style.background]="theme.colors.secondary"></div>
+          <div class="flex gap-1 h-8 rounded overflow-hidden">
+            <div class="flex-1" [style.background]="theme.colors.primary"></div>
+            <div class="flex-1" [style.background]="theme.colors.secondary"></div>
           </div>
-          <div class="theme-info">
-            <div class="theme-name">{{ theme.displayName }}</div>
-            <div class="theme-description">{{ theme.description }}</div>
+          <div class="flex flex-col gap-1">
+            <div class="text-sm font-semibold">{{ theme.displayName }}</div>
+            <div class="text-xs text-gray-600">{{ theme.description }}</div>
           </div>
           @if (currentTheme() === theme.name) {
-            <mat-icon class="check-icon-corner">check_circle</mat-icon>
+            <mat-icon class="absolute bottom-2 right-2 text-xl text-[color:var(--mat-sys-primary)]">check_circle</mat-icon>
           }
         </button>
       }
     </div>
   </div>
 
-  <mat-divider />
+  <mat-divider class="my-2" />
 
   <!-- Layout Configuration -->
-  <div class="settings-section">
-    <div class="settings-section-title">
-      <mat-icon>view_compact</mat-icon>
-      <h3>Layout Density</h3>
+  <div class="py-4">
+    <div class="flex items-center gap-2 mb-2">
+      <mat-icon class="text-xl">view_compact</mat-icon>
+      <h3 class="text-lg font-semibold m-0">Layout Density</h3>
     </div>
-    <p class="settings-description">Adjust spacing and component density</p>
+    <p class="text-sm text-gray-600 mb-3">Adjust spacing and component density</p>
     
     <mat-button-toggle-group
       [value]="currentLayout()"
@@ -54,37 +54,34 @@
     >
       <mat-button-toggle value="compact">
         <span>
-            <!-- <mat-icon>view_compact</mat-icon> -->
             Compact
         </span>
       </mat-button-toggle>
       <mat-button-toggle value="comfortable">
         <span>
-            <!-- <mat-icon>view_comfortable</mat-icon> -->
             Comfortable
         </span>
       </mat-button-toggle>
       <mat-button-toggle value="spacious">
         <span>
-            <!-- <mat-icon>view_stream</mat-icon> -->
             Spacious
         </span>
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div>
 
-  <mat-divider />
+  <mat-divider class="my-2" />
 
   <!-- Font Size Configuration -->
-  <div class="settings-section">
-    <div class="settings-section-title">
-      <mat-icon>text_fields</mat-icon>
-      <h3>Font Size</h3>
+  <div class="py-4">
+    <div class="flex items-center gap-2 mb-2">
+      <mat-icon class="text-xl">text_fields</mat-icon>
+      <h3 class="text-lg font-semibold m-0">Font Size</h3>
     </div>
-    <p class="settings-description">Adjust the base font size</p>
+    <p class="text-sm text-gray-600 mb-3">Adjust the base font size</p>
     
-    <div class="slider-container">
-      <div class="slider-labels">
+    <div class="flex flex-col gap-2">
+      <div class="flex justify-between text-xs text-gray-600 mb-1">
         <span class="slider-label">XS</span>
         <span class="slider-label">Small</span>
         <span class="slider-label">Medium</span>
@@ -98,7 +95,7 @@
         step="1" 
         discrete
         [displayWith]="formatFontSizeLabel"
-        class="font-size-slider"
+        class="w-full"
       >
         <input 
           matSliderThumb 
@@ -109,11 +106,11 @@
     </div>
   </div>
 
-  <mat-divider />
+  <mat-divider class="my-2" />
 
   <!-- Info Section -->
-  <div class="settings-section settings-info">
-    <mat-icon>info</mat-icon>
-    <p>Settings are saved locally and will persist across sessions. Use the theme toggle in the header to switch between light and dark modes.</p>
+  <div class="py-4 flex items-start gap-2 text-sm text-gray-600">
+    <mat-icon class="text-base mt-0.5">info</mat-icon>
+    <p class="m-0">Settings are saved locally and will persist across sessions. Use the theme toggle in the header to switch between light and dark modes.</p>
   </div>
 </div>
