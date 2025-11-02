@@ -1,0 +1,57 @@
+/* Component Styles - Tailwind CSS 4 + DaisyUI 5
+ *
+ * IMPORTANT: @apply directives are NOT compatible with Tailwind CSS 4 in component-scoped SCSS files.
+ * All @apply directives have been converted to vanilla CSS using DaisyUI CSS variables.
+ *
+ * DaisyUI Color Variables:
+ * - oklch(var(--p))  = primary
+ * - oklch(var(--pc)) = primary-content
+ * - oklch(var(--b1)) = base-100
+ * - oklch(var(--b2)) = base-200
+ * - oklch(var(--b3)) = base-300
+ * - oklch(var(--bc)) = base-content
+ * - oklch(var(--su)) = success
+ * - oklch(var(--wa)) = warning
+ * - oklch(var(--er)) = error
+ * - oklch(var(--in)) = info
+ * - See: https://daisyui.com/docs/colors/
+ */
+
+
+:host {
+  --mfc-action-required-bg: #FFCDD2;
+  --mfc-action-action-text-bg: #fff;
+  --mfc-action-text-color: inherit;
+
+  display: flex;
+  width: 100%;
+  border-radius: theme(--radius-3xl);
+  padding: --spacing(7);
+  gap: --spacing(8);
+  align-items: center;
+  background-color: var(--mfc-action-required-bg);
+  color: var(--mfc-action-text-color);
+
+  .action-text {
+    // Converted from: @apply flex rounded-2xl;
+    background: var(--mfc-action-action-text-bg);
+    padding: --spacing(2.5) --spacing(3) --spacing(2.5) --spacing(2.5);
+    align-items: center;
+    flex: none;
+    font-size: var(--text-md);
+    gap: --spacing(1.5);
+  }
+
+  .description {
+    flex-grow: 1;
+  }
+
+  .button {
+    flex: none;
+  }
+}
+
+:host-context(html.dark) {
+  --mfc-action-required-bg: #9C7D81;
+  --mfc-action-action-text-bg: #8C7174;
+}

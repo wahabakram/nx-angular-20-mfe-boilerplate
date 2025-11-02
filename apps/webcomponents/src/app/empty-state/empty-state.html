@@ -1,0 +1,75 @@
+<!-- Empty State Component -->
+<div [class]="containerClasses()">
+
+  <!-- Illustration/Icon -->
+  @if (defaultConfig().illustration) {
+    <!-- Large Illustration -->
+    <div class="mb-6">
+      <div class="relative">
+        <!-- Background Circle -->
+        <div class="absolute inset-0 bg-gradient-to-br from-base-300/20 to-base-content/10 rounded-full blur-2xl"></div>
+
+        <!-- Main Icon -->
+        <div class="relative">
+          <mfc-icon
+            [name]="getVariantIcon()"
+            [class]="iconClasses()">
+          </mfc-icon>
+
+          <!-- Floating Elements for illustration -->
+          @if (defaultConfig().variant === 'default') {
+            <div class="absolute -top-1 -right-1 size-3 bg-primary/20 rounded-full animate-pulse"></div>
+            <div class="absolute -bottom-0 -left-0 size-2 bg-secondary/30 rounded-full animate-bounce"></div>
+          }
+        </div>
+      </div>
+    </div>
+  } @else {
+    <!-- Simple Icon -->
+    <mfc-icon
+      [name]="getVariantIcon()"
+      [class]="iconClasses()">
+    </mfc-icon>
+  }
+
+  <!-- Content -->
+  <div class="max-w-md mx-auto">
+
+    <!-- Title -->
+    <h3 [class]="titleClasses()">
+      {{ defaultConfig().title }}
+    </h3>
+
+    <!-- Message -->
+    <p [class]="messageClasses()">
+      {{ defaultConfig().message }}
+    </p>
+
+    <!-- Action Button -->
+    @if (defaultConfig().showAction) {
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="onActionClick()">
+        @if (defaultConfig().actionIcon) {
+          <mfc-icon [name]="defaultConfig().actionIcon" class="size-5"></mfc-icon>
+        }
+        {{ defaultConfig().actionText }}
+      </button>
+    }
+  </div>
+
+  <!-- Loading variant specific animation -->
+  @if (defaultConfig().variant === 'loading') {
+    <div class="mt-4 flex justify-center">
+      <div class="loading loading-dots loading-md text-primary"></div>
+    </div>
+  }
+
+  <!-- Search variant specific suggestions -->
+  @if (defaultConfig().variant === 'search') {
+    <div class="mt-6 text-xs text-base-content/50">
+      <p>Try adjusting your search criteria or browse our categories</p>
+    </div>
+  }
+</div>

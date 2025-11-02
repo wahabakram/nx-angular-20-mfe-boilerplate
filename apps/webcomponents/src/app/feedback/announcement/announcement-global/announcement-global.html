@@ -1,0 +1,8 @@
+@if (announcement()) {
+  <mfc-announcement closable
+                    [iconName]="announcement()?.iconName || ''"
+                    [variant]="announcement()?.variant || ''"
+                    (closed)="onClose()">
+    {{ announcement()?.message }}
+  </mfc-announcement>
+}

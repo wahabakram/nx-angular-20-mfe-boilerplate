@@ -1,0 +1,5 @@
+@if(control() && config()) {
+  <mat-slide-toggle [formControl]="control()">
+    {{ config().label }}
+  </mat-slide-toggle>
+}

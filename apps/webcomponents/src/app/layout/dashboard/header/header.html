@@ -1,0 +1,208 @@
+<div class="navbar bg-base-100 shadow-sm px-4">
+    <div class="navbar-start">
+        <button (click)="toggleDrawer()" class="btn btn-ghost btn-circle">
+            <mfc-icon name="solar:hamburger-menu-line-duotone" class="w-6 h-6 fill-current" />
+        </button>
+    </div>
+
+    <!-- Global Search Bar (Center) -->
+    @if (showSearch()) {
+    <div class="navbar-center flex justify-center w-[75%] px-4">
+        <div class="w-full max-w-2xl">
+            <mfc-search-bar
+                [value]="searchValue()"
+                [suggestions]="searchSuggestions()"
+                [config]="{
+                    placeholder: searchPlaceholder(),
+                    showClearButton: true,
+                    showSuggestions: true,
+                    appearance: 'outline',
+                    size: 'medium'
+                }"
+                (searchQuery)="searchQueryChange.emit($event)"
+                (suggestionSelected)="searchSuggestionSelected.emit($event)" />
+        </div>
+    </div>
+    }
+
+    <div class="navbar-end gap-3">
+        <!-- Theme Selector Dropdown -->
+        <div class="dropdown dropdown-end">
+            <button tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                <mfc-icon name="solar:palette-line-duotone" class="w-6 h-6 fill-current"></mfc-icon>
+            </button>
+            <!-- @if (showThemeSelector()) { -->
+            <div tabindex="0" class="dropdown-content bg-base-100 rounded-box mt-3 w-72 p-0 shadow-lg">
+                <div class="theme-header p-4 border-b border-base-300">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold text-lg">Theme</h3>
+                        <span class="text-xs text-base-content/70">{{ getCurrentThemeDisplay() }}</span>
+                    </div>
+                </div>
+
+                <div class="theme-list max-h-96 overflow-y-auto p-2">
+                    <!-- Light Themes -->
+                    <div class="theme-category mb-3">
+                        <h4 class="text-xs font-semibold text-base-content/60 px-2 mb-2">Light Themes</h4>
+                        <div class="grid grid-cols-1 gap-2">
+                            @for (theme of getLightThemes(); track theme.name) {
+                            <button
+                                class="theme-option"
+                                [class.active]="getCurrentTheme() === theme.name"
+                                (click)="selectTheme(theme.name)">
+                                <div class="theme-colors" [style.background-color]="theme.colors.background">
+                                    <span class="color-swatch" [style.background-color]="theme.colors.primary"></span>
+                                    <span class="color-swatch" [style.background-color]="theme.colors.secondary"></span>
+                                    <span class="color-swatch" [style.background-color]="theme.colors.accent"></span>
+                                    <span class="color-swatch" [style.background-color]="theme.colors.neutral"></span>
+                                </div>
+                                <span class="theme-name">{{ theme.displayName }}</span>
+                            </button>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Dark Themes -->
+                    <div class="theme-category mb-3">
+                        <h4 class="text-xs font-semibold text-base-content/60 px-2 mb-2">Dark Themes</h4>
+                        <div class="grid grid-cols-1 gap-2">
+                            @for (theme of getDarkThemes(); track theme.name) {
+                            <button
+                                class="theme-option"
+                                [class.active]="getCurrentTheme() === theme.name"
+                                (click)="selectTheme(theme.name)">
+                                <div class="theme-colors" [style.background-color]="theme.colors.background">
+                                    <span class="color-swatch" [style.background-color]="theme.colors.primary"></span>
+                                    <span class="color-swatch" [style.background-color]="theme.colors.secondary"></span>
+                                    <span class="color-swatch" [style.background-color]="theme.colors.accent"></span>
+                                    <span class="color-swatch" [style.background-color]="theme.colors.neutral"></span>
+                                </div>
+                                <span class="theme-name">{{ theme.displayName }}</span>
+                            </button>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Colorful Themes -->
+                    <div class="theme-category">
+                        <h4 class="text-xs font-semibold text-base-content/60 px-2 mb-2">Colorful Themes</h4>
+                        <div class="grid grid-cols-1 gap-2">
+                            @for (theme of getColorfulThemes(); track theme.name) {
+                            <button
+                                class="theme-option"
+                                [class.active]="getCurrentTheme() === theme.name"
+                                (click)="selectTheme(theme.name)">
+                                <div class="theme-colors" [style.background-color]="theme.colors.background">
+                                    <span class="color-swatch" [style.background-color]="theme.colors.primary"></span>
+                                    <span class="color-swatch" [style.background-color]="theme.colors.secondary"></span>
+                                    <span class="color-swatch" [style.background-color]="theme.colors.accent"></span>
+                                    <span class="color-swatch" [style.background-color]="theme.colors.neutral"></span>
+                                </div>
+                                <span class="theme-name">{{ theme.displayName }}</span>
+                            </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- } -->
+        </div>
+
+        <!-- Notifications Dropdown -->
+        <div class="dropdown dropdown-end">
+            <button tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                <div class="indicator">
+                    <mfc-icon name="solar:bell-bing-line-duotone" class="w-6 h-6 fill-current"></mfc-icon>
+                    @if (unreadCount() > 0) {
+                    <span class="badge badge-xs badge-primary indicator-item">{{ unreadCount() }}</span>
+                    }
+                </div>
+            </button>
+            <!-- @if (showNotifications()) { -->
+            <div tabindex="0" class="dropdown-content bg-base-100 rounded-box mt-3 w-80 p-0 shadow-lg">
+                <div class="notification-header p-4 border-b border-base-300">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold text-lg">Notifications</h3>
+                        @if (unreadCount() > 0) {
+                        <button class="btn btn-ghost btn-xs" (click)="markAllAsRead()">Mark all read</button>
+                        }
+                    </div>
+                </div>
+                <div class="notification-list max-h-96 overflow-y-auto">
+                    @for (notification of notifications().slice(0, 5); track notification.id) {
+                    <div class="notification-item p-4 border-b border-base-300 hover:bg-base-200 cursor-pointer" 
+                         [class.unread]="!notification.read"
+                         (click)="markNotificationAsRead(notification)"
+                         role="presentation">
+                        <div class="flex items-start gap-3">
+                            <div class="notification-icon">
+                                <mfc-icon [name]="getNotificationIcon(notification.type)" 
+                                        class="w-5 h-5 fill-current"
+                                        [style.color]="getNotificationColor(notification.type)"></mfc-icon>
+                            </div>
+                            <div class="notification-content flex-1 min-w-0">
+                                <div class="notification-title font-medium text-sm truncate">{{ notification.title }}</div>
+                                <div class="notification-message text-xs text-base-content/70 mt-1">{{ notification.message }}</div>
+                                <div class="notification-time text-xs text-base-content/50 mt-2">{{ formatNotificationTime(notification.timestamp) }}</div>
+                            </div>
+                            <div class="notification-actions">
+                                @if (!notification.read) {
+                                <div class="w-2 h-2 bg-primary rounded-full"></div>
+                                }
+                                <button class="btn btn-ghost btn-xs" (click)="clearNotification(notification); $event.stopPropagation()">
+                                    <mfc-icon name="solar:close-line-duotone" class="w-3 h-3 fill-current"></mfc-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    } @empty {
+                    <div class="p-8 text-center text-base-content/50">
+                        <mfc-icon name="solar:bell-off-line-duotone" class="w-8 h-8 fill-current mx-auto mb-2"></mfc-icon>
+                        <p>No notifications</p>
+                    </div>
+                    }
+                </div>
+                @if (notifications().length > 5) {
+                <div class="notification-footer p-3 border-t bg-base-50">
+                    <button class="btn btn-ghost btn-sm w-full">View all notifications</button>
+                </div>
+                }
+            </div>
+            <!-- } -->
+        </div>
+
+        <!-- Profile Dropdown -->
+        <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                <div class="w-8 rounded-full">
+                    <img alt="User avatar"
+                        src="https://i.pravatar.cc/150?img=1" />
+                </div>
+            </div>
+            <ul tabindex="0" class="menu menu-md dropdown-content bg-base-100 rounded-box mt-3 w-64 p-2 shadow-lg">
+                <li>
+                    <a (click)="navigateToProfile()" class="justify-between" role="presentation">
+                        <span class="flex items-center gap-2">
+                            <mfc-icon name="solar:user-line-duotone" class="w-5 h-5 fill-current"></mfc-icon>
+                            <span>Profile</span>
+                        </span>
+                        <span class="badge badge-sm">New</span>
+                    </a>
+                </li>
+                <li>
+                    <a (click)="navigateToSettings()" role="presentation">
+                        <mfc-icon name="solar:settings-line-duotone" class="w-5 h-5 fill-current"></mfc-icon>
+                        Settings
+                    </a>
+                </li>
+                <div class="divider my-1"></div>
+                <li>
+                    <a (click)="logout()" class="text-error" role="presentation">
+                        <mfc-icon name="solar:logout-2-line-duotone" class="w-5 h-5 fill-current"></mfc-icon>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

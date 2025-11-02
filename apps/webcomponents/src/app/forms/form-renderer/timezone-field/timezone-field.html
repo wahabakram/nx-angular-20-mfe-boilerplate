@@ -1,0 +1,11 @@
+@if(control() && config()) {
+  <mat-form-field>
+    <mat-label>{{ config().label }}</mat-label>
+    <mfc-timezone-select [formControl]="control()"
+                         [placeholder]="config().placeholder || ''"/>
+    <mat-hint>{{ config().hint }}</mat-hint>
+    @if (control().invalid && control().touched) {
+      <mat-error>{{ getErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+}

@@ -1,0 +1,12 @@
+@if(control() && config()) {
+  <mat-form-field>
+    <mat-label>{{ config().label }}</mat-label>
+    <input matInput [matDatepicker]="picker" [formControl]="control()" readonly>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-hint>{{ config().hint }}</mat-hint>
+    @if (control().invalid && control().touched) {
+      <mat-error>{{ getErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+}

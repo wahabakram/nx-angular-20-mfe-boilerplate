@@ -1,0 +1,32 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  text-transform: var(--mfc-sidebar-nav-heading-text-transform);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
+  color: var(--mfc-sidebar-nav-heading-color);
+  font-size: var(--mfc-sidebar-nav-heading-font-size);
+  font-weight: var(--mfc-sidebar-nav-heading-font-weight);
+  padding: var(--mfc-sidebar-nav-heading-padding);
+  margin-top: var(--mfc-sidebar-nav-heading-margin-top);
+  margin-bottom: var(--mfc-sidebar-nav-heading-margin-bottom);
+  text-align: var(--mfc-sidebar-nav-heading-text-align);
+  height: --spacing(6);
+  align-items: center;
+  position: relative;
+
+  .line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    height: --spacing(2);
+    border-radius: --spacing(2);
+    background: var(--mfc-sidebar-nav-compact-line-bg);
+    width: calc(var(--mfc-sidebar-compact-width) - --spacing(7));
+  }
+}

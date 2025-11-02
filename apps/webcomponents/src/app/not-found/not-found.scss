@@ -1,0 +1,233 @@
+/* Modern Not Found Component Styles */
+
+.mfc-not-found {
+  position: relative;
+  overflow: hidden;
+
+  // Floating animation for illustration elements
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-bounce {
+    animation: bounce 1s infinite;
+  }
+
+  // Enhanced gradient background for illustration variant
+  .bg-gradient-to-br {
+    background: linear-gradient(135deg,
+        var(--fallback-p, oklch(var(--p)/0.1)) 0%,
+        var(--fallback-s, oklch(var(--s)/0.1)) 100%);
+  }
+
+  // Blur effect for background elements
+  .blur-3xl {
+    filter: blur(64px);
+  }
+
+  // Button enhancements
+  .btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, currentColor 0%, transparent 70%);
+      transition: all 0.3s ease;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+    }
+
+    &:hover::before {
+      width: 200px;
+      height: 200px;
+      opacity: 0.1;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  // Icon glow effect for illustration variant
+  .relative mfc-icon {
+    filter: drop-shadow(0 0 20px currentColor);
+    transition: filter 0.3s ease;
+
+    &:hover {
+      filter: drop-shadow(0 0 30px currentColor);
+    }
+  }
+
+  // Card styling enhancements
+  .card {
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Custom animations
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-25%);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// Add floating animation to illustration elements
+.mfc-not-found .relative .absolute {
+  animation: float 3s ease-in-out infinite;
+
+  &:nth-child(2) {
+    animation-delay: 1s;
+  }
+
+  &:nth-child(3) {
+    animation-delay: 2s;
+  }
+}
+
+// Responsive enhancements
+@media (max-width: 640px) {
+  .mfc-not-found {
+    .max-w-lg {
+      max-width: 100%;
+    }
+
+    .flex-wrap {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn {
+      width: 100%;
+      max-width: 200px;
+    }
+
+    // Smaller illustration on mobile
+    .blur-3xl {
+      filter: blur(32px);
+    }
+  }
+}
+
+// Dark mode enhancements
+[data-theme="dark"] {
+  .mfc-not-found {
+    .relative mfc-icon {
+      filter: drop-shadow(0 0 25px currentColor);
+    }
+
+    .bg-gradient-to-br {
+      background: linear-gradient(135deg,
+          var(--fallback-p, oklch(var(--p)/0.15)) 0%,
+          var(--fallback-s, oklch(var(--s)/0.15)) 100%);
+    }
+
+    .card {
+      backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .mfc-not-found {
+    .relative mfc-icon {
+      filter: none;
+    }
+
+    .bg-gradient-to-br {
+      background: var(--fallback-b2, oklch(var(--b2)/1));
+    }
+
+    .absolute {
+      opacity: 0.8;
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .mfc-not-found {
+
+    .animate-pulse,
+    .animate-bounce,
+    .relative .absolute {
+      animation: none;
+    }
+
+    .btn {
+      transition: none;
+
+      &::before {
+        transition: none;
+      }
+
+      &:active {
+        transform: none;
+      }
+    }
+
+    .relative mfc-icon {
+      transition: none;
+    }
+
+    .card {
+      transition: none;
+
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+}
+
+// Focus styles for accessibility
+.mfc-not-found .btn:focus-visible {
+  outline: 2px solid var(--fallback-p, oklch(var(--p)/1));
+  outline-offset: 2px;
+}

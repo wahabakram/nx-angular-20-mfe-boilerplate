@@ -1,0 +1,25 @@
+@reference 'tailwindcss';
+
+:host {
+  --mfc-breadcrumbs-gap: calc(var(--spacing) * 2.5);
+  --mfc-breadcrumbs-item-font-size: theme(--text-sm);
+  --mfc-breadcrumbs-item-color: var(--color-secondary);
+  --mfc-breadcrumbs-item-hover-color: var(--color-primary);
+  --mfc-breadcrumbs-active-item-color: var(--color-primary);
+  --mfc-breadcrumbs-item-font-weight: 400;
+  --mfc-breadcrumbs-separator-color: var(--color-neutral-400);
+  --mfc-breadcrumbs-separator-font-size: var(--text-md);
+  --mfc-breadcrumbs-separator-position-top: 1px;
+  --mfc-breadcrumbs-title-color: var(--color-neutral-800);
+  --mfc-breadcrumbs-title-font-size: var(--text-xs);
+
+  display: flex;
+  align-items: center;
+  gap: var(--mfc-breadcrumbs-gap);
+}
+
+:host-context(html.dark) {
+  --mfc-breadcrumbs-item-color: var(--color-neutral-400);
+  --mfc-breadcrumbs-separator-color: var(--color-neutral-400);
+  --mfc-breadcrumbs-title-color: var(--color-neutral-100);
+}

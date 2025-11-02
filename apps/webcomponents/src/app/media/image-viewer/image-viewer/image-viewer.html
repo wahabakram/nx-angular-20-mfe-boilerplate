@@ -1,0 +1,63 @@
+<div class="title-container">
+  @if (hasTitle()) {
+    <div class="title">
+      @if (data.titleTplRef) {
+        <ng-container [ngTemplateOutlet]="data.titleTplRef"></ng-container>
+      } @else if (data.caption) {
+        {{ data.title }}
+      }
+    </div>
+  }
+</div>
+<div class="controls" (click)="onPreventClick($event)" role="presentation">
+  <div class="w-max">
+    <button (click)="pictureRef.close()" class="close">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+  <div class="w-max">
+    <button class="zoom" (click)="toggleZoom()" [disabled]="scaleMax === 1 || null">
+      @if (scale === this.scaleMin) {
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6" />
+        </svg>
+      } @else {
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM13.5 10.5h-6" />
+        </svg>
+      }
+    </button>
+  </div>
+</div>
+<div class="content" (click)="onBackdropClick()" role="presentation">
+  <div class="image" (dragstart)="onDragStart($event)">
+    @if (loading) {
+      <div class="spinner">
+        <span class="loading loading-spinner loading-lg"></span>
+      </div>
+    }
+    <img [src]="data.sourceUrl" alt="" (load)="onLoad($event)" (click)="onPreventClick($event)" class="img" role="presentation">
+  </div>
+  @if (hasAside()) {
+    <aside class="aside" (click)="onPreventClick($event)" role="presentation">
+      <div class="aside-header">
+        @if (data.captionTplRef) {
+          <ng-container [ngTemplateOutlet]="data.captionTplRef"></ng-container>
+        } @else if (data.caption) {
+          {{ data.caption }}
+        }
+      </div>
+      <div class="aside-body">
+        <div class="aside-body-scroll">
+          @if (data.descriptionTplRef) {
+            <ng-container [ngTemplateOutlet]="data.descriptionTplRef"></ng-container>
+          } @else if (data.description) {
+            {{ data.description }}
+          }
+        </div>
+      </div>
+    </aside>
+  }
+</div>

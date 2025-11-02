@@ -1,0 +1,75 @@
+<mat-select
+  #matSelect
+  panelClass="mfc-currency-select-panel"
+  [value]="value"
+  (selectionChange)="onSelectionChange($event)"
+  (opened)="onSelectOpened()"
+  (closed)="onSelectClosed()"
+  [placeholder]="placeholder"
+  [required]="isRequiredSignal()"
+  [disabled]="isDisabledSignal()">
+  <mat-select-trigger class="select-trigger">
+    @let selectedCurrency = selectedCurrencyDisplay();
+    @if (selectedCurrency) {
+      <div class="flex items-center gap-2">
+        <span class="text-xl leading-[0]">{{ selectedCurrency.flag }}</span>
+        <div>
+          <span class="currency-code">
+            {{ selectedCurrency.code }}
+            {{ selectedCurrency.symbol }}
+          </span>
+          @if (showCountryName()) {
+            &ndash; {{ selectedCurrency.name }}
+          }
+        </div>
+      </div>
+    }
+
+    @if (!selectedCurrencyDisplay() && placeholder) {
+      <div class="placeholder-text">
+        {{ placeholder }}
+      </div>
+    }
+  </mat-select-trigger>
+
+  <div class="px-3 py-3 rounded-t sticky top-0 z-[1] bg-base-100">
+    <input #searchInput
+           type="text" placeholder="Search..." autocomplete="off" [formControl]="searchCtrl"
+           class="w-full input input-bordered input-sm">
+    @if (searchCtrl.value) {
+      <div class="absolute end-4 top-1/2 -translate-y-1/2">
+        <button
+          mat-icon-button
+          (click)="clearSearch($event)"
+          class="clear-button btn btn-ghost btn-xs btn-circle"
+          type="button"
+          aria-label="Clear search">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    }
+  </div>
+
+  @for (currency of filteredCurrencies(); track currency.code) {
+    <mat-option [value]="currency.code">
+      <div class="flex items-center gap-2 h-full">
+        <span class="text-xl leading-[0]">{{ currency.flag }}</span>
+        <div>
+          <span class="currency-code uppercase">
+            {{ currency.code }}
+            {{ currency.symbol }}
+          </span>
+          @if (showCountryName()) {
+            &ndash; {{ currency.name }}
+          }
+        </div>
+      </div>
+    </mat-option>
+  } @empty {
+    @if (searchCtrl.value) {
+      <div class="text-sm px-4 py-3">
+        <span i18n>Currency not found</span>.
+      </div>
+    }
+  }
+</mat-select>

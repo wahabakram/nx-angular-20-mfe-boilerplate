@@ -1,0 +1,23 @@
+@if (hasIncidents()) {
+  <mfc-incidents>
+    <mfc-incidents-bar>
+      <mfc-incidents-title>{{ title() }}</mfc-incidents-title>
+      @if (description()) {
+        <mfc-incidents-description>{{ description() }}</mfc-incidents-description>
+      }
+      <mat-icon mfcIncidentsToggleIcon>expand_more</mat-icon>
+    </mfc-incidents-bar>
+    <mfc-incidents-list fixed>
+      @for (incident of incidents(); track incident) {
+        <mfc-incident>
+          <mat-icon mfcIncidentIcon>info</mat-icon>
+          <mat-icon mfcIncidentClose>close</mat-icon>
+          <mfc-incident-title>{{ incident.title }}</mfc-incident-title>
+          @if (incident.details) {
+            <mfc-incident-details>{{ incident.details }}</mfc-incident-details>
+          }
+        </mfc-incident>
+      }
+    </mfc-incidents-list>
+  </mfc-incidents>
+}

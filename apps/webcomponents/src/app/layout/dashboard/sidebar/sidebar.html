@@ -1,0 +1,140 @@
+<aside class="menu menu-md p-4 w-72 bg-base-200 text-base-content min-h-screen flex flex-col">
+    <h2 class="text-lg font-bold mb-4">Company Logo</h2>
+
+    <!-- Workspace Selector Dropdown -->
+    <div class="dropdown dropdown-bottom w-full mb-6">
+        <button tabindex="0" role="button" class="btn btn-outline w-full justify-between">
+            <div class="flex items-center gap-2">
+                <mfc-icon name="solar:buildings-2-line-duotone" class="w-4 h-4 fill-current" />
+                <span>{{ selectedWorkspace()?.name || 'Select Workspace' }}</span>
+            </div>
+            <mfc-icon name="solar:alt-arrow-down-line-duotone" class="w-4 h-4 fill-current" />
+        </button>
+        <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-full p-2 shadow border border-base-300">
+            @for (workspace of workspaces(); track workspace.id) {
+                <li>
+                    <a (click)="selectWorkspace(workspace)" 
+                       [class.active]="selectedWorkspace()?.id === workspace.id"
+                       role="presentation">
+                        <mfc-icon [name]="workspace.isDefault ? 'solar:star-line-duotone' : 'solar:buildings-2-line-duotone'" 
+                                 class="w-4 h-4 fill-current" />
+                        <div class="flex flex-col items-start">
+                            <span>{{ workspace.name }}</span>
+                            @if (workspace.description) {
+                                <span class="text-xs text-base-content/60">{{ workspace.description }}</span>
+                            }
+                        </div>
+                        @if (workspace.isDefault) {
+                            <div class="badge badge-xs badge-primary ml-auto">Default</div>
+                        }
+                    </a>
+                </li>
+            }
+            <div class="divider my-1"></div>
+            <li>
+                <a role="presentation">
+                    <mfc-icon name="solar:add-square-line-duotone" class="w-4 h-4 fill-current" />
+                    Create Workspace
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="flex-1">
+        <div class="mb-2 text-sm font-bold uppercase text-base-content/60">General</div>
+        <ul class="menu menu-md mb-4 rounded-box bg-base-200 w-full">
+            <li>
+                <a [routerLink]="['/']" routerLinkActive="menu-active" [routerLinkActiveOptions]="{ exact: true }">
+                    <mfc-icon name="si:dashboard-duotone" class="w-5 h-5 fill-current" />
+                    Dashboard
+                </a>
+            </li>
+            <li>
+                <details open>
+                    <summary>
+                        <span class="flex items-center gap-2">
+                            <mfc-icon name="solar:box-outline" class="w-5 h-5 fill-current" />
+                            Builders
+                        </span>
+                    </summary>
+                    <ul>
+                        <li>
+                            <a [routerLink]="['/builders/form-builder']" routerLinkActive="menu-active"
+                                [routerLinkActiveOptions]="{ exact: true }">Form Builder</a>
+                        </li>
+                        <li>
+                            <a>Workflow Builder</a>
+                        </li>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+
+        <div class="mb-2 text-sm font-bold uppercase text-base-content/60">Analyze</div>
+        <ul class="menu menu-md mb-4 rounded-box bg-base-200 w-full">
+            <li>
+                <a [routerLink]="['/activity']" routerLinkActive="menu-active">
+                    <mfc-icon name="solar:pulse-2-line-duotone" class="w-5 h-5 fill-current" />
+                    Activity
+                </a>
+            </li>
+            <li>
+                <a [routerLink]="['/reports']" routerLinkActive="menu-active">
+                    <mfc-icon name="solar:document-text-line-duotone" class="w-5 h-5 fill-current" />
+                    Reports
+                </a>
+            </li>
+            <li>
+                <a [routerLink]="['/analytics']" routerLinkActive="menu-active">
+                    <mfc-icon name="solar:chart-2-bold-duotone" class="w-5 h-5 fill-current" />
+                    Analytics
+                </a>
+            </li>
+            <li>
+                <a [routerLink]="['/insights']" routerLinkActive="menu-active">
+                    <mfc-icon name="solar:rocket-2-bold-duotone" class="w-5 h-5 fill-current" />
+                    Insights
+                </a>
+            </li>
+        </ul>
+
+        <div class="mb-2 text-sm font-bold uppercase text-base-content/60">Manage</div>
+        <ul class="menu menu-md mb-4 rounded-box bg-base-200 w-full">
+            <li>
+                <a [routerLink]="['/projects']" routerLinkActive="menu-active">
+                    <mfc-icon name="solar:case-minimalistic-line-duotone" class="w-5 h-5 fill-current" />
+                    Projects
+                </a>
+            </li>
+            <li>
+                <a [routerLink]="['/teams']" routerLinkActive="menu-active">
+                    <mfc-icon name="solar:users-group-rounded-line-duotone" class="w-5 h-5 fill-current" />
+                    Teams
+                </a>
+            </li>
+            <li>
+                <a [routerLink]="['/integrations']" routerLinkActive="menu-active">
+                    <mfc-icon name="solar:plug-circle-line-duotone" class="w-5 h-5 fill-current" />
+                    Integrations
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="mt-auto">
+        <ul class="menu menu-md rounded-box bg-base-200 w-full">
+            <li>
+                <a [routerLink]="['/settings']" routerLinkActive="menu-active">
+                    <mfc-icon name="solar:settings-line-duotone" class="w-5 h-5 fill-current" />
+                    Settings
+                </a>
+            </li>
+            <li>
+                <a (click)="logout()" role="presentation">
+                    <mfc-icon name="solar:logout-2-line-duotone" class="w-5 h-5 fill-current" />
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>

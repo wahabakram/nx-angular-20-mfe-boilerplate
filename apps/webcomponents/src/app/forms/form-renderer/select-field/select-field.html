@@ -1,0 +1,14 @@
+@if (control() && config()) {
+  <mat-form-field>
+    <mat-label>{{ config().label }}</mat-label>
+    <mat-select [formControl]="control()">
+      @for (option of options; track option.value) {
+        <mat-option [value]="option.value">{{ option.label }}</mat-option>
+      }
+    </mat-select>
+    <mat-hint>{{ config().hint }}</mat-hint>
+    @if (control().invalid && control().touched) {
+      <mat-error>{{ getErrorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+}

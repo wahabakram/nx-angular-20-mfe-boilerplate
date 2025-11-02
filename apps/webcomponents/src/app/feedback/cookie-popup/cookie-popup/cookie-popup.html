@@ -1,0 +1,18 @@
+<ng-template #contentRef>
+  <div class="mfc-cookie-popup">
+    <h4 class="title">
+      <ng-content select="[mfcCookiePopupTitle]"/>
+    </h4>
+    <div class="message">
+      <ng-content/>
+    </div>
+    <div class="controls">
+      <button mat-stroked-button class="control" (click)="acceptNecessaryCookiesOnly()">
+        <ng-content select="[mfcCookiePopupAcceptNecessaryOnlyButton]"/>
+      </button>
+      <button mat-flat-button class="control" (click)="acceptAllCookies()">
+        <ng-content select="[mfcCookiePopupAcceptAllButton]"/>
+      </button>
+    </div>
+  </div>
+</ng-template>

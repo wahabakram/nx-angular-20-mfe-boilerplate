@@ -1,0 +1,17 @@
+<!-- Loading Spinner Component -->
+<div [class]="containerClasses()">
+
+  <!-- Spinner Content -->
+  <div class="loading-content">
+
+    <!-- Loading Animation -->
+    <div [class]="spinnerClasses()"></div>
+
+    <!-- Loading Message -->
+    @if (defaultConfig().message) {
+    <div [class]="messageClasses()">
+      {{ defaultConfig().message }}
+    </div>
+    }
+  </div>
+</div>

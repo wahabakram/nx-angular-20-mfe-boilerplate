@@ -1,0 +1,253 @@
+/* Modern Loading Spinner Styles */
+
+.mfc-loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .loading-message {
+    font-weight: 500;
+    animation: fade-in-out 2s ease-in-out infinite;
+  }
+}
+
+// Overlay styles
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--fallback-b1, oklch(var(--b1)/0.8));
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  border-radius: inherit;
+}
+
+// Full screen styles
+.loading-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--fallback-b1, oklch(var(--b1)/0.95));
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  border-radius: 0;
+
+  .loading-content {
+    gap: 20px;
+  }
+}
+
+// Custom loading animations
+@keyframes fade-in-out {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 2px currentColor);
+  }
+  50% {
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+}
+
+// Enhanced loading spinner with glow effect
+.loading-spinner {
+  animation: spin 1s linear infinite, pulse-glow 2s ease-in-out infinite;
+}
+
+// Enhanced loading dots with stagger effect
+.loading-dots {
+  &::before,
+  &::after {
+    animation-delay: 0.2s, 0.4s;
+  }
+}
+
+// Enhanced loading ring with pulse
+.loading-ring {
+  animation: spin 1.5s linear infinite, pulse-glow 3s ease-in-out infinite;
+}
+
+// Enhanced loading ball with bounce
+.loading-ball {
+  animation: bounce 1s ease-in-out infinite, pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.1);
+  }
+}
+
+// Enhanced loading bars with wave effect
+.loading-bars {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: currentColor;
+    animation: wave 1.5s ease-in-out infinite;
+  }
+
+  &::before {
+    animation-delay: -0.5s;
+  }
+
+  &::after {
+    animation-delay: -1s;
+  }
+}
+
+@keyframes wave {
+  0%, 100% {
+    transform: scaleY(0.4);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+// Enhanced loading infinity with continuous flow
+.loading-infinity {
+  animation: infinity-flow 2s ease-in-out infinite, pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes infinity-flow {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+// Color variations with enhanced contrast
+.text-primary {
+  color: var(--fallback-p, oklch(var(--p)/1));
+  filter: saturate(1.2);
+}
+
+.text-secondary {
+  color: var(--fallback-s, oklch(var(--s)/1));
+  filter: saturate(1.2);
+}
+
+.text-accent {
+  color: var(--fallback-a, oklch(var(--a)/1));
+  filter: saturate(1.2);
+}
+
+.text-success {
+  color: var(--fallback-su, oklch(var(--su)/1));
+  filter: saturate(1.2);
+}
+
+.text-warning {
+  color: var(--fallback-w, oklch(var(--w)/1));
+  filter: saturate(1.2);
+}
+
+.text-error {
+  color: var(--fallback-e, oklch(var(--e)/1));
+  filter: saturate(1.2);
+}
+
+.text-info {
+  color: var(--fallback-in, oklch(var(--in)/1));
+  filter: saturate(1.2);
+}
+
+.text-neutral {
+  color: var(--fallback-n, oklch(var(--n)/1));
+  filter: saturate(1.2);
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .loading-fullscreen {
+    .loading-content {
+      gap: 16px;
+    }
+
+    .loading-message {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// Dark mode enhancements
+[data-theme="dark"] {
+  .loading-overlay {
+    background: var(--fallback-b1, oklch(var(--b1)/0.9));
+  }
+
+  .loading-fullscreen {
+    background: var(--fallback-b1, oklch(var(--b1)/0.98));
+  }
+
+  .loading-spinner,
+  .loading-ring,
+  .loading-ball {
+    filter: drop-shadow(0 0 4px currentColor);
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .loading-overlay,
+  .loading-fullscreen {
+    background: var(--fallback-b1, oklch(var(--b1)/1));
+  }
+
+  .loading {
+    filter: none !important;
+    border-width: 3px;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .loading {
+    animation-duration: 3s;
+  }
+
+  .loading-message {
+    animation: none;
+  }
+
+  .loading-spinner,
+  .loading-ring,
+  .loading-ball,
+  .loading-bars,
+  .loading-infinity {
+    animation: spin 3s linear infinite;
+  }
+}

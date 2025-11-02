@@ -1,0 +1,7 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  font-size: var(--mfc-incidents-description-font-size);
+  opacity: var(--mfc-incidents-description-opacity);
+}

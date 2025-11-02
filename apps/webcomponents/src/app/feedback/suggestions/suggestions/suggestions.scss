@@ -1,0 +1,20 @@
+:host {
+  --mfc-suggestions-bg: hsl(var(--b1));
+  --mfc-suggestion-block-heading-color: hsl(var(--bc));
+  --mfc-suggestion-block-font-size: 0.75rem;
+  --mfc-suggestion-block-font-weight: 600;
+  --mfc-suggestion-block-content-padding: 0.5rem 0;
+  --mfc-suggestion-height: 2.75rem;
+  --mfc-suggestion-padding: 0 0.5rem;
+  --mfc-suggestion-hover-bg: hsl(var(--b2));
+  --mfc-suggestion-border-radius: 9999px;
+
+  display: block;
+  overflow-y: auto;
+  background-color: var(--mfc-suggestions-bg);
+}
+
+:host-context(html.dark) {
+  --mfc-suggestions-bg: hsl(var(--b2));
+  --mfc-suggestion-hover-bg: hsl(var(--b3));
+}

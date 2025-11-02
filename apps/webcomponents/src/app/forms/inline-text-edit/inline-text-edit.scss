@@ -1,0 +1,40 @@
+:host {
+  display: block;
+  padding: 4px 10px;
+  position: relative;
+  transition: border-color 0.15s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid transparent;
+  outline: none;
+  border-radius: theme('borderRadius.lg');
+  cursor: text;
+  margin-left: -10px;
+  margin-right: -10px;
+  word-wrap: break-word;
+
+  &:hover {
+    border-color: oklch(var(--bc) / 0.2);
+  }
+
+  &.editing {
+    color: oklch(var(--bc));
+    caret-color: oklch(var(--p));
+  }
+
+  &.focused {
+    border-color: oklch(var(--p));
+    outline: 1px solid oklch(var(--p));
+  }
+
+  &:empty {
+    &:before {
+      position: absolute;
+      content: attr(data-placeholder);
+      inset: 0;
+      z-index: 0;
+      color: oklch(var(--bc) / 0.4);
+      font-size: inherit;
+      padding: inherit;
+      word-wrap: break-word;
+    }
+  }
+}

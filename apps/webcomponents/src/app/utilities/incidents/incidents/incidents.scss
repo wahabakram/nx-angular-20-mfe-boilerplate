@@ -1,0 +1,40 @@
+@reference 'tailwindcss';
+
+:host {
+  --mfc-incidents-bar-height: --spacing(24);
+  --mfc-incidents-bar-bg: var(--color-orange-container);
+  --mfc-incidents-bar-padding: 0 --spacing(8);
+  --mfc-incidents-bar-color: var(--color-on-orange-container);
+  --mfc-incidents-bar-box-shadow: none;
+  --mfc-incidents-bar-hover-box-shadow: theme(--shadow-sm);
+  --mfc-incidents-list-bg: rgba(0, 0, 0, .32);
+  --mfc-incidents-list-gap: --spacing(5);
+  --mfc-incidents-list-padding: --spacing(7) 0;
+  --mfc-incident-bg: white;
+  --mfc-incident-color: var(--color-neutral-700);
+  --mfc-incident-border-radius: theme(--radius-md);
+  --mfc-incident-padding: --spacing(4) --spacing(6);
+  --mfc-incident-gap: --spacing(6);
+  --mfc-incident-border-start: --spacing(1) solid var(--color-neutral-900);
+  --mfc-incident-close-color: var(--color-neutral-500);
+  --mfc-incident-close-hover-color: var(--color-neutral-900);
+  --mfc-incident-title-font-size: theme(--text-sm);
+  --mfc-incident-title-font-weight: 500;
+  --mfc-incident-details-font-size: theme(--text-sm);
+  --mfc-incident-details-color: var(--color-neutral-500);
+  --mfc-incidents-title-font-size: var(--text-base);
+  --mfc-incidents-title-font-weight: 500;
+  --mfc-incidents-description-font-size: theme(--text-sm);
+  --mfc-incidents-description-opacity: 80%;
+
+  display: contents;
+
+  .list-container {
+    display: none;
+    height: calc(100vh - var(--mfc-layout-top-header-top) + var(--mfc-layout-top-header-height));
+  }
+}
+
+:host-context(html.dark) {
+  --mfc-incidents-list-bg: rgba(255, 255, 255, .32);
+}

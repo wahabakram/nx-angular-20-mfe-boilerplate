@@ -1,0 +1,6 @@
+@reference 'tailwindcss';
+
+:host {
+  position: absolute;
+  color: var(--mfc-gauge-value-color);
+}

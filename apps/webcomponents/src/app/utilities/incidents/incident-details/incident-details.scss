@@ -1,0 +1,7 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  font-size: var(--mfc-incident-details-font-size);
+  color: var(--mfc-incident-details-color);
+}

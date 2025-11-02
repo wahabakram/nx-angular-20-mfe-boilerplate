@@ -1,0 +1,26 @@
+:host {
+  display: block;
+  margin: 1.25rem 0;
+
+  &.is-inline {
+    display: inline;
+  }
+
+  ::ng-deep {
+    pre.shiki {
+      padding: 1.25rem;
+      border-radius: 1rem;
+      overflow: auto;
+      line-height: 1.5;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.875rem;
+    }
+
+    code { white-space: pre; }
+  }
+
+  .loading {
+    opacity: 0.6;
+    color: oklch(var(--bc) / 0.6);
+  }
+}

@@ -1,0 +1,59 @@
+<!-- Stat Card Component -->
+<div [class]="cardClasses()" (click)="onCardClick()" [attr.role]="config().clickable ? 'button' : null"
+  [attr.tabindex]="config().clickable ? '0' : null"
+  [attr.aria-label]="config().clickable ? 'Click to view details for ' + config().title : null" role="presentation">
+
+  <!-- Loading State -->
+  @if (config().loading) {
+  <div class="flex items-center justify-center py-8">
+    <div class="loading loading-spinner loading-md"></div>
+  </div>
+  } @else {
+  <!-- Card Content -->
+  <div class="flex items-start justify-between">
+
+    <!-- Main Content -->
+    <div class="flex-1 min-w-0">
+
+      <!-- Title -->
+      <h3 [class]="titleClasses()">
+        {{ config().title }}
+      </h3>
+
+      <!-- Value -->
+      <div [class]="valueClasses()">
+        {{ formatValue(config().value) }}
+      </div>
+
+      <!-- Description -->
+      @if (config().description) {
+      <p class="text-sm text-base-content/60 mt-1 truncate">
+        {{ config().description }}
+      </p>
+      }
+
+      <!-- Trend Indicator -->
+      @if (config().trend) {
+      <div [class]="trendClasses()" class="flex items-center justify-center mt-2">
+        <mfc-icon [name]="getTrendIcon()" class="size-3">
+        </mfc-icon>
+        <span>{{ config().trend!.value }}%</span>
+        @if (config().trend!.label) {
+        <span class="ml-1">{{ config().trend!.label }}</span>
+        }
+      </div>
+      }
+    </div>
+
+    <!-- Icon -->
+    @if (config().icon) {
+    <div class="ml-4">
+      <div class="flex items-center justify-center rounded-lg p-2 bg-base-200/50">
+        <mfc-icon [name]="config().icon!" [class]="iconClasses()">
+        </mfc-icon>
+      </div>
+    </div>
+    }
+  </div>
+  }
+</div>

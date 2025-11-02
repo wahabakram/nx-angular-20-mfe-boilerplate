@@ -4,14 +4,12 @@ import {
   OnInit,
   outputBinding,
   signal,
-  Type,
   viewChild,
   ViewContainerRef,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { loadRemote } from '@module-federation/enhanced/runtime';
-import { Subject } from 'rxjs';
 import {
   MatDrawer,
   MatDrawerContainer,
@@ -40,8 +38,6 @@ export class App implements OnInit {
   sidenav = viewChild.required('sidenav', { read: ViewContainerRef });
   settings = viewChild.required('settings', { read: ViewContainerRef });
 
-  protected buttonComponent: Type<unknown> | null = null;
-  protected settingsComponent: Type<unknown> | null = null;
   protected isLoading = true;
 
   async ngOnInit() {

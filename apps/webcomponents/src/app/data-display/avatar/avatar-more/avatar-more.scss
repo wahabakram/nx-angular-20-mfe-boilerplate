@@ -1,0 +1,42 @@
+@reference 'tailwindcss';
+
+:host {
+  --mfc-avatar-font-weight: 500;
+  --mfc-avatar-size: --spacing(10);
+  --mfc-avatar-border-radius: calc(infinity * 1px);
+  --mfc-avatar-bg: theme(--color-emerald-500);
+  --mfc-avatar-color: white;
+  --mfc-avatar-inner-border: inset 0 0 2px var(--color-border);
+  --mfc-avatar-total-font-size: var(--text-xs);
+  --mfc-avatar-total-font-weight: 500;
+  --mfc-avatar-total-color: white;
+  --mfc-avatar-total-bg: var(--color-neutral-700);
+  --mfc-avatar-total-hover-bg: var(--color-neutral-600);
+
+  background: var(--mfc-avatar-total-bg);
+  font-size: var(--mfc-avatar-total-font-size);
+  font-weight: var(--mfc-avatar-total-font-weight);
+  color: var(--mfc-avatar-total-color);
+  border-radius: var(--mfc-avatar-border-radius);
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: var(--mfc-avatar-total-hover-bg);
+  }
+}
+
+:host:not([class*="w-"]):not([class*="size-"]) {
+  width: var(--mfc-avatar-size);
+}
+
+:host:not([class*="h-"]):not([class*="size-"]) {
+  height: var(--mfc-avatar-size);
+}
+
+:host-context(html.dark) {
+  --mfc-avatar-group-item-border: 0.125rem solid var(--color-neutral-950);
+  --mfc-avatar-presence-indicator-outline: var(--color-neutral-950) solid 2px;
+}

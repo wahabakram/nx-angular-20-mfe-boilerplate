@@ -1,0 +1,161 @@
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  input,
+  output,
+  signal,
+  Renderer2,
+  PLATFORM_ID,
+  AfterContentChecked,
+  afterNextRender,
+} from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+
+@Component({
+  selector: 'mfc-inline-text-edit,[mfc-inline-text-edit]',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './inline-text-edit.html',
+  styleUrl: './inline-text-edit.scss',
+  host: {
+    'class': 'mfc-inline-text-edit',
+    '[attr.contenteditable]': 'isContentEditable',
+    '[attr.data-placeholder]': 'placeholder()',
+    '[class.editing]': 'isEditing()',
+    '[class.focused]': 'isFocused()',
+    '(focus)': 'onFocus()',
+    '(blur)': 'onBlur()',
+    '(keydown.enter)': 'onEnter($event)',
+    '(keydown.escape)': 'onEscape()',
+    '(paste)': 'onPaste($event)',
+    '(input)': 'onInput()',
+  },
+})
+export class InlineTextEdit implements AfterContentChecked {
+  private platformId = inject(PLATFORM_ID);
+
+  enabled = input(true);
+  placeholder = input('');
+
+  readonly changed = output<string>();
+
+  isEditing = signal(false);
+  isFocused = signal(false);
+
+  private previousValue = '';
+  private minHeightSet = false;
+  private elementRef = inject(ElementRef<HTMLElement>);
+  private renderer = inject(Renderer2);
+
+  constructor() {
+    afterNextRender(() => {
+      this.setInitialMinHeight();
+    });
+  }
+
+  get isContentEditable() {
+    return true;
+  }
+
+  ngAfterContentChecked() {
+    if (isPlatformServer(this.platformId)) {
+      return;
+    }
+
+    this.setInitialMinHeight();
+  }
+
+  private setInitialMinHeight(): void {
+    if (this.minHeightSet) {
+      return;
+    }
+
+    const el = this.elementRef.nativeElement;
+    let height = el.getBoundingClientRect().height;
+
+    if (!height || height < 1) {
+      const cs = getComputedStyle(el);
+      let lh = parseFloat(cs.lineHeight);
+
+      if (isNaN(lh) || lh <= 0) {
+        const fs = parseFloat(cs.fontSize) || 16;
+        lh = fs * 1.5;
+      }
+
+      height = lh;
+    }
+
+    if (height && height > 0) {
+      this.renderer.setStyle(el, 'min-height', `${Math.ceil(height)}px`);
+      this.minHeightSet = true;
+    }
+  }
+
+  onFocus(): void {
+    this.isFocused.set(true);
+  }
+
+  onBlur(): void {
+    this.isFocused.set(false);
+    this.finishEdit();
+  }
+
+  onEnter(event: Event): void {
+    event.preventDefault();
+    this.finishEdit();
+  }
+
+  onEscape(): void {
+    this.cancelEdit();
+  }
+
+  onPaste(event: ClipboardEvent): void {
+    event.preventDefault();
+    const text = event.clipboardData?.getData('text/plain') ?? '';
+    document.execCommand('insertText', false, text);
+  }
+
+  onInput(): void {
+    // Track live changes and normalize empty content.
+    // Browsers may insert a <br> (or wrappers like <div><br></div>) in empty contenteditable elements.
+    const el = this.elementRef.nativeElement;
+    const html = (el.innerHTML ?? '').trim().toLowerCase();
+    const text = (el.textContent ?? '').trim();
+
+    const isEffectivelyEmpty =
+      text.length === 0 ||
+      html === '' ||
+      html === '<br>' ||
+      html === '<br/>' ||
+      html === '<div><br></div>';
+
+    if (isEffectivelyEmpty && el.innerHTML !== '') {
+      // Clear to a truly empty state so placeholders and styling work correctly.
+      el.innerHTML = '';
+    }
+  }
+
+  private finishEdit(): void {
+    if (!this.isEditing()) {
+      return;
+    }
+
+    const newValue = this.elementRef.nativeElement.textContent?.trim() ?? '';
+
+    if (newValue !== this.previousValue) {
+      this.changed.emit(newValue);
+    }
+
+    this.isEditing.set(false);
+  }
+
+  private cancelEdit(): void {
+    if (!this.isEditing()) {
+      return;
+    }
+
+    this.elementRef.nativeElement.textContent = this.previousValue;
+    this.isEditing.set(false);
+  }
+}

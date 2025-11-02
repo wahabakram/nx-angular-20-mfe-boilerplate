@@ -1,0 +1,83 @@
+<mat-card class="chart-widget-card" [class.loading]="isLoading()">
+    @if (config().showHeader !== false) {
+    <mat-card-header class="chart-header">
+        <div class="header-content">
+            <div class="title-section">
+                <mat-card-title class="chart-title">{{ config().title }}</mat-card-title>
+                @if (config().description) {
+                <mat-card-subtitle class="chart-description">{{ config().description }}</mat-card-subtitle>
+                }
+            </div>
+            @if (config().showMenu !== false) {
+            <div class="header-actions">
+                @if (config().refreshable !== false) {
+                <button class="btn btn-ghost btn-circle" (click)="onRefresh()" matTooltip="Refresh Chart" [disabled]="isLoading()">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                }
+                <div class="dropdown dropdown-end">
+                    <button class="btn btn-ghost btn-circle" tabindex="0" role="button" matTooltip="Chart Options"
+                        [disabled]="isLoading()">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow-lg border border-base-300">
+                        @if (config().exportable !== false) {
+                        <li>
+                            <a (click)="onExportPNG()" role="presentation">
+                                <mat-icon>image</mat-icon>
+                                <span>Export as PNG</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a (click)="onExportJPG()" role="presentation">
+                                <mat-icon>photo</mat-icon>
+                                <span>Export as JPG</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a (click)="onExportSVG()" role="presentation">
+                                <mat-icon>vector_image</mat-icon>
+                                <span>Export as SVG</span>
+                            </a>
+                        </li>
+                        <div class="divider my-1"></div>
+                        }
+                        <li>
+                            <a (click)="onFullscreen()" role="presentation">
+                                <mat-icon>fullscreen</mat-icon>
+                                <span>Fullscreen</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            }
+        </div>
+    </mat-card-header>
+    }
+
+    <mat-card-content class="chart-content" [style.padding]="config().showHeader === false ? '16px' : null">
+        @if (isLoading()) {
+        <div class="loading-overlay">
+            <div class="loading-spinner">
+                <mat-icon class="spin">refresh</mat-icon>
+            </div>
+            <p>Loading chart data...</p>
+        </div>
+        } @else if (hasError()) {
+        <div class="error-state">
+            <mat-icon>error_outline</mat-icon>
+            <h3>Failed to load chart</h3>
+            <p>There was an error loading the chart data. Please try again.</p>
+            <button class="btn btn-primary" (click)="onRefresh()">
+                <mat-icon>refresh</mat-icon>
+                Retry
+            </button>
+        </div>
+        } @else {
+        <div echarts [options]="chartOptions()" [loading]="isLoading()" [style.height.px]="config().height || 300"
+            [style.width]="config().width || '100%'" class="chart-container">
+        </div>
+        }
+    </mat-card-content>
+</mat-card>

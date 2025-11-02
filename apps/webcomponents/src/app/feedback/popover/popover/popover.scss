@@ -1,0 +1,51 @@
+:host {
+  --mfc-popover-border: none;
+  --mfc-popover-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --mfc-popover-border-radius: 1rem;
+  --mfc-popover-bg: theme('colors.base-100');
+  --mfc-popover-margin: 0.625rem;
+
+  display: block;
+  position: relative;
+  border-radius: var(--mfc-popover-border-radius);
+  background-color: var(--mfc-popover-bg);
+  border: var(--mfc-popover-border);
+  box-shadow: var(--mfc-popover-shadow);
+  animation: .15s mfc-popover-animation;
+
+  @keyframes mfc-popover-animation {
+    0% {
+      transform: scale(.9);
+      opacity: 0;
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+
+:host-context(.mfc-overlay-above) {
+  margin-bottom: var(--mfc-popover-margin);
+  transform-origin: bottom;
+}
+
+:host-context(.mfc-overlay-below) {
+  margin-top: var(--mfc-popover-margin);
+  transform-origin: top;
+}
+
+:host-context(.mfc-overlay-before) {
+  margin-inline-end: var(--mfc-popover-margin);
+  transform-origin: right;
+}
+
+:host-context(.mfc-overlay-after) {
+  margin-inline-start: var(--mfc-popover-margin);
+  transform-origin: left;
+}
+
+[data-theme="dark"] :host {
+  --mfc-popover-bg: theme('colors.base-300');
+}

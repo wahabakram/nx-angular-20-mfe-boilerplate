@@ -1,0 +1,172 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  text-decoration: none;
+  position: relative;
+
+  .inner {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    white-space: nowrap;
+    flex: none;
+    cursor: pointer;
+    user-select: none;
+    margin: 0;
+    width: var(--mfc-navigation-item-width);
+    background-color: var(--mfc-navigation-item-bg);
+    min-height: var(--mfc-navigation-item-height);
+    padding: var(--mfc-navigation-item-padding);
+    font-size: var(--mfc-navigation-item-font-size);
+    border-radius: var(--mfc-navigation-item-border-radius);
+    font-weight: var(--mfc-navigation-item-font-weight);
+    color: var(--mfc-navigation-item-color);
+    gap: var(--mfc-navigation-item-gap);
+    border: var(--mfc-navigation-item-border-width) solid var(--mfc-navigation-item-border-color);
+  }
+
+  &:hover {
+    text-decoration: none;
+
+    .inner {
+      transition: background-color .2s;
+      background-color: var(--mfc-navigation-item-hover-bg);
+      color: var(--mfc-navigation-item-hover-color);
+    }
+  }
+
+  .text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .badge {
+    &:empty {
+      display: none;
+    }
+
+    display: inline-flex;
+    flex: none;
+    border-radius: calc(infinity * 1px);
+    height: --spacing(5);
+    min-width: --spacing(5);
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-xs);
+    padding: 0 --spacing(1.5);
+    font-weight: bold;
+  }
+
+  &:not(.is-badge-text-only) {
+    .badge {
+      font-weight: 600;
+      font-size: var(--text-2xs);
+      background: var(--color-surface-tint);
+      color: var(--color-on-primary);
+    }
+  }
+
+  .icon {
+    position: relative;
+    left: -1px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: var(--mfc-navigation-item-icon-width);
+    color: var(--mfc-navigation-item-icon-color);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &.is-active,
+  &.is-active:hover {
+    .inner {
+      background-color: var(--mfc-navigation-item-active-bg);
+      color: var(--mfc-navigation-item-active-color);
+    }
+  }
+
+  &:not(.is-active):hover {
+    text-decoration: none;
+
+    .icon {
+      color: var(--mfc-navigation-item-hover-icon-color);
+    }
+  }
+
+  &.is-active {
+    .icon {
+      color: var(--mfc-navigation-item-active-icon-color);
+    }
+  }
+}
+
+:host-context([data-appearance="secondary"]) {
+  --mfc-navigation-item-border-radius: calc(infinity * 1px);
+  --mfc-navigation-item-height: --spacing(11);
+  --mfc-navigation-item-active-bg: var(--color-background);
+
+  &.is-active {
+    --mfc-navigation-item-border-color: var(--color-neutral-900);
+  }
+}
+
+:host-context(.mfc-navigation-group-menu) {
+  .inner {
+    margin: var(--mfc-navigation-nested-item-margin);
+    width: calc(var(--mfc-navigation-item-width) - var(--mfc-navigation-nested-item-margin));
+    background-color: var(--mfc-navigation-nested-item-bg);
+    min-height: var(--mfc-navigation-nested-item-height);
+    padding: var(--mfc-navigation-nested-item-padding);
+    color: var(--mfc-navigation-nested-item-color);
+  }
+
+  &:hover {
+    .inner {
+      background-color: var(--mfc-navigation-nested-item-hover-bg);
+      color: var(--mfc-navigation-nested-item-hover-color);
+    }
+  }
+
+  &.is-active .inner,
+  &.is-active:hover .inner {
+    background-color: var(--mfc-navigation-nested-item-active-bg);
+    color: var(--mfc-navigation-nested-item-active-color);
+  }
+
+  &:not(:last-child){
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 20px;
+      bottom: -10px;
+      width: 1px;
+      background: var(--mfc-navigation-group-tree-lines-color);
+      z-index: 0;
+    }
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    width: calc(var(--mfc-navigation-nested-item-height) / 1.5);
+    height: calc(var(--mfc-navigation-nested-item-height) / 2);
+    border-bottom-left-radius: calc(var(--mfc-navigation-nested-item-height) / 4);
+    border-left: 1px solid var(--mfc-navigation-group-tree-lines-color);
+    border-bottom: 1px solid var(--mfc-navigation-group-tree-lines-color);
+  }
+}
+
+:host-context(html.dark [data-appearance="secondary"]) {
+  &.is-active {
+    --mfc-navigation-item-border-color: var(--color-neutral-400);
+    --mfc-navigation-item-active-color: var(--color-neutral-300);
+  }
+}

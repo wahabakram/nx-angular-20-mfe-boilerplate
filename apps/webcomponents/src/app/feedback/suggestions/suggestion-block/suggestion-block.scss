@@ -1,0 +1,24 @@
+:host {
+  display: block;
+
+  .heading {
+    color: var(--mfc-suggestion-block-heading-color);
+    font-size: var(--mfc-suggestion-block-font-size);
+    font-weight: var(--mfc-suggestion-block-font-weight);
+    padding: var(--mfc-suggestion-padding);
+  }
+
+  .content {
+    padding: var(--mfc-suggestion-block-content-padding);
+
+    &.is-inline {
+      display: flex;
+      gap: 0.75rem;
+    }
+  }
+
+  .divider {
+    height: 1px;
+    background-color: hsl(var(--bc) / 0.1);
+  }
+}

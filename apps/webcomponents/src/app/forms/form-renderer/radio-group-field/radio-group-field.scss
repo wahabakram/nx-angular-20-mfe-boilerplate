@@ -1,0 +1,37 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  margin-bottom: --spacing(6);
+
+  .radio-group-label {
+    display: block;
+    color: var(--mat-form-field-outlined-label-text-color);
+    font-size: calc(var(--mat-form-field-outlined-label-text-size) * .75);
+  }
+
+  mat-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: --spacing(1);
+
+    &.inline {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: --spacing(4);
+    }
+  }
+
+  mat-hint {
+    display: block;
+    font-size: var(--mat-form-field-subscript-text-size, var(--mat-sys-body-small-size));
+  }
+
+  mat-error {
+    display: block;
+    font-size: var(--mat-form-field-subscript-text-size, var(--mat-sys-body-small-size));
+    letter-spacing: var(--mat-form-field-subscript-text-tracking, var(--mat-sys-body-small-tracking));
+    font-weight: var(--mat-form-field-subscript-text-weight, var(--mat-sys-body-small-weight));
+  }
+}

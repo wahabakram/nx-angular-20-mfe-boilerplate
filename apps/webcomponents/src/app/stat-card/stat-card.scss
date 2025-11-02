@@ -1,0 +1,181 @@
+/* Modern Stat Card Styles */
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+
+  // Hover effects for clickable cards
+  &.cursor-pointer {
+    transform: translateY(0);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    &:active {
+      transform: translateY(-1px);
+    }
+
+    // Focus styles for accessibility
+    &:focus-visible {
+      outline: 2px solid var(--fallback-p, oklch(var(--p)/1));
+      outline-offset: 2px;
+    }
+  }
+
+  // Gradient overlay for enhanced variants
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent 0%, currentColor 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  // Show gradient on hover for clickable cards
+  &.cursor-pointer:hover::before {
+    opacity: 0.6;
+  }
+
+  // Variant-specific gradient colors
+  &:global(.border-primary\/20)::before {
+    background: linear-gradient(90deg, transparent 0%, var(--fallback-p, oklch(var(--p)/1)) 50%, transparent 100%);
+  }
+
+  &:global(.border-secondary\/20)::before {
+    background: linear-gradient(90deg, transparent 0%, var(--fallback-s, oklch(var(--s)/1)) 50%, transparent 100%);
+  }
+
+  &:global(.border-success\/20)::before {
+    background: linear-gradient(90deg, transparent 0%, var(--fallback-su, oklch(var(--su)/1)) 50%, transparent 100%);
+  }
+
+  &:global(.border-warning\/20)::before {
+    background: linear-gradient(90deg, transparent 0%, var(--fallback-w, oklch(var(--w)/1)) 50%, transparent 100%);
+  }
+
+  &:global(.border-error\/20)::before {
+    background: linear-gradient(90deg, transparent 0%, var(--fallback-e, oklch(var(--e)/1)) 50%, transparent 100%);
+  }
+}
+
+// Animation for loading state
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Trend indicator animations
+.text-success {
+  animation: pulse-success 2s ease-in-out infinite;
+}
+
+.text-error {
+  animation: pulse-error 2s ease-in-out infinite;
+}
+
+@keyframes pulse-success {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes pulse-error {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+// Icon container styles
+.rounded-lg {
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover .rounded-lg {
+  background-color: var(--fallback-b3, oklch(var(--b3)/1));
+  transform: scale(1.05);
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .stat-card {
+    .text-3xl {
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+    }
+
+    .text-2xl {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+
+    .text-lg {
+      font-size: 1.125rem;
+      line-height: 1.75rem;
+    }
+  }
+}
+
+// Dark mode adjustments
+[data-theme="dark"] .stat-card {
+  &::before {
+    opacity: 0.4;
+  }
+
+  &.cursor-pointer:hover::before {
+    opacity: 0.8;
+  }
+
+  .rounded-lg {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  &:hover .rounded-lg {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .stat-card {
+    border-width: 2px;
+
+    &::before {
+      height: 6px;
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .stat-card,
+  .rounded-lg,
+  .text-success,
+  .text-error {
+    animation: none;
+    transition: none;
+  }
+
+  .stat-card.cursor-pointer:hover {
+    transform: none;
+  }
+}

@@ -1,0 +1,55 @@
+// Theme selector styles
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 2px solid transparent;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+
+  &:hover {
+    background-color: oklch(var(--b2));
+  }
+
+  &.active {
+    border-color: oklch(var(--p));
+    background-color: oklch(var(--p) / 0.1);
+  }
+
+  .theme-colors {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.15rem;
+    flex-shrink: 0;
+    padding: 0.3rem;
+    border-radius: 10px;
+  }
+
+  .color-swatch {
+    display: block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    border: 1px solid oklch(var(--bc) / 0.2);
+  }
+
+  .theme-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: oklch(var(--bc));
+  }
+}
+
+// Notification styles
+.notification-item {
+  transition: background-color 0.2s ease;
+
+  &.unread {
+    background-color: oklch(var(--b2) / 0.5);
+  }
+}

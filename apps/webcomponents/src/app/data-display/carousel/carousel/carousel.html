@@ -1,0 +1,14 @@
+<div #content class="content"
+     mfcDraggableCarousel
+     [snapToCenter]="snapToCenter()"
+     [snapDebounceTime]="snapDebounceTime()"
+     [snapDuration]="snapDuration()"
+     [resistanceFactor]="resistanceFactor()"
+     [velocityThreshold]="velocityThreshold()"
+     [visibilityDebounceTime]="visibilityDebounceTime()"
+     (indexChange)="onIndexChanged($event)">
+  <ng-content select="mfc-carousel-card,[mfc-carousel-card]"></ng-content>
+</div>
+<div class="controls">
+  <ng-content select="[mfcCarouselControls]"></ng-content>
+</div>

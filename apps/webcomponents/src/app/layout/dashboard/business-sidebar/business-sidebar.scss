@@ -1,0 +1,289 @@
+/* Business Sidebar Styles - Tailwind CSS 4 + DaisyUI 5
+ *
+ * IMPORTANT: @apply directives are NOT compatible with Tailwind CSS 4 in component-scoped SCSS files.
+ * All @apply directives have been converted to vanilla CSS using DaisyUI CSS variables.
+ *
+ * DaisyUI Color Variables:
+ * - oklch(var(--p))  = primary
+ * - oklch(var(--pc)) = primary-content
+ * - oklch(var(--b3)) = base-300
+ * - See: https://daisyui.com/docs/colors/
+ */
+
+.mfc-business-sidebar {
+  transition: width 0.3s ease-in-out;
+
+  // Compact mode styles
+  &.w-20 {
+    .dropdown {
+      display: none;
+    }
+
+    .card {
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    .menu {
+      li > a {
+        justify-content: center;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+
+      details summary {
+        justify-content: center;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+
+        .flex {
+          justify-content: center;
+        }
+      }
+
+      details ul {
+        display: none;
+      }
+    }
+  }
+
+  .menu {
+    .menu-active {
+      // Converted from: @apply bg-primary text-primary-content;
+      background-color: oklch(var(--p));
+      color: oklch(var(--pc));
+
+      &:hover {
+        // Converted from: @apply bg-primary text-primary-content;
+        background-color: oklch(var(--p));
+        color: oklch(var(--pc));
+      }
+    }
+
+    details[open] > summary {
+      // Converted from: @apply bg-base-300;
+      background-color: oklch(var(--b3));
+    }
+
+    details summary {
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        // Converted from: @apply bg-base-300;
+        background-color: oklch(var(--b3));
+      }
+
+      // Remove default arrow
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      &::marker {
+        display: none;
+      }
+    }
+
+    // Submenu styling
+    details ul {
+      // Converted from: @apply pl-4 mt-2;
+      padding-left: 1rem;
+      margin-top: 0.5rem;
+
+      li a {
+        // Converted from: @apply text-sm py-1 px-3;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+          // Converted from: @apply bg-base-300;
+          background-color: oklch(var(--b3));
+        }
+
+        &.menu-active {
+          // Converted from: @apply bg-primary/20 text-primary;
+          background-color: oklch(var(--p) / 0.2);
+          color: oklch(var(--p));
+        }
+      }
+    }
+
+    // Menu item transitions
+    li > a {
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        transform: translateX(2px);
+      }
+    }
+  }
+
+  // User profile card
+  .card {
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  // Badge animations
+  .badge-primary {
+    animation: pulse 2s infinite;
+  }
+
+  // Dropdown animations
+  .dropdown-content {
+    animation: slideDown 0.2s ease-out;
+  }
+
+  // Workspace dropdown styling
+  .dropdown {
+    .btn {
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        transform: translateY(-1px);
+      }
+    }
+
+    .dropdown-content {
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+      li a {
+        transition: all 0.2s ease-in-out;
+
+        &:hover {
+          transform: translateX(4px);
+        }
+
+        &.active {
+          // Converted from: @apply bg-primary/20 text-primary;
+          background-color: oklch(var(--p) / 0.2);
+          color: oklch(var(--p));
+        }
+      }
+    }
+  }
+
+  // Avatar styling
+  .avatar {
+    .placeholder div {
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  // Scrollable menu navigation
+  .sidebar-menu-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(156, 163, 175, 0.3);
+      border-radius: 2px;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(156, 163, 175, 0.6);
+    }
+  }
+}
+
+// Animations
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Dark mode enhancements
+[data-theme="dark"] {
+  .mfc-business-sidebar {
+    .dropdown-content {
+      backdrop-filter: blur(15px);
+      border-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .card {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+      &:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .mfc-business-sidebar {
+    &.w-72 {
+      width: 100vw;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 50;
+      height: 100vh;
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .mfc-business-sidebar {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .mfc-business-sidebar {
+    .menu {
+      .menu-active {
+        border: 2px solid currentColor;
+      }
+    }
+
+    .dropdown-content {
+      backdrop-filter: none;
+      background: var(--fallback-b1, oklch(var(--b1)/1));
+    }
+  }
+}

@@ -1,0 +1,67 @@
+/* Component Styles - Tailwind CSS 4 + DaisyUI 5
+ *
+ * IMPORTANT: @apply directives are NOT compatible with Tailwind CSS 4 in component-scoped SCSS files.
+ * All @apply directives have been converted to vanilla CSS using DaisyUI CSS variables.
+ *
+ * DaisyUI Color Variables:
+ * - oklch(var(--p))  = primary
+ * - oklch(var(--pc)) = primary-content
+ * - oklch(var(--b1)) = base-100
+ * - oklch(var(--b2)) = base-200
+ * - oklch(var(--b3)) = base-300
+ * - oklch(var(--bc)) = base-content
+ * - oklch(var(--su)) = success
+ * - oklch(var(--wa)) = warning
+ * - oklch(var(--er)) = error
+ * - oklch(var(--in)) = info
+ * - See: https://daisyui.com/docs/colors/
+ */
+
+
+:host {
+  --mfc-sidebar-header-padding: --spacing(6);
+  --mfc-sidebar-header-compact-padding: 0;
+
+// Converted from: @apply flex items-center w-full justify-between;
+  flex: none;
+  width: 100%;
+  padding: var(--mfc-sidebar-header-padding);
+
+  ::ng-deep {
+    .mfc-sidebar-compact-view-mode {
+      display: none;
+    }
+  }
+}
+
+:host-context(.mfc-sidebar.compact:not(:hover)) {
+  padding: var(--mfc-sidebar-header-compact-padding);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  ::ng-deep {
+    .mfc-sidebar-full-view-mode {
+      display: none;
+    }
+
+    .mfc-sidebar-compact-view-mode {
+      display: block;
+    }
+  }
+}
+
+:host-context(.mfc-sidebar.compact:hover) {
+  ::ng-deep {
+    .mfc-sidebar-compact-view-mode {
+      display: none;
+    }
+
+    .mfc-sidebar-full-view-mode {
+      display: block;
+    }
+  }
+}

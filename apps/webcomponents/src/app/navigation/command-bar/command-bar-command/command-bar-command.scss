@@ -1,0 +1,37 @@
+@reference 'tailwindcss';
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  padding: var(--mfc-command-bar-command-padding);
+  font-size: var(--mfc-command-bar-command-font-size);
+  cursor: pointer;
+  gap: var(--mfc-command-bar-command-gap);
+  color: var(--mfc-command-bar-command-color);
+  user-select: none;
+  border-radius: calc(infinity * 1px);
+  height: var(--mfc-command-bar-command-height);
+
+  &:hover {
+    color: var(--mfc-command-bar-command-hover-color);
+    background: var(--mfc-command-bar-command-hover-bg);
+  }
+
+  .shortcut {
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--mfc-command-bar-command-shortcut-bg);
+    border-radius: var(--mfc-command-bar-command-shortcut-border-radius);
+    font-size: var(--mfc-command-bar-command-shortcut-font-size);
+    color: var(--mfc-command-bar-command-shortcut-color);
+    padding: var(--mfc-command-bar-command-shortcut-padding);
+    border: var(--mfc-command-bar-command-shortcut-border);
+    flex: none;
+    width: var(--mfc-command-bar-command-shortcut-size);
+    height: var(--mfc-command-bar-command-shortcut-size);
+  }
+}

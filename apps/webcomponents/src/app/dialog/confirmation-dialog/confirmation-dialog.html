@@ -1,0 +1,16 @@
+<div class="p-6">
+    <div class="flex items-center gap-4 mb-4">
+        <div class="flex-shrink-0">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center"
+                [class.bg-info/10]="data()?.variant === 'info'" [class.bg-warning/10]="data()?.variant === 'warning'"
+                [class.bg-error/10]="data()?.variant === 'error'">
+                <mfc-icon [name]="getIcon()" class="w-6 h-6" [class.text-info]="data()?.variant === 'info'"
+                    [class.text-warning]="data()?.variant === 'warning'"
+                    [class.text-error]="data()?.variant === 'error'" />
+            </div>
+        </div>
+        <div class="flex-1">
+            <p class="text-base-content leading-relaxed">{{ data()?.message }}</p>
+        </div>
+    </div>
+</div>

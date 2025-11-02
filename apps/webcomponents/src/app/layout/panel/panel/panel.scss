@@ -1,0 +1,25 @@
+@reference 'tailwindcss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+
+  .body {
+    display: flex;
+    align-items: stretch;
+    flex-grow: 1;
+  }
+
+  &:not([class*="w-"]) {
+    width: 100%;
+  }
+
+  &:not([class*="h-"]) {
+    height: 100%
+  }
+
+  &.is-absolute {
+    position: absolute;
+    inset: 0;
+  }
+}

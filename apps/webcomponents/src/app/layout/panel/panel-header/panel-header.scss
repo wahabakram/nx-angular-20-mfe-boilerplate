@@ -1,0 +1,12 @@
+@reference 'tailwindcss';
+
+:host {
+  --mfc-panel-header-height: --spacing(14);
+
+  flex: none;
+  grid-area: header;
+
+  &:not([class*="h-"]) {
+    height: var(--mfc-panel-header-height);
+  }
+}
