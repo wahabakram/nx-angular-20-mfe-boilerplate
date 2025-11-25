@@ -1,0 +1,18 @@
+<header class="mb-4 flex items-center justify-between">
+  <div class="font-semibold">Daily Limit</div>
+</header>
+
+<div>
+  <p class="text-4xl font-semibold">{{ spentAmount() | currency }}</p>
+  <div class="mt-1 flex items-baseline justify-between">
+    <p class="text-sm text-neutral-500">spent of {{ totalLimit() | currency }}</p>
+    <p class="text-sm font-semibold text-neutral-800">{{ percentage() | number: '1.0-1' }}%</p>
+  </div>
+</div>
+
+<div class="mt-5 h-10 w-full overflow-hidden rounded-xl bg-primary-100 dark:bg-primary-200 overflow-hidden">
+  <div
+    class="h-full bg-primary rounded-e-xl transition-width duration-300 ease-in-out"
+    [style.width]="percentage() + '%'"
+  ></div>
+</div>

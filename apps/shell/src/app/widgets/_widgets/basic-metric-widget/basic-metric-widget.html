@@ -1,0 +1,28 @@
+@if (widget().data.viewUrl) {
+  <div class="absolute end-2 top-2">
+    <a [routerLink]="widget().data.viewUrl" mat-icon-button>
+      <mat-icon>arrow_outward</mat-icon>
+    </a>
+  </div>
+}
+<div class="text-neutral-700 dark:text-neutral-900">
+  {{ widget().data.name }}
+</div>
+<div class="mt-2 flex items-center gap-4">
+  <p class="text-4xl font-semibold dark:text-neutral-1000">
+    {{ widget().data.value | number }}
+  </p>
+  <div class="flex items-center gap-1 text-sm"
+       [class.text-green-600]="isPositive()"
+       [class.dark:text-green-700]="isPositive()"
+       [class.text-red-600]="!isPositive()"
+       [class.dark:text-red-700]="!isPositive()">
+    <span>{{ trendText() }}</span>
+
+    @if (isPositive()) {
+      <mat-icon class="!text-[16px] !size-[16px]">trending_up</mat-icon>
+    } @else {
+      <mat-icon class="!text-[16px] !size-[16px]">trending_down</mat-icon>
+    }
+  </div>
+</div>

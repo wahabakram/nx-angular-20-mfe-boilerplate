@@ -1,0 +1,9 @@
+<div mat-dialog-content class="dialog-content" [formGroup]="form">
+  <mat-form-field class="w-full">
+    <input matInput placeholder="Name" formControlName="name">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-flat-button (click)="save()" [disabled]="form.invalid">Save</button>
+</div>

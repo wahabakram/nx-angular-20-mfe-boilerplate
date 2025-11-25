@@ -1,0 +1,50 @@
+<mf-text-editor #editor
+                 [content]="block().data.content"
+                 (contentChange)="onContentChange($event)">
+  <mf-text-editor-floating-menu>
+    <button mat-icon-button matTooltip="Bold"
+            mfTextEditorCommand mfTextEditorCommandBold>
+      <mat-icon>format_bold</mat-icon>
+    </button>
+    <button mat-icon-button matTooltip="Italic"
+            mfTextEditorCommand mfTextEditorCommandItalic>
+      <mat-icon>format_italic</mat-icon>
+    </button>
+    <button mat-icon-button matTooltip="Strike"
+            mfTextEditorCommand mfTextEditorCommandStrike>
+      <mat-icon>strikethrough_s</mat-icon>
+    </button>
+    <mf-text-editor-divider/>
+    <button mat-icon-button matTooltip="Blockquote"
+            mfTextEditorCommand mfTextEditorCommandBlockquote>
+      <mat-icon>format_quote</mat-icon>
+    </button>
+    <button mat-icon-button matTooltip="Horizontal Rule"
+            mfTextEditorCommand mfTextEditorCommandHorizontalRule>
+      <mat-icon>remove</mat-icon>
+    </button>
+  </mf-text-editor-floating-menu>
+  <mf-text-editor-bubble-menu>
+    <button mfTextEditorCommandEditLink>
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mfTextEditorCommandUnsetLink>
+      <mat-icon>link_off</mat-icon>
+    </button>
+    <button mfTextEditorCommand mfTextEditorCommandLink>
+      <mat-icon>link</mat-icon>
+    </button>
+    <button mfTextEditorCommand mfTextEditorCommandBold>
+      <mat-icon>format_bold</mat-icon>
+    </button>
+    <button mfTextEditorCommand mfTextEditorCommandItalic>
+      <mat-icon>format_italic</mat-icon>
+    </button>
+    <button mfTextEditorCommand mfTextEditorCommandStrike>
+      <mat-icon>strikethrough_s</mat-icon>
+    </button>
+    <button mfTextEditorCommand mfTextEditorCommandCode>
+      <mat-icon>code</mat-icon>
+    </button>
+  </mf-text-editor-bubble-menu>
+</mf-text-editor>

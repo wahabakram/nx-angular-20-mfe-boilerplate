@@ -1,0 +1,37 @@
+<header class="font-semibold mb-6">Add a new card</header>
+
+<form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+  <div class="mt-5">
+    <mat-form-field class="w-full">
+      <mat-label>Card number</mat-label>
+      <mat-icon matPrefix>credit_card</mat-icon>
+      <input matInput formControlName="cardNumber" mfCreditCardNumberMask>
+    </mat-form-field>
+  </div>
+  <div class="grid grid-cols-12 gap-x-5">
+    <mat-form-field class="col-span-6">
+      <mat-label>Name on card</mat-label>
+      <input matInput formControlName="cardHolderName" placeholder="e.g. John Doe">
+    </mat-form-field>
+    <mat-form-field class="col-span-3">
+      <mat-label>Expiry</mat-label>
+      <input matInput formControlName="expiryDate" placeholder="MM/YY" mfCreditCardExpiryDateMask>
+    </mat-form-field>
+    <mat-form-field class="col-span-3">
+      <mat-label>CVV</mat-label>
+      <input matInput type="password"
+             formControlName="cvv"
+             maxlength="4"
+             mfCreditCardCvvMask>
+    </mat-form-field>
+  </div>
+  <mat-checkbox formControlName="saveCard" color="primary" class="mb-4">
+    Save Card
+  </mat-checkbox>
+  <div class="flex items-center justify-end gap-4">
+    <button mat-stroked-button type="button" class="grow">Cancel</button>
+    <button mat-flat-button type="submit" class="grow" [disabled]="cardForm.invalid">
+      Add Card
+    </button>
+  </div>
+</form>

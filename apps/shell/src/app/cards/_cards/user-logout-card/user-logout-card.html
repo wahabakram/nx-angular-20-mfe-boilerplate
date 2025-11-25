@@ -1,0 +1,12 @@
+<div class="p-4 flex justify-between items-center">
+  <div class="flex items-center gap-3">
+    <mf-dicebear [key]="userName()" [image]="avatarUrl()" class="size-10"/>
+    <div>
+      <div class="text-sm font-semibold">{{ userName() }}</div>
+      <div class="text-xs text-neutral-500">{{ userStatus() }}</div>
+    </div>
+  </div>
+  <a routerLink="/" mat-icon-button>
+    <mat-icon>logout</mat-icon>
+  </a>
+</div>

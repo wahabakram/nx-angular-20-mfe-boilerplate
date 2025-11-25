@@ -1,0 +1,101 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-sidebar-width: var(--mf-layout-sidebar-width, 300px);
+  --mf-sidebar-compact-width: var(--mf-layout-sidebar-compact-width, 76px);
+  --mf-sidebar-bg: transparent;
+
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  height: 100%;
+  width: var(--mf-sidebar-width);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  background: var(--mf-sidebar-bg);
+
+  &.compact {
+    position: absolute;
+    inset: 0;
+
+    &:hover {
+      box-shadow: theme(--shadow-lg);
+    }
+  }
+
+  &.compact:not(:hover) {
+    width: var(--mf-sidebar-compact-width);
+    overflow: hidden;
+
+    ::ng-deep {
+      .toggle,
+      .badge {
+        display: none;
+      }
+
+      mf-sidebar-nav-heading {
+        padding: 0;
+
+        .line {
+          display: block;
+        }
+
+        .content {
+          opacity: 0;
+        }
+      }
+
+      mf-sidebar-nav-group-menu {
+        &.is-active {
+          display: none;
+        }
+      }
+
+      mf-sidebar-nav-group-toggle {
+        gap: 0;
+        --mf-sidebar-nav-group-toggle-has-icon-padding-end: 0;
+
+        .icon {
+          transition-property: all;
+          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+          transition-duration: 150ms;
+        }
+
+        &:has(.icon:not(:empty)) {
+          .text {
+            opacity: 0;
+            width: 0;
+            max-width: 0;
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+          }
+        }
+      }
+
+      mf-sidebar-nav-item {
+        .inner {
+          gap: 0;
+        }
+
+        .icon {
+          transition-property: all;
+          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+          transition-duration: 150ms;
+        }
+
+        &:has(.icon:not(:empty)) {
+          .text {
+            opacity: 0;
+            width: 0;
+            max-width: 0;
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+          }
+        }
+      }
+    }
+  }
+}

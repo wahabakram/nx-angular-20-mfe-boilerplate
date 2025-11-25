@@ -1,0 +1,24 @@
+<mf-notification>
+  <div class="relative" mfNotificationAvatar>
+    <mf-dicebear [key]="notification().actor.id"
+                  [image]="notification().actor.avatarUrl" class="size-10"/>
+    <div class="flex absolute justify-center z-10 text-white items-center right-0
+                  bottom-2 size-5 bg-blue-400 rounded-full border border-default border-white">
+      <mat-icon class="filled action-icon">folder</mat-icon>
+    </div>
+  </div>
+  <mf-notification-message>
+    <mf-notification-actor>{{ notification().actor.name }}</mf-notification-actor>
+    invited you to edit files in the folder
+    <span class="font-medium text-primary hover:text-tertiary cursor-pointer">
+      {{ notification()['payload']['folderName'] }}
+    </span>
+  </mf-notification-message>
+  <mf-notification-content>
+    <div class="border border-default border-primary rounded-lg px-3 py-2 mt-2 flex items-center gap-2 w-max">
+      <mat-icon class="filled icon">folder</mat-icon>
+      <span class="text-xs">{{ notification()['payload']['folderName'] }}</span>
+    </div>
+  </mf-notification-content>
+  <mf-notification-time>{{ notification().createdAt }}</mf-notification-time>
+</mf-notification>

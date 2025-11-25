@@ -1,0 +1,113 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-command-bar-height: calc(var(--spacing) * 12);
+  --mf-command-bar-padding: 0 calc(var(--spacing) * 1);
+  --mf-command-bar-margin: calc(var(--spacing) * 8) 0;
+  --mf-command-bar-zindex: 50;
+  --mf-command-bar-bg: var(--color-neutral-950);
+  --mf-command-bar-color: var(--color-neutral-200);
+  --mf-command-bar-border: 1px solid var(--color-neutral-700);
+  --mf-command-bar-shadow: theme(--shadow-lg);
+  --mf-command-bar-border-radius: calc(infinity * 1px);
+  --mf-command-bar-command-height: calc(var(--spacing) * 10);
+  --mf-command-bar-command-padding: 0 calc(var(--spacing) * 3.5);
+  --mf-command-bar-command-font-size: theme(--text-sm);
+  --mf-command-bar-command-color: var(--color-neutral-200);
+  --mf-command-bar-command-hover-color: var(--color-neutral-100);
+  --mf-command-bar-command-hover-bg: var(--color-neutral-800);
+  --mf-command-bar-value-color: var(--color-neutral-200);
+  --mf-command-bar-command-gap: calc(var(--spacing) * 3);
+  --mf-command-bar-content-padding: 0 calc(var(--spacing) * 4);
+  --mf-command-bar-font-size: theme(--text-sm);
+  --mf-command-bar-divider-width: 1px;
+  --mf-command-bar-divider-height: calc(var(--spacing) * 6);
+  --mf-command-bar-divider-bg: var(--color-neutral-600);
+  --mf-command-bar-command-shortcut-bg: var(--color-neutral-700);
+  --mf-command-bar-command-shortcut-border-radius: theme(--radius-lg);
+  --mf-command-bar-command-shortcut-font-size: var(--text-xs);
+  --mf-command-bar-command-shortcut-color: var(--color-neutral-300);
+  --mf-command-bar-command-shortcut-padding: 0 5px;
+  --mf-command-bar-command-shortcut-border: 1px solid var(--color-neutral-600);
+  --mf-command-bar-command-shortcut-size: calc(var(--spacing) * 5);
+
+  left: 50%;
+  translate: -50% 0;
+  height: var(--mf-command-bar-height);
+  border: var(--mf-command-bar-border);
+  box-shadow: var(--mf-command-bar-shadow);
+  border-radius: var(--mf-command-bar-border-radius);
+  z-index: -1;
+  font-size: var(--mf-command-bar-font-size);
+  color: var(--mf-command-bar-color);
+  padding: var(--mf-command-bar-padding);
+  overflow: hidden;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  width: min-content;
+  position: fixed;
+  background-color: var(--mf-command-bar-bg);
+  margin: var(--mf-command-bar-margin);
+  gap: calc(var(--spacing) * 1);
+
+  .content {
+    &:empty {
+      display: none;
+    }
+
+    white-space: nowrap;
+    padding: var(--mf-command-bar-content-padding);
+  }
+
+  &.is-open {
+    opacity: 1;
+    z-index: var(--mf-command-bar-zindex);
+  }
+
+  &[mf-command-bar-position="top"] {
+    top: 0;
+  }
+
+  &[mf-command-bar-position="top"].is-open {
+    animation: 0.3s mf-command-bar-animation-from-top;
+  }
+
+  &[mf-command-bar-position="bottom"] {
+    bottom: 0;
+  }
+
+  &[mf-command-bar-position="bottom"].is-open {
+    animation: 0.3s mf-command-bar-animation-from-bottom;
+  }
+
+  @keyframes mf-command-bar-animation-from-top {
+    0% {
+      transform: translateY(-150%) scale(.9);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes mf-command-bar-animation-from-bottom {
+    0% {
+      transform: translateY(150%) scale(.9);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+}
+
+:host-context(html.dark) {
+  --mf-command-bar-bg: var(--color-primary-200);
+  --mf-command-bar-color: var(--color-neutral-950);
+  --mf-command-bar-command-color: var(--color-neutral-950);
+}

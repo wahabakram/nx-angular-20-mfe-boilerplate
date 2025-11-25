@@ -1,0 +1,10 @@
+@let status = context.getValue();
+
+<span
+  class="status"
+  [class.issued]="status.type === 'issued'"
+  [class.pending]="status.type === 'pending'"
+  [class.draft]="status.type === 'draft'"
+  [class.paid]="status.type === 'paid'">
+  {{ status.name }}
+</span>

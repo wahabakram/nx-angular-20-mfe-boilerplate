@@ -1,0 +1,40 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-incidents-bar-height: --spacing(24);
+  --mf-incidents-bar-bg: var(--color-orange-container);
+  --mf-incidents-bar-padding: 0 --spacing(8);
+  --mf-incidents-bar-color: var(--color-on-orange-container);
+  --mf-incidents-bar-box-shadow: none;
+  --mf-incidents-bar-hover-box-shadow: theme(--shadow-sm);
+  --mf-incidents-list-bg: rgba(0, 0, 0, .32);
+  --mf-incidents-list-gap: --spacing(5);
+  --mf-incidents-list-padding: --spacing(7) 0;
+  --mf-incident-bg: white;
+  --mf-incident-color: var(--color-neutral-700);
+  --mf-incident-border-radius: theme(--radius-md);
+  --mf-incident-padding: --spacing(4) --spacing(6);
+  --mf-incident-gap: --spacing(6);
+  --mf-incident-border-start: --spacing(1) solid var(--color-neutral-900);
+  --mf-incident-close-color: var(--color-neutral-500);
+  --mf-incident-close-hover-color: var(--color-neutral-900);
+  --mf-incident-title-font-size: theme(--text-sm);
+  --mf-incident-title-font-weight: 500;
+  --mf-incident-details-font-size: theme(--text-sm);
+  --mf-incident-details-color: var(--color-neutral-500);
+  --mf-incidents-title-font-size: var(--text-base);
+  --mf-incidents-title-font-weight: 500;
+  --mf-incidents-description-font-size: theme(--text-sm);
+  --mf-incidents-description-opacity: 80%;
+
+  display: contents;
+
+  .list-container {
+    display: none;
+    height: calc(100vh - var(--mf-layout-top-header-top) + var(--mf-layout-top-header-height));
+  }
+}
+
+:host-context(html.dark) {
+  --mf-incidents-list-bg: rgba(255, 255, 255, .32);
+}

@@ -12,7 +12,7 @@ export default [
         'error',
         {
           type: 'attribute',
-          prefix: 'mf',
+          prefix: 'app',
           style: 'camelCase',
         },
       ],
@@ -20,10 +20,12 @@ export default [
         'error',
         {
           type: 'element',
-          prefix: 'mf',
+          prefix: 'app',
           style: 'kebab-case',
         },
       ],
+      // Disable enforce-module-boundaries to allow @/* path alias for internal imports
+      '@nx/enforce-module-boundaries': 'off',
     },
   },
   {

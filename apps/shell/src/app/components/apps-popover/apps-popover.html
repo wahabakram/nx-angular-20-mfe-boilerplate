@@ -1,0 +1,41 @@
+<div class="p-6">
+  <div>
+    <h2 class="text-primary font-medium mb-4 text-xs">MY SHOP</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      @for (myShopItem of myShopItems(); track myShopItem) {
+        <a [routerLink]="myShopItem.link"
+           (click)="close()"
+           class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-primary-100 dark:hover:bg-neutral-950
+                  cursor-pointer menu-item transition-colors">
+          <div class="bg-primary-container rounded-full size-14 flex items-center justify-center">
+            <mat-icon>{{ myShopItem.icon }}</mat-icon>
+          </div>
+          <div>
+            <h3 class="font-medium text-base text-on-surface">{{ myShopItem.name }}</h3>
+            <p class="text-sm text-on-surface-variant">{{ myShopItem.description }}</p>
+          </div>
+        </a>
+      }
+    </div>
+  </div>
+  <mf-horizontal-divider class="my-10"/>
+  <div>
+    <h2 class="text-primary font-medium mb-4 text-xs">ACCOUNT</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (accountItem of accountItems(); track accountItem) {
+        <a [routerLink]="accountItem.link"
+           (click)="close()"
+           class="flex items-center space-x-4 p-3 rounded-2xl cursor-pointer
+                  hover:bg-primary-100 dark:hover:bg-neutral-950 menu-item transition-colors">
+          <div class="size-14 rounded-xl bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center">
+            <mat-icon>{{ accountItem.icon }}</mat-icon>
+          </div>
+          <div>
+            <h3 class="font-medium text-base text-on-surface">{{ accountItem.name }}</h3>
+            <p class="text-sm text-on-surface-variant">{{ accountItem.description }}</p>
+          </div>
+        </a>
+      }
+    </div>
+  </div>
+</div>

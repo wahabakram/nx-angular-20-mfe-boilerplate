@@ -1,0 +1,22 @@
+<div class="note-card-wrapper" [style.background-color]="color()">
+  <div class="controls-container">
+    <ng-content select="[noteControls]"/>
+  </div>
+  <div class="note-image-container">
+    <ng-content select="[noteImage]"></ng-content>
+  </div>
+  <div class="note-body-container">
+    <div class="note-title-container">
+      <ng-content select="[noteTitle]"></ng-content>
+    </div>
+    <div class="note-content-container">
+      <ng-content select="[noteContent]"></ng-content>
+    </div>
+    <div class="note-tasks-container">
+      <ng-content select="[noteTasks]"></ng-content>
+    </div>
+  </div>
+  <div class="note-labels-container">
+    <ng-content select="[noteLabels]"></ng-content>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-action-required-bg: #FFCDD2;
+  --mf-action-action-text-bg: #fff;
+  --mf-action-text-color: inherit;
+
+  display: flex;
+  width: 100%;
+  border-radius: theme(--radius-3xl);
+  padding: --spacing(7);
+  gap: --spacing(8);
+  align-items: center;
+  background-color: var(--mf-action-required-bg);
+  color: var(--mf-action-text-color);
+
+  .action-text {
+    @apply flex rounded-2xl;
+    background: var(--mf-action-action-text-bg);
+    padding: --spacing(2.5) --spacing(3) --spacing(2.5) --spacing(2.5);
+    align-items: center;
+    flex: none;
+    font-size: var(--text-md);
+    gap: --spacing(1.5);
+  }
+
+  .description {
+    flex-grow: 1;
+  }
+
+  .button {
+    flex: none;
+  }
+}
+
+:host-context(html.dark) {
+  --mf-action-required-bg: #9C7D81;
+  --mf-action-action-text-bg: #8C7174;
+}

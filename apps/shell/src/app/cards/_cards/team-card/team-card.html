@@ -1,0 +1,21 @@
+<div class="flex flex-col flex-auto items-center">
+  <div class="flex flex-col flex-auto w-full p-8 text-center">
+    <mf-dicebear [key]="fullName()" [image]="avatarUrl()" class="size-32 flex-none mx-auto"/>
+    <div class="mt-6 font-medium">{{ fullName() }}</div>
+    @if (description()) {
+      <div class="text-secondary">{{ description() }}</div>
+    }
+  </div>
+  <div class="flex items-center w-full border-t border-surface-container divide-x divide-surface-container">
+    <a class="flex flex-auto gap-2 items-center justify-center py-3
+              text-neutral-variant-500 hover:text-primary transition-all" [href]="mailtoLink()">
+      <mat-icon aria-hidden="true" class="filled">mail</mat-icon>
+      <span>Email</span>
+    </a>
+    <a class="flex flex-auto gap-2 items-center justify-center py-3
+              text-neutral-variant-500 hover:text-primary transition-all" [href]="telLink()">
+      <mat-icon aria-hidden="true" class="filled">phone</mat-icon>
+      <span>Call</span>
+    </a>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<div class="py-12 px-12">
+  <h1 class="text-xl font-semibold">General</h1>
+
+  <main class="mt-12 flex flex-col gap-10">
+    <section>
+      <app-welcome-widget/>
+    </section>
+    <section>
+      <app-recent-events-widget class="w-92"/>
+    </section>
+    <section>
+      <app-getting-started-widget class="w-9/12"/>
+    </section>
+    <section>
+      <app-daily-limit-widget [spentAmount]="750" [totalLimit]="1000" class="w-92"/>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-7">
+      <app-basic-metric-widget [widget]="viewsWidget()"/>
+      <app-basic-metric-widget [widget]="visitsWidget()"/>
+      <app-basic-metric-widget [widget]="newUsersWidget()"/>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-7">
+      <app-sprint-meeting-widget
+        [title]="springMeetingTitle()"
+        [timeRange]="springMeetingTime()"
+        [attendees]="meetingAttendees()"
+      />
+      <app-team-meeting-widget
+        [title]="teamMeetingTitle()"
+        [timeRange]="teamMeetingTime()"
+        [attendees]="meetingAttendees()"
+      />
+      <app-team-session-widget
+        [title]="teamSessionTitle()"
+        [timeRange]="teamSessionTime()"
+        [attendees]="meetingAttendees()"
+      />
+    </section>
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-7">
+      <app-events-widget class="col-span-1"/>
+      <app-team-widget class="col-span-1"/>
+    </section>
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-7">
+      <app-total-tasks-widget class="col-span-1"/>
+      <app-total-projects-widget class="col-span-1"/>
+    </section>
+    <section>
+      <app-tasks-in-progress-widget class="w-2/3"/>
+    </section>
+    <section>
+      <app-todos-widget class="w-2/3"/>
+    </section>
+    <section>
+      <app-action-required-widget [widget]="actionRequiredWidget()"/>
+    </section>
+  </main>
+</div>

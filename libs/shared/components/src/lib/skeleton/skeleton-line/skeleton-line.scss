@@ -1,0 +1,22 @@
+:host {
+  height: 1rem;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--mf-skeleton-from-bg, oklch(var(--b3) / 0.8)) 0%,
+    var(--mf-skeleton-to-bg, oklch(var(--b2) / 0.7)) 50%,
+    var(--mf-skeleton-from-bg, oklch(var(--b3) / 0.8)) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: var(--mf-skeleton-item-border-radius, 1rem);
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

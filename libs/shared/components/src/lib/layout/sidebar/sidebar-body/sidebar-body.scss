@@ -1,0 +1,24 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-sidebar-body-padding: --spacing(2);
+  display: block;
+  width: 100%;
+  flex-grow: 1;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  position: relative;
+
+  .scroll-content {
+    padding: var(--mf-sidebar-body-padding);
+  }
+}
+
+:host-context(.mf-sidebar.compact) {
+  overflow-y: hidden;
+  padding: 0;
+}
+
+:host-context(.mf-sidebar.compact:hover) {
+  overflow-y: auto;
+}

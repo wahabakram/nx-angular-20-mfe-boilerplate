@@ -1,0 +1,63 @@
+<div class="px-10 py-16 mat-typography">
+  <h1 class="text-center">Membership plans</h1>
+  <div class="grid grid-cols-1 lg:grid-cols-2 max-w-[900px] gap-8 mx-auto mt-16">
+    <div class="col-span-1">
+      <div class="card-container px-7 py-8 rounded-2xl relative pb-20 h-full">
+        <div class="flex items-center">
+          <div class="text-xl font-bold">Basic</div>
+          <div class="ms-auto text-tiny font-medium">This is your current plan</div>
+        </div>
+        <div class="mt-2 text-md font-medium">Free</div>
+        <div class="mt-7 mb-4 text-sm">
+          Includes:
+        </div>
+        <ul class="list-unstyled text-md w-11/12">
+          @for (freeFeature of freeFeatures(); track freeFeature) {
+            <li class="flex mb-3.5 gap-2">
+              <div class="text-green-500">
+                <mat-icon class="relative top-0.5">done</mat-icon>
+              </div>
+              <div>
+                {{ freeFeature }}
+              </div>
+            </li>
+          }
+        </ul>
+        <div class="absolute bottom-5 start-6">
+          <small class="text-2xs text-neutral-500">*Connects expire one year after purchase date</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-1">
+      <div class="bg-primary text-on-primary px-7 py-8 rounded-2xl relative pb-20 h-full">
+        <div class="flex items-center">
+          <div class="text-xl font-bold">Plus</div>
+          <div class="ms-auto">
+            <button matRipple
+                    class="h-10 rounded-full cursor-pointer bg-white flex text-neutral-900
+                           text-tiny font-bold items-center justify-center px-5">Upgrade to Plus</button>
+          </div>
+        </div>
+        <div class="mt-2 text-md font-medium">$20 per month*</div>
+        <div class="mt-7 mb-4 text-sm">
+          Includes everything in Basic and:
+        </div>
+        <ul class="list-unstyled text-md w-11/12">
+          @for (plusFeature of plusFeatures(); track plusFeature) {
+            <li class="flex mb-3.5 gap-2">
+              <div class="relative top-0.5">
+                <mat-icon>done</mat-icon>
+              </div>
+              <div>
+                {{ plusFeature }}
+              </div>
+            </li>
+          }
+        </ul>
+        <div class="absolute bottom-5 start-6">
+          <small class="text-2xs text-neutral-100">*Sales tax may apply</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

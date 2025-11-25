@@ -1,0 +1,23 @@
+<mf-panel>
+  <mf-panel-header class="h-16 border-b border-b-surface-container">
+    <div class="h-full flex items-center gap-2 px-6">
+      @if (loaded()) {
+        <a [routerLink]="courseUrl" mat-icon-button matTooltip="Back To Course" class="-ms-3">
+          <mat-icon>arrow_backward</mat-icon>
+        </a>
+        <h1 class="font-semibold">
+          {{ lesson().moduleItem.module.name }} / <span class="text-primary">{{ lesson().name }}</span>
+        </h1>
+      } @else {
+        Loading...
+      }
+    </div>
+  </mf-panel-header>
+  <mf-panel-body>
+    @if (loaded()) {
+      <mf-lesson-builder [content]="lesson().content" (changed)="onChanged($event)"/>
+    } @else {
+      <div class="p-6">Loading...</div>
+    }
+  </mf-panel-body>
+</mf-panel>

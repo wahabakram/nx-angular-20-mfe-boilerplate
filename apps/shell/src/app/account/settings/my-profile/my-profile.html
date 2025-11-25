@@ -1,0 +1,160 @@
+<div class="p-12">
+  <div class="max-w-[960px]">
+    <h1 class="text-lg font-semibold mb-2">My Profile</h1>
+    <p class="text-sm text-neutral-500">Please update your profile settings here</p>
+    <div class="flex flex-col gap-3 mt-10" [formGroup]="myProfileForm">
+      <div class="flex items-center gap-4">
+        <mf-dicebear [image]="avatarUrl"
+                      [key]="myProfileForm.value.fullName"
+                      class="size-28 border border-default rounded-full" />
+        <div class="flex items-center gap-4">
+          @if (avatarUploading()) {
+            <div class="text-sm">Uploading...</div>
+          } @else {
+            <div>
+              <div class="flex items-center gap-3">
+                <button mat-flat-button mfUploadTrigger accept="image/*"
+                        (fileSelected)="onAvatarFileSelected($event)">
+                  @if (avatarUrl) {
+                    Change
+                  } @else {
+                    Upload
+                  }
+                </button>
+                @if (avatarUrl) {
+                  <button mat-stroked-button (click)="removeAvatarUrl()">Delete</button>
+                }
+              </div>
+              <div class="text-xs mt-2 text-neutral-500">Images only up to 1MB</div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="mt-2 mb-5">
+        <div class="font-semibold mt-5">Personal Information</div>
+        <div class="text-sm text-neutral-500 mt-1">
+          Communication details in case we want to connect with you. These will be kept private.
+        </div>
+      </div>
+      <div class="w-2/3 grid grid-cols-2 gap-y-3 gap-x-5">
+        <mat-form-field class="col-span-2">
+          <mat-label>Full Name</mat-label>
+          <input type="text" matInput placeholder="Enter your full name" formControlName="fullName">
+        </mat-form-field>
+        <mat-form-field class="col-span-1">
+          <mat-label>Username</mat-label>
+          <input type="text"
+                 matInput placeholder="Enter your job"
+                 formControlName="username"
+                 [readonly]="isUsernameReadOnly()">
+          <mat-hint>Letters, digits, and +.-_ characters only</mat-hint>
+          @if (
+            myProfileForm.controls.username.hasError('invalidUsername') &&
+            myProfileForm.controls.username.touched
+            ) {
+            <mat-error>Only letters, numbers, and the symbols . - _</mat-error>
+          }
+          <button mat-icon-button matSuffix matTooltip="Change Username" class="me-2">
+            <mat-icon (click)="changeUsername()">edit</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field class="col-span-1">
+          <mat-label>Company</mat-label>
+          <input type="text" matInput placeholder="Enter your job" formControlName="company">
+        </mat-form-field>
+        <mat-form-field class="col-span-1">
+          <mat-label>Job Title</mat-label>
+          <input type="text" matInput placeholder="Enter your job" formControlName="jobTitle">
+        </mat-form-field>
+        <mat-form-field class="col-span-1">
+          <mat-label>Phone Number</mat-label>
+          <mf-phone-input formControlName="phoneNumber"/>
+        </mat-form-field>
+        <mat-form-field class="col-span-2">
+          <mat-label>Bio</mat-label>
+          <textarea matInput rows="3" placeholder="Describe yourself"
+                    formControlName="bio" cdkTextareaAutosize></textarea>
+          <mat-hint>Tell us a little bit about what you do (e.g, Copywriter, Investor, Agency Owner)</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="font-semibold mt-5 mb-4">Date & Time Settings</div>
+
+      <div class="w-2/3 grid grid-cols-2 gap-y-3 gap-x-5">
+        <mat-form-field class="col-span-1">
+          <mat-label>Timezone</mat-label>
+          <mf-timezone-select formControlName="timezone" placeholder="Select your timezone"/>
+        </mat-form-field>
+        <mat-form-field class="col-span-1">
+          <mat-label>Date Format</mat-label>
+          <mf-date-format-select formControlName="dateFormat" placeholder="Select date format"/>
+        </mat-form-field>
+      </div>
+
+      <div class="font-semibold mt-5 mb-4">Home Address</div>
+      <div [formGroup]="myProfileForm.controls.address"
+           class="w-2/3 grid grid-cols-2 gap-y-3 gap-x-5">
+        <mat-form-field class="col-span-1">
+          <mat-label>Country</mat-label>
+          <mf-country-select formControlName="country" placeholder="Select your country"/>
+        </mat-form-field>
+        <mat-form-field class="col-span-1">
+          <mat-label>City</mat-label>
+          <input type="text" formControlName="city" matInput placeholder="Enter your city">
+        </mat-form-field>
+        <mat-form-field class="col-span-1">
+          <mat-label>Street</mat-label>
+          <input type="text" formControlName="street" matInput placeholder="Enter your street">
+        </mat-form-field>
+        <mat-form-field class="col-span-1">
+          <mat-label>Building</mat-label>
+          <input type="text" formControlName="building" matInput placeholder="Enter building number">
+        </mat-form-field>
+        <mat-form-field class="col-span-1">
+          <mat-label>Apartment</mat-label>
+          <input type="text" formControlName="apartment" matInput placeholder="Enter apartment number">
+        </mat-form-field>
+        <mat-form-field class="col-span-1">
+          <mat-label>Postal Code</mat-label>
+          <input type="text" formControlName="postalCode" matInput placeholder="Enter postal code">
+        </mat-form-field>
+        <mat-form-field class="col-span-2">
+          <mat-label>Additional Info</mat-label>
+          <textarea matInput rows="3" placeholder="Additional Info"
+                    formControlName="additionalInfo" cdkTextareaAutosize></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="mt-5 mb-5 flex items-center justify-between w-2/3">
+        <div>
+          <div class="font-semibold">Social Media Links</div>
+          <div class="text-sm text-neutral-500 mt-1">
+            Links for you social media.
+          </div>
+        </div>
+        <button mat-mini-fab matTooltip="Add Social Media">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <div class="w-2/3 grid grid-cols-2 gap-y-3 gap-x-5">
+        @for (socialMedia of socialMediaList(); track socialMedia) {
+          <mat-form-field class="col-span-2">
+            <mat-label>{{ socialMedia.label }}</mat-label>
+            <mf-icon [name]="socialMedia.logoIcon" class="size-7 ms-3 me-1" matPrefix/>
+            <input type="text" matInput
+                   [placeholder]="socialMedia.placeholder"
+                   [formControlName]="socialMedia.formControlName">
+          </mat-form-field>
+        }
+      </div>
+    </div>
+
+    <div class="mt-5">
+      <button mat-flat-button class="w-32"
+              [disabled]="myProfileForm.invalid"
+              [mfButtonLoading]="saving()"
+              (click)="save()">Save</button>
+    </div>
+  </div>
+</div>

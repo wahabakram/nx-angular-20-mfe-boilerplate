@@ -1,0 +1,53 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-popover-border: none;
+  --mf-popover-shadow: theme(--shadow-lg);
+  --mf-popover-border-radius: theme(--radius-2xl);
+  --mf-popover-bg: var(--color-surface-container-lowest);
+  --mf-popover-margin: --spacing(2.5);
+
+  display: block;
+  position: relative;
+  border-radius: var(--mf-popover-border-radius);
+  background-color: var(--mf-popover-bg);
+  border: var(--mf-popover-border);
+  box-shadow: var(--mf-popover-shadow);
+  animation: .15s mf-popover-animation;
+
+  @keyframes mf-popover-animation {
+    0% {
+      transform: scale(.9);
+      opacity: 0;
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+
+:host-context(.mf-overlay-above) {
+  margin-bottom: var(--mf-popover-margin);
+  transform-origin: bottom;
+}
+
+:host-context(.mf-overlay-below) {
+  margin-top: var(--mf-popover-margin);
+  transform-origin: top;
+}
+
+:host-context(.mf-overlay-before) {
+  margin-inline-end: var(--mf-popover-margin);
+  transform-origin: right;
+}
+
+:host-context(.mf-overlay-after) {
+  margin-inline-start: var(--mf-popover-margin);
+  transform-origin: left;
+}
+
+:host-context(html.dark) {
+  --mf-popover-bg: var(--color-neutral-1000);
+}

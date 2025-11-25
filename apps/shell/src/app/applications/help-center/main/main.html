@@ -1,0 +1,66 @@
+<div class="p-10 lg:max-w-[1200px] mx-auto">
+  <header class="bg-primary-200 dark:bg-secondary-container dark:text-on-secondary-container
+                 rounded-3xl p-20 text-center mat-typography">
+    <h1>Help Center</h1>
+    <p>
+      Find guides and find quick solutions to common questions across eight categories.
+      From community engagement to resolving account issues, tracking orders, and
+      understanding payment methods. If you have any questions, our support team
+      is just a click away. Let's make your experience exceptional!
+    </p>
+    <div class="flex items-center justify-center gap-10 mt-10">
+      <a href="tel:+12345678910" class="hover:underline flex items-center gap-2">
+        <mat-icon>phone</mat-icon>+1 (23) 45678910
+      </a>
+      <a href="mailto:support@elementarlabs.com" class="hover:underline flex items-center gap-2">
+        <mat-icon>mail</mat-icon>support&#64;elementarlabs.com
+      </a>
+    </div>
+  </header>
+  <div class="fixed bottom-10 right-10 z-10">
+    <button mat-fab>
+      <mat-icon>support</mat-icon>
+    </button>
+  </div>
+
+  <main class="mt-14">
+    <div class="mb-7 flex items-center justify-between">
+      <h2 class="text-3xl -mt-2">How can we help?</h2>
+      <mat-form-field class="w-72">
+        <mat-icon matPrefix>search</mat-icon>
+        <input matInput placeholder="Search...">
+      </mat-form-field>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      @for (category of helpCategories(); track category.title) {
+        <mat-card>
+          <mat-card-content>
+            <div class="bg-surface-container-lowest text-primary rounded-xl size-14 flex items-center justify-center">
+              <mat-icon>{{ category.icon }}</mat-icon>
+            </div>
+            <div>
+              <h3 class="text-xl">{{ category.title }}</h3>
+              <div class="flex flex-wrap gap-2 mt-3">
+                @for (tag of category.tags; track tag) {
+                  <span class="text-2xs border border-default rounded-full py-1 px-3">{{ tag }}</span>
+                }
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+
+    <div class="mt-20 mb-4">
+      <h2 class="text-3xl mb-10 text-center">Common Questions</h2>
+      <ul class="flex flex-wrap justify-center gap-4">
+        @for (question of commonQuestions(); track question.text) {
+          <li class="border border-default rounded-full px-4 py-2 text-sm hover:bg-surface-container-low cursor-pointer">
+            <a [href]="question.link" class="hover:text-primary hover:text-underline">{{ question.text }}</a>
+          </li>
+        }
+      </ul>
+    </div>
+  </main>
+</div>

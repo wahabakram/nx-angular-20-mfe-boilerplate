@@ -1,0 +1,12 @@
+<div class="avatar">
+  <ng-content select="[mfNotificationAvatar]"/>
+</div>
+<div class="grow">
+  <span class="message">
+    <ng-content select="mf-notification-message,[mf-notification-message]"/>
+  </span>
+  <div class="content">
+    <ng-content select="mf-notification-content,[mf-notification-content]"/>
+  </div>
+  <ng-content select="mf-notification-time,[mf-notification-time]"/>
+</div>

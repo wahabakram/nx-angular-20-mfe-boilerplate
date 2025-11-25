@@ -1,0 +1,55 @@
+<div class="p-12" [formGroup]="notificationsForm">
+  <h1 class="text-lg font-semibold mb-8">Notifications</h1>
+
+  <section formGroupName="alerts">
+    <h2 class="text-base font-semibold mb-6">Alerts</h2>
+    <div class="space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-medium">Communication</h3>
+          <p class="text-sm text-neutral-500 mt-1">Get news, announcements, and product updates.</p>
+        </div>
+        <mat-slide-toggle formControlName="communication"/>
+      </div>
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-medium">Security</h3>
+          <p class="text-sm text-neutral-500 mt-1">Get important notifications about your account security.</p>
+        </div>
+        <mat-slide-toggle formControlName="security"/>
+      </div>
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-medium">Meetups</h3>
+          <p class="text-sm text-neutral-500 mt-1">Get an email when a Meetup is posted close to my location.</p>
+        </div>
+        <mat-slide-toggle formControlName="meetups"/>
+      </div>
+    </div>
+  </section>
+
+  <mf-horizontal-divider class="my-12"/>
+
+  <section formGroupName="accountActivity">
+    <h2 class="text-base font-semibold mb-6">Account Activity</h2>
+    <p class="text-neutral-600 mb-6">Email me when:</p>
+    <div class="space-y-6">
+      <div class="flex items-center justify-between">
+        <span>Someone comments on one of my items</span>
+        <mat-slide-toggle formControlName="comments"/>
+      </div>
+      <div class="flex items-center justify-between">
+        <span>Someone mentions me</span>
+        <mat-slide-toggle formControlName="mentions"/>
+      </div>
+      <div class="flex items-center justify-between">
+        <span>Someone follows me</span>
+        <mat-slide-toggle formControlName="follows"/>
+      </div>
+      <div class="flex items-center justify-between">
+        <span>Someone replies to my job posting</span>
+        <mat-slide-toggle formControlName="jobReplies"/>
+      </div>
+    </div>
+  </section>
+</div>

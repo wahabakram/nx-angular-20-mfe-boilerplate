@@ -1,0 +1,26 @@
+<div class="flex justify-between items-start">
+  <div>
+    <div class="font-semibold">{{ widgetName() }}</div>
+    <div class="text-3xl font-bold mt-3">{{ earningValue() | currency }}</div>
+  </div>
+  <div class="flex items-center space-x-6">
+    <div class="flex items-center space-x-4">
+      @for (series of internalDatasets(); track series.name) {
+        <div
+          class="flex items-center space-x-2 text-sm text-neutral-600 cursor-pointer transition-opacity"
+          [class.opacity-50]="!series.isActive"
+          (click)="toggleSeriesVisibility(series.name)">
+          <span class="h-2.5 w-2.5 rounded-full" [style.background-color]="series.color"></span>
+          <span>{{ series.name }}</span>
+        </div>
+      }
+    </div>
+    <mf-segmented [(ngModel)]="selectedPeriod">
+      @for (period of timePeriods(); track period) {
+        <button mf-segmented-button [value]="period.type"
+                (click)="setPeriod(period.type)">{{ period.name }}</button>
+      }
+    </mf-segmented>
+  </div>
+</div>
+<div #chartContainer class="w-full h-80"></div>

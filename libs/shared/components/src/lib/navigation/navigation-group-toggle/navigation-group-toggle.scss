@@ -1,0 +1,107 @@
+@reference 'tailwindcss';
+
+:host {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  white-space: nowrap;
+  position: relative;
+  flex: none;
+  cursor: pointer;
+  user-select: none;
+  background-color: var(--mf-navigation-group-toggle-bg);
+  min-height: var(--mf-navigation-item-height);
+  padding: var(--mf-navigation-item-padding);
+  font-size: var(--mf-navigation-item-font-size);
+  border-radius: var(--mf-navigation-item-border-radius);
+  font-weight: var(--mf-navigation-item-font-weight);
+  color: var(--mf-navigation-item-color);
+  gap: var(--mf-navigation-item-gap);
+  width: var(--mf-navigation-item-width);
+
+  .text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .badge {
+    &:empty {
+      display: none;
+    }
+
+    display: inline-flex;
+    flex: none;
+    border-radius: calc(infinity * 1px);
+    height: --spacing(5);
+    min-width: --spacing(5);
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-xs);
+    padding: 0 --spacing(1.5);
+    font-weight: bold;
+  }
+
+  &:not(.is-badge-text-only) {
+    .badge {
+      font-weight: 600;
+      font-size: var(--text-2xs);
+      background: var(--color-surface-tint);
+      color: var(--color-on-primary);
+    }
+  }
+
+  .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--mf-navigation-item-icon-width);
+    color: var(--mf-navigation-item-icon-color);
+    flex: none;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--mf-transition-transform);
+    margin-inline-end: 2px;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &:hover {
+    background-color: var(--mf-navigation-item-hover-bg);
+    color: var(--mf-navigation-item-hover-color);
+    transition: background-color .2s;
+  }
+
+  &.is-active,
+  &.is-active:hover {
+    background-color: var(--mf-navigation-group-toggle-active-bg);
+    color: var(--mf-navigation-group-toggle-active-color);
+  }
+
+  &:not(.is-active):hover .icon {
+    color: var(--mf-navigation-item-hover-icon-color);
+  }
+
+  &.is-active {
+    .icon {
+      color: var(--mf-navigation-group-toggle-active-color);
+    }
+
+    .toggle {
+      transform: rotate(-180deg);
+    }
+  }
+
+  &:has(.toggle:not(:empty)) {
+    padding-inline-end: var(--mf-navigation-group-toggle-has-icon-padding-end);
+  }
+}

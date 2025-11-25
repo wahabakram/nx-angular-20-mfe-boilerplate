@@ -1,0 +1,18 @@
+import { Directive, inject } from '@angular/core';
+import { COMMENT_EDITOR, ICommentEditor } from '../types';
+
+@Directive({
+  selector: '[mfCommentEditorCommandStrike]',
+  host: {
+    '[attr.disabled]': `(commentEditor && commentEditor.api.isCommandDisabled('toggleStrike')) ? '' : null`,
+    '[class.active]': `commentEditor && commentEditor.api.isActive('strike')`,
+    '(click)': `onClick()`
+  }
+})
+export class CommentEditorCommandStrikeDirective {
+  protected commentEditor = inject<ICommentEditor>(COMMENT_EDITOR);
+
+  protected onClick() {
+    this.commentEditor.api.runCommand('toggleStrike');
+  }
+}

@@ -1,0 +1,16 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+
+  .host-container {
+    background-color: #f5f1ee !important;
+    padding: --spacing(5);
+  }
+}
+
+:host-context(html.dark) {
+  .host-container {
+    background-color: #cfc7c1 !important;
+  }
+}

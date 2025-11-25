@@ -1,0 +1,38 @@
+<div class="flex justify-between items-center">
+  <div
+    class="size-14 rounded-full flex items-center justify-center"
+    [class]="community().logo.gradient">
+    <span class="text-white text-3xl font-bold">{{ community().logo.letter }}</span>
+  </div>
+  <mf-avatar-group>
+    @for (member of community().members; track member.id; let i = $index) {
+      <mf-dicebear [key]="member.id" [image]="member.avatarUrl"/>
+    }
+    <mf-avatar-more>+{{ community().memberCount / 1000 }}k</mf-avatar-more>
+  </mf-avatar-group>
+</div>
+
+<div class="mt-6">
+  <div class="text-lg font-semibold">{{ community().name }}</div>
+  <div class="text-neutral-600 text-sm mt-1 truncate">{{ community().description }}</div>
+</div>
+
+<div class="mt-6 flex justify-between items-center">
+  <div class="w-max border border-neutral-300 dark:border-neutral-700
+              rounded-full size-10 flex items-center justify-center">
+    <button
+      mat-icon-button
+      (click)="toggleFavorite()"
+      [attr.aria-label]="favoriteButtonAriaLabel()">
+      <mat-icon class="[&.active]:!text-pink-500"
+                [class.filled]="isFavorited()"
+                [class.active]="isFavorited()">favorite</mat-icon>
+    </button>
+  </div>
+  <div class="flex gap-3">
+    <button mat-stroked-button>View</button>
+    <button mat-flat-button>
+      <mat-icon>group_add</mat-icon>Join
+    </button>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+@reference 'tailwindcss';
+
+:host {
+    --mf-horizontal-divider-text-bg: var(--color-background);
+
+    display: block;
+    position: relative;
+
+    .text {
+        @apply absolute left-1/2 h-6 w-max whitespace-nowrap px-5 top-1/2 -translate-y-1/2 -translate-x-1/2 text-center text-sm;
+        background: var(--mf-horizontal-divider-text-bg);
+
+        &:empty {
+            display: none;
+        }
+    }
+
+    &:not([class*="h-"]) {
+        height: 1px;
+    }
+
+    &:not([class*="bg-"]) {
+        background: var(--color-border);
+    }
+}

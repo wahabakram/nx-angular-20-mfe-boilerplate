@@ -1,0 +1,19 @@
+<app-page>
+  <ng-container pageTitle>My Projects ({{ projectCount() }})</ng-container>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <button (click)="projectService.addProject()" type="button"
+            class="border cursor-pointer border-default rounded-3xl flex flex-col items-center justify-center p-6
+            h-full min-h-[220px] text-neutral-500 hover:bg-primary-200 hover:border-primary">
+      <mat-icon class="text-4xl mb-3">add</mat-icon>
+      <span class="font-semibold text-lg tracking-wide">CREATE NEW PROJECT</span>
+    </button>
+
+    @for (project of projects(); track project.id) {
+      <app-project [project]="project"
+                   (edit)="projectService.editProject($event)"
+                   (delete)="projectService.deleteProject($event)"/>
+    } @empty {
+      <p class="text-neutral-500 md:col-span-2">You have no projects. Add one to get started!</p>
+    }
+  </div>
+</app-page>

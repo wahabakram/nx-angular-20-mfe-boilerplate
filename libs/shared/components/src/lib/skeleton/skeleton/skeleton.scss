@@ -1,0 +1,20 @@
+:host {
+  // DaisyUI-adapted variables
+  --mf-skeleton-gap: 1rem;
+  --mf-skeleton-item-border-radius: 1rem;
+  --mf-skeleton-from-bg: oklch(var(--b3) / 0.8);
+  --mf-skeleton-to-bg: oklch(var(--b2) / 0.7);
+
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: var(--mf-skeleton-gap);
+
+  &.is-direction-col {
+    flex-direction: column;
+  }
+
+  &.is-direction-row {
+    flex-direction: row;
+  }
+}

@@ -1,0 +1,70 @@
+<mf-popover>
+  <div class="w-[360px] text-base list-none bg-surface-container rounded-xl overflow-hidden shadow-lg dark:divide-inverse">
+    <div class="flex items-center justify-between bg-surface-container-highest text-sm h-12 px-4">
+      <div class="text-on-surface font-semibold">Notifications</div>
+      <button mat-icon-button class="-me-1">
+        <mf-icon name="solar:settings-bold-duotone"/>
+      </button>
+    </div>
+    <div class="h-[300px] overflow-y-auto">
+      @if (notifications.length > 0) {
+        <mf-notification-list [notifications]="notifications" class="p-3">
+          <ng-template mfNotificationDef="mentionedInComment" let-notification>
+            <mf-notification matRipple class="!bg-surface-bright !cursor-pointer hover:!bg-surface-container-lowest !rounded-xl shadow-sm">
+              <div class="relative" mfNotificationAvatar>
+                <mf-dicebear [key]="notification.actor.id"
+                              [image]="notification.actor.avatarUrl" class="size-10"/>
+                <div class="flex absolute justify-center z-10 text-white items-center right-0
+                  bottom-1 size-5 bg-green-400 rounded-full border border-default border-white ">
+                  <mat-icon class="filled action-icon">comment</mat-icon>
+                </div>
+              </div>
+              <mf-notification-message>
+                <mf-notification-actor>{{ notification.actor.name }}</mf-notification-actor>
+                mentioned you in a comment:
+                <span class="font-medium text-primary hover:text-tertiary cursor-pointer">
+                  &#64;{{ notification['notifier'].username }}
+                </span>
+              </mf-notification-message>
+              <mf-notification-content>
+                {{ notification['payload']['content'] }}
+              </mf-notification-content>
+              <mf-notification-time>{{ notification.createdAt }}</mf-notification-time>
+            </mf-notification>
+          </ng-template>
+          <ng-template mfNotificationDef="inviteToEditFilesInFolder" let-notification>
+            <mf-notification matRipple class="!bg-surface-bright !cursor-pointer hover:!bg-surface-container-lowest !rounded-xl shadow-sm">
+              <div class="relative" mfNotificationAvatar>
+                <mf-dicebear [key]="notification.actor.id"
+                              [image]="notification.actor.avatarUrl" class="size-10"/>
+                <div class="flex absolute justify-center z-10 text-white items-center right-0
+                  bottom-1 size-5 bg-blue-400 rounded-full border border-default border-white">
+                  <mat-icon class="filled action-icon">folder</mat-icon>
+                </div>
+              </div>
+              <mf-notification-message>
+                <mf-notification-actor>{{ notification.actor.name }}</mf-notification-actor>
+                invited you to edit files in the folder
+                <span class="font-medium text-primary hover:text-tertiary cursor-pointer">
+                  {{ notification['payload']['folderName'] }}
+                </span>
+              </mf-notification-message>
+              <mf-notification-content>
+                <div class="border border-default border-primary rounded-lg px-3 py-2 mt-2 flex items-center gap-2 w-max">
+                  <mat-icon class="filled icon">folder</mat-icon>
+                  <span class="text-xs">{{ notification['payload']['folderName'] }}</span>
+                </div>
+              </mf-notification-content>
+              <mf-notification-time>{{ notification.createdAt }}</mf-notification-time>
+            </mf-notification>
+          </ng-template>
+        </mf-notification-list>
+        <div class="px-4 mb-3">
+          <a routerLink="/account/notifications" mat-button class="w-full">View all</a>
+        </div>
+      } @else {
+        There are no notifications.
+      }
+    </div>
+  </div>
+</mf-popover>

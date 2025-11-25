@@ -1,0 +1,19 @@
+<div>
+  <div class="header">Productive Time / <span class="day">Day</span></div>
+  <div class="content">
+    <div class="time-display">
+      <div class="hours">{{ hours() }} hr</div>
+      @if (percentageChange(); as pc) {
+        <div
+          class="percentage-change"
+          [class.positive]="pc > 0"
+          [class.negative]="pc < 0"
+        >
+          <span class="icon"></span>
+          {{ pc > 0 ? '+' : '' }}{{ pc }}% <span class="last-text">last week</span>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+<div class="chart-wrapper"></div>

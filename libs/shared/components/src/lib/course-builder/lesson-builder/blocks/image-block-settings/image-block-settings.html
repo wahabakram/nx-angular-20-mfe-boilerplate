@@ -1,0 +1,14 @@
+<div class="py-5" [formGroup]="form">
+  <mat-form-field class="w-full">
+    <mat-label>Alt text</mat-label>
+    <input matInput formControlName="alt">
+  </mat-form-field>
+  <mat-form-field class="w-full">
+    <mat-label>Align</mat-label>
+    <mat-select formControlName="align">
+      <mat-option value="left">Left</mat-option>
+      <mat-option value="center">Center</mat-option>
+      <mat-option value="right">Right</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

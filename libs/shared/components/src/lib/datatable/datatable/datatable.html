@@ -1,0 +1,145 @@
+<table class="-table">
+  @if (!showHeader()) {
+<!--    <colgroup>-->
+<!--      @for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {-->
+<!--        @for (header of headerGroup.headers; track header.id) {-->
+<!--          <col [style.width]="header.column.getSize() ? header.column.getSize() + 'px' : 'auto'">-->
+<!--        }-->
+<!--      }-->
+<!--    </colgroup>-->
+  }
+  @if (showHeader()) {
+    <thead #theadEl>
+      @for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {
+        <tr>
+          @for (header of headerGroup.headers; track header.id) {
+            @if (!header.isPlaceholder) {
+              <th [style.width]="header.column.getSize() ? header.column.getSize() + 'px' : 'auto'">
+                <ng-container
+                  *flexRender="
+                    header.column.columnDef.header;
+                    props: header.getContext();
+                    let header
+                  ">
+                  <div [innerHTML]="header"></div>
+
+                  <!--                <div-->
+                  <!--                  class="resizer"-->
+                  <!--                  [class.isResizing]="header.column.getIsResizing()"-->
+                  <!--                  (dblclick)="header.column.resetSize()"-->
+                  <!--                  (mousedown)="header.getResizeHandler()($event)"-->
+                  <!--                  (touchstart)="header.getResizeHandler()($event)"-->
+                  <!--                ></div>-->
+                </ng-container>
+              </th>
+            }
+          }
+        </tr>
+      }
+    </thead>
+  }
+
+  @if (tableFixed()) {
+    <tbody #tbodyEl class="relative">
+      <mf-overlay-scrollbar [absolute]="true">
+        @for (row of table.getRowModel().rows; track row.id) {
+          <tr [class.is-row-selected]="isRowSelected(row)">
+            @for (cell of row.getVisibleCells(); track cell.id) {
+              <td [style.width]="cell.column.getSize() ? cell.column.getSize() + 'px' : 'auto'">
+                <ng-container
+                  *flexRender="
+                    cell.column.columnDef.cell;
+                    props: cell.getContext();
+                    let cell
+                  "
+                >
+                  <div [innerHTML]="cell"></div>
+                </ng-container>
+              </td>
+            }
+          </tr>
+        } @empty {
+          <tr>
+            <td [attr.colspan]="table.getAllColumns().length" class="text-center text-sm p-8 text-neutral-500">
+              There are no records to display.
+            </td>
+          </tr>
+        }
+      </mf-overlay-scrollbar>
+    </tbody>
+  } @else {
+    <tbody #tbodyEl >
+      @for (row of table.getRowModel().rows; track row.id) {
+        <tr [class.is-row-selected]="isRowSelected(row)">
+          @for (cell of row.getVisibleCells(); track cell.id) {
+            <td [style.width]="cell.column.getSize() ? cell.column.getSize() + 'px' : 'auto'">
+              <ng-container
+                *flexRender="
+                    cell.column.columnDef.cell;
+                    props: cell.getContext();
+                    let cell
+                  "
+              >
+                <div [innerHTML]="cell"></div>
+              </ng-container>
+            </td>
+          }
+        </tr>
+      } @empty {
+        <tr>
+          <td [attr.colspan]="table.getAllColumns().length" class="text-center text-sm p-8 text-neutral-500">
+            There are no records to display.
+          </td>
+        </tr>
+      }
+    </tbody>
+  }
+
+
+<!--  @if (table.getFooterGroups().length > 0) {-->
+<!--    <tfoot>-->
+<!--      @for (footerGroup of table.getFooterGroups(); track footerGroup.id) {-->
+<!--        <tr>-->
+<!--          @for (footer of footerGroup.headers; track footer.id) {-->
+<!--            <th>-->
+<!--              <ng-container-->
+<!--                *flexRender="-->
+<!--                  footer.column.columnDef.footer;-->
+<!--                  props: footer.getContext();-->
+<!--                  let footer-->
+<!--                ">-->
+<!--                {{ footer }}-->
+<!--              </ng-container>-->
+<!--            </th>-->
+<!--          }-->
+<!--        </tr>-->
+<!--      }-->
+<!--    </tfoot>-->
+<!--  }-->
+</table>
+
+@if (showPagination() && table.getPageCount() > 1) {
+  <div class="pagination flex items-center justify-between"
+       #paginationEl>
+    <div class="py-2 ps-4 text-sm">
+      Showing {{ showingFrom() }} to {{ showingTo() }} of {{ dataLength() }}
+    </div>
+    <div class="flex items-center gap-2 p-2">
+      <button mat-icon-button (click)="table.setPageIndex(0)" [disabled]="!table.getCanPreviousPage()">
+        <mat-icon>first_page</mat-icon>
+      </button>
+      <button mat-icon-button (click)="table.previousPage()" [disabled]="!table.getCanPreviousPage()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <span class="text-sm">
+        Page {{ table.getState().pagination.pageIndex + 1 }} of {{ table.getPageCount() }}
+      </span>
+      <button mat-icon-button (click)="table.nextPage()" [disabled]="!table.getCanNextPage()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+      <button mat-icon-button (click)="table.setPageIndex(table.getPageCount() - 1)" [disabled]="!table.getCanNextPage()">
+        <mat-icon>last_page</mat-icon>
+      </button>
+    </div>
+  </div>
+}

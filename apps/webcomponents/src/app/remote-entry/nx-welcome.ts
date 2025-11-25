@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'mfc-nx-welcome',
+  selector: 'mf-nx-welcome',
   imports: [CommonModule],
   template: `
     <!--

@@ -1,0 +1,22 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-logo-text-font-size: theme(--text-xl);
+  --mf-logo-text-font-weight: 800;
+  --mf-logo-text-color: var(--color-primary);
+  --mf-logo-text-hover-color: var(--color-tertiary);
+
+  display: inline-block;
+  width: max-content;
+  height: max-content;
+
+  &.is-text {
+    color: var(--mf-logo-text-color);
+    font-size: var(--mf-logo-text-font-size);
+    font-weight: var(--mf-logo-text-font-weight);
+
+    &:hover {
+      color: var(--mf-logo-text-hover-color);
+    }
+  }
+}

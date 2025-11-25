@@ -1,0 +1,26 @@
+@reference 'tailwindcss';
+
+:host {
+  position: relative;
+  padding-inline-start: var(--mf-sidebar-nav-group-menu-padding-start);
+  // transition: grid-template-rows .05s linear;
+  grid-template-rows: 0fr;
+  display: grid;
+
+  .inner {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: var(--mf-sidebar-nav-items-gap);
+  }
+
+  &.is-active {
+    // transition: grid-template-rows .1s ease-in;
+    grid-template-rows: 1fr;
+    margin-top: var(--mf-sidebar-nav-item-space-y);
+
+    .inner {
+      padding: calc(var(--mf-sidebar-nav-items-gap) * 2) 0 var(--mf-sidebar-nav-items-gap) 0;
+    }
+  }
+}

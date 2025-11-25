@@ -1,0 +1,60 @@
+<mf-panel>
+  <mf-panel-sidebar class="w-[300px] pt-4 pe-5 border-e border-e-surface-container">
+    <mf-panel>
+      <mf-panel-header class="ps-5 flex items-center">
+        <button mat-flat-button>
+          <mat-icon>edit</mat-icon>
+          Compose Mail
+        </button>
+      </mf-panel-header>
+      <mf-panel-body>
+        <mf-overlay-scrollbar [absolute]="true">
+          <div class="ps-5 pb-6">
+            <mf-navigation [activeKey]="activeLinkId()" appearance="secondary" class="mt-4">
+              @for (navItem of navigation(); track navItem) {
+                <a mf-navigation-item
+                   [key]="navItem.id"
+                   [routerLink]="navItem.routerLink"
+                   [badgeTextOnly]="navItem.badgeTextOnly">
+                  <mat-icon mfNavigationItemIcon>{{ navItem.icon }}</mat-icon>
+                  <ng-container mfNavigationItemBadge>
+                    @if (navItem.emailsCount) {
+                      {{ navItem.emailsCount }}
+                    }
+                  </ng-container>
+                  {{ navItem.name }}
+                </a>
+              }
+            </mf-navigation>
+            <div class="flex items-center justify-between mt-7 mb-3">
+              <div class="font-bold text-sm px-5">Labels</div>
+              <button mat-icon-button (click)="addNewLabel()">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+            <mf-navigation [activeKey]="activeLinkId()" appearance="secondary">
+              @for (label of allLabels(); track label) {
+                <div class="relative group">
+                  <div class="absolute opacity-0 right-0 z-1 top-1/2 -translate-y-1/2 group-hover:opacity-100">
+                    <button mat-icon-button (click)="editLabel(label)">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </div>
+                  <a mf-navigation-item [key]="label.id" [routerLink]="label.routerLink">
+                    <mat-icon mfNavigationItemIcon>label</mat-icon>
+                    {{ label.name }}
+                  </a>
+                </div>
+              }
+            </mf-navigation>
+          </div>
+        </mf-overlay-scrollbar>
+      </mf-panel-body>
+    </mf-panel>
+  </mf-panel-sidebar>
+  <mf-panel-body>
+    <app-container>
+      <router-outlet/>
+    </app-container>
+  </mf-panel-body>
+</mf-panel>

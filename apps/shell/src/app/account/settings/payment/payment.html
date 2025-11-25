@@ -1,0 +1,118 @@
+<div class="p-12">
+  <div class="mb-8">
+    <h1 class="text-lg font-semibold">Payment Methods</h1>
+    <p class="text-sm text-neutral-500 mt-1">Manage your payment methods notifications in here.</p>
+  </div>
+
+  <form [formGroup]="paymentForm" class="lg:w-2/3">
+    <section class="mb-8" formGroupName="cardInfo">
+      <h2 class="text-base font-semibold mb-6 flex items-center">
+        Your Card Info
+<!--        <span class="text-neutral-500 ms-2 leading-none">-->
+<!--          <mat-icon>info_outline</mat-icon>-->
+<!--        </span>-->
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-y-3 gap-x-5">
+        <mat-form-field class="col-span-8">
+          <mat-label>Card Number</mat-label>
+          <mat-icon matPrefix>credit_card</mat-icon>
+          <input matInput formControlName="cardNumber" mfCreditCardNumberMask />
+          <img matSuffix ngSrc="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg"
+               alt="Visa" width="38" height="12" class="me-3" />
+        </mat-form-field>
+        <mat-form-field class="col-span-4">
+          <mat-label>CVV</mat-label>
+          <input matInput formControlName="cvv"
+                 maxlength="3"
+                 mfCreditCardCvvMask />
+        </mat-form-field>
+        <mat-form-field class="col-span-8">
+          <mat-label>Name On Card</mat-label>
+          <input matInput formControlName="cardHolderName" />
+        </mat-form-field>
+        <mat-form-field class="col-span-4">
+          <mat-label>Expiry Date</mat-label>
+          <input matInput formControlName="expiryDate" mfCreditCardExpiryDateMask />
+        </mat-form-field>
+      </div>
+    </section>
+
+    <!-- Address Section -->
+    <section class="mb-8" formGroupName="address">
+      <h2 class="text-base font-semibold mt-8 mb-4">Billing Address</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-5">
+        <mat-form-field class="col-span-1">
+          <mat-label>Country</mat-label>
+          <mf-country-select formControlName="country" placeholder="Select your country"/>
+        </mat-form-field>
+        <mat-form-field class="col-span-1">
+          <mat-label>City / Province</mat-label>
+          <input type="text" matInput formControlName="cityProvince">
+        </mat-form-field>
+        <mat-form-field class="col-span-2">
+          <mat-label>Physical Address</mat-label>
+          <textarea matInput formControlName="physicalAddress" rows="3" cdkTextareaAutosize></textarea>
+        </mat-form-field>
+      </div>
+    </section>
+
+    <!-- Saved Credit Cards List -->
+    <section class="mb-8">
+      <h2 class="text-base font-semibold">Credit Cards</h2>
+      <p class="text-sm text-neutral-500 mt-1 mb-6">You can adjust the settings on your general notification here.</p>
+      <div class="space-y-4">
+        @for (card of savedCards(); track card) {
+          <div class="border border-default p-4 rounded-2xl flex justify-between items-center flex-wrap gap-2">
+            <div class="flex items-center">
+              @switch (card.brand) {
+                @case ('visa') {
+                  <img ngSrc="https://img.icons8.com/color/48/000000/visa.png" width="40"
+                       height="40" alt="Visa" class="w-10 h-10 mr-4" />
+                }
+                @case ('mastercard') {
+                  <img ngSrc="https://img.icons8.com/color/48/000000/mastercard-logo.png"
+                       width="40" height="40" alt="Mastercard" class="w-10 h-10 mr-4" />
+                }
+              }
+              <div>
+                <p class="font-semibold">Ending in {{ card.last4 }}</p>
+                <p class="text-sm text-neutral-500">Expired in {{ card.expiry }}</p>
+              </div>
+            </div>
+            <div class="flex-shrink-0 flex gap-1">
+              <button mat-button (click)="deleteCard(card)">Delete</button>
+              <button mat-flat-button color="primary" (click)="editCard(card)">Edit</button>
+            </div>
+          </div>
+        }
+      </div>
+      <button mat-button color="primary" class="mt-4" (click)="addNewCreditCard()">
+        <mat-icon>add</mat-icon>
+        Add New Credit Card
+      </button>
+    </section>
+    <hr class="mb-8" />
+
+    <!-- Settings Section -->
+    <section formGroupName="settings">
+      <h2 class="text-base font-semibold">Credit Cards</h2>
+      <p class="text-sm text-neutral-500 mt-1 mb-6">You can adjust the settings on your general notification here.</p>
+      <div class="space-y-4">
+        <div>
+          <mat-checkbox formControlName="autoSaveCard" color="primary">
+            <span class="font-semibold">Auto Save Credit Card</span>
+          </mat-checkbox>
+          <p class="text-sm text-neutral-500 ml-11">Malesuada fames ac turpis egestas. Lorem ipsum dolor sit amet.</p>
+        </div>
+        <div>
+          <mat-checkbox formControlName="notifyCard" color="primary">
+            <span class="font-semibold">Notify Credit Card</span>
+          </mat-checkbox>
+          <p class="text-sm text-neutral-500 ml-11">
+            Imperdiet dui accumsan sit amet. Euismod quis viverra nibh cras. Pulvinar sapien et ligula ullamcorper malesuada.
+          </p>
+        </div>
+      </div>
+    </section>
+  </form>
+</div>

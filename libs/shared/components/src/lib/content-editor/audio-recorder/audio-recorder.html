@@ -1,0 +1,9 @@
+@if (recordingState() === 'inactive') {
+  <button mat-fab (click)="startRecording()">
+    <mat-icon>mic</mat-icon>
+  </button>
+} @else {
+  <button mat-fab (click)="stopRecording()">
+    <mat-icon>mic_off</mat-icon>
+  </button>
+}

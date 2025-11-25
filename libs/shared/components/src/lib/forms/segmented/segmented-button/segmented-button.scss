@@ -1,0 +1,69 @@
+:host {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: center;
+  color: var(--mf-segmented-button-color);
+  font-size: var(--mf-segmented-button-font-size);
+  min-width: var(--mf-segmented-button-min-width);
+  border-radius: var(--mf-segmented-button-border-radius);
+  gap: var(--mf-segmented-button-gap);
+  flex: none;
+  padding: var(--mf-segmented-button-padding);
+  height: var(--mf-segmented-button-height);
+  transition: all 0.2s ease;
+
+  &.icon-only {
+    --mf-segmented-button-min-width: 0;
+    --mf-segmented-button-icon-offset-margin: 0;
+
+    width: var(--mf-segmented-button-height);
+    gap: 0;
+    padding: 0;
+
+    .content {
+      display: none;
+    }
+  }
+
+  .icon {
+    line-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-inline-start: var(--mf-segmented-button-icon-offset-margin);
+
+    ::ng-deep {
+      .mat-icon {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  .icon {
+    &:empty {
+      display: none;
+    }
+  }
+
+  &:hover {
+    background-color: var(--mf-segmented-button-hover-bg);
+    color: var(--mf-segmented-button-hover-color);
+    text-decoration-line: none;
+  }
+
+  &.is-selected {
+    pointer-events: none;
+    background-color: var(--mf-segmented-button-selected-bg);
+    color: var(--mf-segmented-button-selected-color);
+    box-shadow: var(--mf-segmented-button-selected-shadow);
+  }
+
+  &:disabled,
+  &.is-disabled {
+    pointer-events: none;
+    opacity: 0.65;
+  }
+}

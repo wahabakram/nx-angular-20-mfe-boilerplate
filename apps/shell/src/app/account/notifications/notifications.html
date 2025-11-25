@@ -1,0 +1,31 @@
+<app-container class="mat-typography">
+  <div class="p-12">
+    <h1>Notifications</h1>
+    <div class="w-6/12 mt-14">
+      <mf-notification-list [notifications]="notifications()" class="gap-5">
+        <ng-template mfNotificationDef="mentionedInComment" let-notification>
+          <app-mentioned-in-comment [notification]="notification" mfNotificationProps [isUnread]="notification.isNew" />
+        </ng-template>
+        <ng-template mfNotificationDef="inviteToEditFilesInFolder" let-notification>
+          <app-invite-to-edit-files-in-folder [notification]="notification" mfNotificationProps
+            [isUnread]="notification.isNew" />
+        </ng-template>
+        <ng-template mfNotificationControlsDef let-notification>
+          <button mat-icon-button [matMenuTriggerFor]="settings">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #settings xPosition="before">
+            <button mat-menu-item>
+              <mat-icon>notifications_off</mat-icon>
+              <span>Disable this type of notification</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>delete</mat-icon>
+              <span>Delete notification</span>
+            </button>
+          </mat-menu>
+        </ng-template>
+      </mf-notification-list>
+    </div>
+  </div>
+</app-container>

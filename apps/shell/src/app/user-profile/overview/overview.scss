@@ -1,0 +1,41 @@
+// Мы используем ::ng-deep для проникновения в стили компонента Material,
+// что позволяет нам точно настроить их внешний вид.
+:host ::ng-deep {
+  //.mat-mdc-tab-header {
+  //  background-color: white;
+  //  border-radius: 12px;
+  //  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  //  padding: 0 8px;
+  //}
+  //
+  //.mat-mdc-tab {
+  //  color: #6b7280; // text-gray-500
+  //  font-weight: 500;
+  //}
+  //
+  //// Стиль для активной вкладки
+  //.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  //  color: #3b82f6; // text-blue-500
+  //}
+  //
+  //.mat-mdc-tab.mdc-tab--active .mat-icon {
+  //  color: #3b82f6; // text-blue-500
+  //}
+  //
+  //// Индикатор (синяя полоска)
+  //.mat-mdc-tab-indicator.mat-mdc-tab-indicator-stretch {
+  //  display: none; // Убираем стандартный индикатор
+  //}
+  //
+  //.mat-mdc-tab-body-wrapper {
+  //  margin-top: -1px; // Чтобы контент прилипал к вкладкам
+  //}
+  //
+  //// Стиль для поля поиска
+  //.mat-mdc-form-field .mdc-notched-outline > * {
+  //  border-color: #e5e7eb !important; // border-gray-200
+  //}
+  //.mat-mdc-form-field:hover .mdc-notched-outline > * {
+  //  border-color: #3b82f6 !important; // border-blue-500
+  //}
+}

@@ -1,0 +1,25 @@
+@reference 'tailwindcss';
+
+:host {
+  height: 100%;
+  display: block;
+
+  .messenger {
+    height: 100%;
+    display: grid;
+    gap: --spacing(2);
+    grid-template-columns: 312px 1fr;
+    border-radius: theme(--radius-3xl);
+    padding: --spacing(5);
+  }
+
+  &:has(.sidebar) {
+    .messenger {
+      grid-template-columns: 312px 1fr 312px;
+    }
+  }
+
+  -comment-editor {
+    ---comment-editor-content-max-height: 160px;
+  }
+}

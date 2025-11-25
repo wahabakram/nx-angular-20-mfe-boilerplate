@@ -1,0 +1,118 @@
+<!-- Modern Search Bar Component -->
+<div class="mf-search-bar" [class]="getFieldClass()">
+
+  <!-- Active Filters -->
+  @if (defaultConfig().showFilters && filters().length > 0) {
+  <div class="mb-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (filter of filters(); track trackByFilter($index, filter)) {
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>{{ filter.label }}</mat-label>
+        <input matInput [value]="filter.value" readonly>
+        @if (filter.removable !== false) {
+        <button matSuffix mat-icon-button type="button" (click)="onFilterRemoved(filter)"
+          [attr.aria-label]="'Remove filter: ' + filter.label">
+          <mf-icon name="solar:close-line-duotone" class="size-4"></mf-icon>
+        </button>
+        }
+      </mat-form-field>
+      }
+    </div>
+  </div>
+  }
+
+  <!-- Search Input Field -->
+  <div class="relative">
+    <mat-form-field [appearance]="defaultConfig().appearance" class="w-full"
+      [class.mat-form-field-small]="defaultConfig().size === 'small'"
+      [class.mat-form-field-large]="defaultConfig().size === 'large'">
+
+      <mat-label>{{ defaultConfig().placeholder }}</mat-label>
+
+      <!-- Search Icon Prefix -->
+      <button matSuffix class="btn btn-ghost btn-circle" type="button" [attr.aria-label]="'Search'">
+        <mf-icon name="solar:magnifer-line-duotone" class="size-5 text-base-content/60"></mf-icon>
+      </button>
+
+      <!-- Input Field -->
+      <input matInput [formControl]="searchControl" [placeholder]="defaultConfig().placeholder" [matAutocomplete]="auto"
+        (focus)="onFocus()" (blur)="onBlur()" autocomplete="off" class="w-full">
+
+      <!-- Clear Button Suffix -->
+      @if (defaultConfig().showClearButton && searchControl.value) {
+      <button matSuffix class="btn btn-ghost btn-circle" type="button" (click)="clearSearch()" [attr.aria-label]="'Clear search'">
+        <mf-icon name="solar:close-circle-line-duotone" class="size-5"></mf-icon>
+      </button>
+      }
+
+      <!-- Hint Text -->
+      @if (defaultConfig().hint) {
+      <mat-hint>{{ defaultConfig().hint }}</mat-hint>
+      }
+    </mat-form-field>
+
+    <!-- Autocomplete Panel -->
+    <mat-autocomplete #auto="matAutocomplete" class="mf-search-autocomplete" [displayWith]="null"
+      (optionSelected)="onSuggestionSelected($event.option.value)">
+
+      @if (defaultConfig().showSuggestions) {
+
+      @if (filteredSuggestions().length === 0 && searchControl.value) {
+      <mat-option disabled>
+        <div class="flex items-center gap-3 py-2">
+          <mf-icon name="solar:magnifer-line-duotone" class="size-4 text-base-content/40"></mf-icon>
+          <span class="text-sm text-base-content/60">No suggestions found</span>
+        </div>
+      </mat-option>
+      }
+
+      @for (group of groupedSuggestions(); track group.category) {
+      @if (group.items.length > 0) {
+      <!-- Category Header -->
+      @if (groupedSuggestions().length > 1) {
+      <mat-optgroup [label]="group.category">
+        @for (suggestion of group.items; track trackBySuggestion($index, suggestion)) {
+        <mat-option [value]="suggestion">
+          <div class="flex items-center gap-3 py-1">
+            <mf-icon [name]="getSuggestionIcon(suggestion)" class="size-4 text-base-content/60 flex-shrink-0">
+            </mf-icon>
+            <div class="flex-1 min-w-0">
+              <div class="text-sm font-medium text-base-content truncate">
+                {{ suggestion.label }}
+              </div>
+              @if (suggestion.value !== suggestion.label) {
+              <div class="text-xs text-base-content/60 truncate">
+                {{ suggestion.value }}
+              </div>
+              }
+            </div>
+          </div>
+        </mat-option>
+        }
+      </mat-optgroup>
+      } @else {
+      @for (suggestion of group.items; track trackBySuggestion($index, suggestion)) {
+      <mat-option [value]="suggestion">
+        <div class="flex items-center gap-3 py-1">
+          <mf-icon [name]="getSuggestionIcon(suggestion)" class="size-4 text-base-content/60 flex-shrink-0">
+          </mf-icon>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-medium text-base-content truncate">
+              {{ suggestion.label }}
+            </div>
+            @if (suggestion.value !== suggestion.label) {
+            <div class="text-xs text-base-content/60 truncate">
+              {{ suggestion.value }}
+            </div>
+            }
+          </div>
+        </div>
+      </mat-option>
+      }
+      }
+      }
+      }
+      }
+    </mat-autocomplete>
+  </div>
+</div>

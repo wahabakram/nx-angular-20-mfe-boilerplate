@@ -1,0 +1,29 @@
+<app-page>
+  <div appPageContent>
+    <h1>Skeleton</h1>
+
+    <main class="flex flex-col gap-12 mt-11">
+      <section>
+        <h3 class="mat-title-large !mb-5">Dashboard cards skeleton</h3>
+        @defer {
+          <app-dashboard-cards-example/>
+        } @placeholder () {
+        }
+      </section>
+
+      <section>
+        <h3 class="mat-title-large !mb-5">Dashboard chart skeleton</h3>
+        @defer {
+          <app-dashboard-chart-example/>
+        }
+      </section>
+
+      <section>
+        <h3 class="mat-title-large !mb-5">Dashboard stats skeleton</h3>
+        @defer {
+          <app-dashboard-example/>
+        }
+      </section>
+    </main>
+  </div>
+</app-page>

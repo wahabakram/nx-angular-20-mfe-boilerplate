@@ -1,0 +1,9 @@
+@let object = context.getValue();
+
+@if (object.avatarUrl) {
+  <mf-dicebear [image]="object.avatarUrl" [alt]="object.name"/>
+}
+
+<div>
+  <div>{{ object.name }}</div>
+</div>

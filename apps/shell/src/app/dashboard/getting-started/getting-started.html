@@ -1,0 +1,10 @@
+<app-page>
+  <ng-container pageTitle>Dashboard</ng-container>
+  <ng-container pageDescription>Welcome back, User</ng-container>
+  <ng-container pageActions>
+    <a routerLink="/applications/help-center/main" mat-button>
+      <mat-icon>help</mat-icon> Help Center
+    </a>
+  </ng-container>
+  <mf-dashboard [configs]="configs()" [items]="items()" plain/>
+</app-page>

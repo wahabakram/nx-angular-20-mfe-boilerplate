@@ -1,0 +1,11 @@
+<div class="py-5" [formGroup]="form">
+  <mat-form-field class="w-full">
+    <mat-label>Language</mat-label>
+    <mat-select formControlName="language">
+      <mat-option value="none">None</mat-option>
+      @for (language of languages() | orderBy:'name'; track language) {
+        <mat-option [value]="language.language">{{ language.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</div>

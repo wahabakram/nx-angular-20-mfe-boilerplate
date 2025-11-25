@@ -1,0 +1,40 @@
+@use '@angular/material' as mat;
+@reference 'tailwindcss';
+
+:host {
+  display: grid;
+  align-items: center;
+  border-radius: var(--mf-incident-border-radius);
+  background: var(--mf-incident-bg);
+  grid-template-areas: "icon content close";
+  padding: var(--mf-incident-padding);
+  gap: var(--mf-incident-gap);
+  border-inline-start: var(--mf-incident-border-start);
+  grid-template-columns: [icon] var(--mf-incident-gap) [content] 1fr [action] var(--mf-incident-gap);
+  color: var(--mf-incident-color);
+
+  .content {
+    grid-area: content;
+    display: grid;
+    gap: var(--mf-incident-gap);
+    grid-template-areas: "data button";
+    grid-template-columns: [data] 1fr [button] var(--mf-incident-gap);
+  }
+
+  .data {
+    grid-area: data;
+  }
+
+  .icon {
+    line-height: 0;
+    display: inline-block;
+    max-width: max-content;
+  }
+
+  .close {
+    @include mat.icon-button-overrides((
+      icon-color: var(--mf-incident-close-color),
+      state-layer-color: var(--mf-incident-close-color)
+    ));
+  }
+}

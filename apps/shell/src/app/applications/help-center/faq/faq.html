@@ -1,0 +1,86 @@
+<div class="mat-typography">
+  <div class="max-w-[900px] mx-auto py-10 px-5">
+    <a routerLink="/applications/help-center/main"
+       class="inline-flex items-center gap-2 text-primary font-medium mb-6
+              hover:text-tertiary transition-colors">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Help Center
+    </a>
+
+    <h1 class="!mb-12">
+      Frequently Asked Questions
+    </h1>
+
+    <section class="mb-12">
+      <h2 class="!text-2xl !mb-6">Most asked</h2>
+      <div class="space-y-5">
+        @for (faq of mostAskedFaqs(); track faq.question) {
+          <ng-container
+            [ngTemplateOutlet]="faqItemTemplate"
+            [ngTemplateOutletContext]="{ $implicit: faq }">
+          </ng-container>
+        }
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="!text-2xl !mb-6">General inquiries</h2>
+      <div class="space-y-5">
+        @for (faq of generalInquiriesFaqs(); track faq.question) {
+          <ng-container
+            [ngTemplateOutlet]="faqItemTemplate"
+            [ngTemplateOutletContext]="{ $implicit: faq }">
+          </ng-container>
+        }
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="!text-2xl !mb-6">Licenses</h2>
+      <div class="space-y-5">
+        @for (faq of licensesFaqs(); track faq.question) {
+          <ng-container
+            [ngTemplateOutlet]="faqItemTemplate"
+            [ngTemplateOutletContext]="{ $implicit: faq }">
+          </ng-container>
+        }
+      </div>
+    </section>
+
+    <section>
+      <h2 class="!text-2xl !mb-6">Payments</h2>
+      <div class="space-y-5">
+        @for (faq of paymentsFaqs(); track faq.question) {
+          <ng-container
+            [ngTemplateOutlet]="faqItemTemplate"
+            [ngTemplateOutletContext]="{ $implicit: faq }">
+          </ng-container>
+        }
+      </div>
+    </section>
+
+    <section class="bg-primary-200 rounded-3xl py-12 px-10 mt-16 flex flex-col items-center justify-center gap-4">
+      <div class="flex flex-col items-center justify-center gap-3">
+        <div class="text-xl font-bold">Still have questions</div>
+        <p>Can't find the answer you're looking for ? Please chat to our friendly team.</p>
+      </div>
+      <button mat-flat-button>Chat with Us</button>
+    </section>
+  </div>
+</div>
+
+<ng-template #faqItemTemplate let-faq>
+  <div class="bg-white rounded-2xl shadow-sm">
+    <div (click)="toggleFaq(faq)" matRipple
+         class="w-full flex justify-between items-center cursor-pointer text-left p-5
+                           md:p-6 focus:outline-none rounded-2xl">
+      <span class="text-lg font-medium text-slate-800">{{ faq.question }}</span>
+      <mat-icon [class.icon-rotated]="faq.isOpen()">keyboard_arrow_down</mat-icon>
+    </div>
+    @if (faq.isOpen()) {
+      <div class="p-5 leading-relaxed border-t border-slate-200">
+        <p>{{ faq.answer }}</p>
+      </div>
+    }
+  </div>
+</ng-template>

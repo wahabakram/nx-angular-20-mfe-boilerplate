@@ -1,0 +1,115 @@
+@reference 'tailwindcss';
+
+:host {
+  ---datatable-tbody-max-height: 99999px;
+
+  display: block;
+  width: 100%;
+  background: var(--color-surface-container-lowest);
+  height: 100%;
+  overflow: hidden;
+
+  table {
+    table-layout: fixed;
+    width: 100%;
+    background: inherit;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    td {
+      line-height: 1.25;
+    }
+  }
+
+  &.is-compact {
+    table.-table {
+      td {
+        padding-top: --spacing(0.5);
+        padding-bottom: --spacing(0.5);
+      }
+    }
+  }
+
+  thead {
+    background: var(--color-surface-container-low);
+  }
+
+  tbody {
+    tr:hover {
+      background: var(--color-primary-100);
+    }
+  }
+
+  tr {
+    &.is-row-selected {
+      background: var(--color-primary-100);
+    }
+  }
+
+  .pagination {
+    border-top: 1px solid var(--color-border);
+  }
+
+  &.table-fixed {
+    table {
+      tbody {
+        display: block;
+        height: var(---datatable-tbody-max-height);
+        max-height: var(---datatable-tbody-max-height);
+        overflow: hidden;
+      }
+
+      thead,
+      tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+      }
+    }
+  }
+}
+
+/* Sticky right last column for instances that opt-in via parent class */
+:host-context(.pin-actions-right) {
+  table.-table {
+    th:last-child,
+    td:last-child {
+      position: sticky;
+      right: 0;
+      background: var(--color-surface-container-lowest);
+      /* ensure it stays above scrolling content */
+      z-index: 1;
+    }
+
+    thead th:last-child {
+      z-index: 2; /* header above body cells */
+      background: var(--color-surface-container-low);
+    }
+
+    /* subtle divider/shadow on the left edge of the pinned column */
+    th:last-child,
+    td:last-child {
+      box-shadow: inset 1px 0 0 var(--color-surface-container);
+    }
+  }
+}
+
+:host-context(html.dark) {
+  tbody {
+    tr:hover {
+      background: var(--color-surface-container-high);
+    }
+  }
+
+  table.-table {
+    th:last-child,
+    td:last-child {
+      background: var(--color-surface-container);
+    }
+
+    th:last-child,
+    td:last-child {
+      box-shadow: inset 1px 0 0 var(--color-surface-container-low);
+    }
+  }
+}

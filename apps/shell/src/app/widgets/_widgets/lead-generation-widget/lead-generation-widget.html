@@ -1,0 +1,23 @@
+<div class="p-5">
+  <div class="flex items-start justify-between">
+    <div class="font-semibold text-neutral-700 dark:text-neutral-400">{{ widget().title || 'Lead generation' }}</div>
+    <span class="inline-flex items-center gap-1 rounded-full px-2 py-1 text-sm"
+          [ngClass]="{
+            'bg-green-container text-on-green-container': widget().percentageChange >= 0,
+            'bg-red-container text-on-red-container': widget().percentageChange < 0
+          }">
+      <mat-icon class="!text-[16px] !size-[16px]">
+        {{ widget().percentageChange >= 0 ? 'trending_up' : 'trending_down' }}
+      </mat-icon>
+      {{ widget().percentageChange | number:'1.0-0' }}%
+    </span>
+  </div>
+
+  <div class="mt-2 text-4xl font-semibold">
+    {{ widget().value | number }}
+  </div>
+
+  <div class="mt-2 text-neutral-500">
+    from {{ widget().from | number }} (last 30 days)
+  </div>
+</div>

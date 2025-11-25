@@ -1,0 +1,11 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  -kanban-board {
+    ---kanban-board-padding-x: --spacing(6);
+  }
+}

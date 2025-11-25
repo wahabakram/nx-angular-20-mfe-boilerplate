@@ -1,0 +1,30 @@
+<header class="flex justify-between items-center mb-4">
+  <div class="font-semibold">Sales Overview</div>
+</header>
+
+<div class="relative w-full h-48">
+  <div #salesChart class="absolute inset-0"></div>
+</div>
+
+<div class="grid grid-cols-2 gap-5 mt-4">
+  <div class="bg-neutral-100 dark:bg-neutral-1000 p-4 rounded-2xl">
+    <p class="text-sm text-neutral-500">Number of Sales</p>
+    <div class="flex items-baseline justify-between mt-1">
+      <p class="text-2xl font-bold">{{ formattedNumberOfSales() }}</p>
+      <div class="flex items-center text-orange-500 text-xs font-semibold">
+        <span>{{ numberOfSalesPercentageChange() }}%</span>
+        <mat-icon class="!text-[16px] !size-[16px] ml-0.5">arrow_downward</mat-icon>
+      </div>
+    </div>
+  </div>
+  <div class="bg-neutral-100 dark:bg-neutral-1000 p-4 rounded-2xl">
+    <p class="text-sm text-neutral-500">Total Revenue</p>
+    <div class="flex items-baseline justify-between mt-1">
+      <p class="text-2xl font-bold">{{ formattedTotalRevenue() }}</p>
+      <div class="flex items-center text-green-600 text-xs font-semibold">
+        <span>{{ totalRevenuePercentageChange() }}%</span>
+        <mat-icon class="!text-[16px] !size-[16px] ml-0.5">arrow_upward</mat-icon>
+      </div>
+    </div>
+  </div>
+</div>

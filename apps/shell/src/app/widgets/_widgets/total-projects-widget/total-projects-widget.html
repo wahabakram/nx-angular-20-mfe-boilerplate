@@ -1,0 +1,30 @@
+<div class="h-full relative rounded-lg group p-4">
+  <div class="font-semibold pb-2.5 border-b-2 border-b-amber-300">Total Projects</div>
+  <div class="mt-4 flex items-center justify-between">
+    <div class="flex items-center gap-1.5">
+      <div class="text-sm">Mar-Aug</div>
+      <div class="text-2xs text-neutral-450">2024</div>
+    </div>
+    <div class="font-bold text-sm">8 Projects</div>
+  </div>
+  <mf-mchart-line [data]="data"
+                   [labels]="labels"
+                   [tooltip]="tooltipRef"
+                   showArea
+                   showMarkers
+                   curve="catmullRom"
+                   strokeWidth="3"
+                   markerDotSize="6"
+                   responsive
+                   fillAreaGradient
+                   class="h-[146px] mt-3 -mx-1 chart">
+    <ng-template #tooltipRef let-data>
+      <mf-mchart-tooltip>
+        <mf-mchart-tooltip-title>{{ data.label }}</mf-mchart-tooltip-title>
+        <mf-mchart-tooltip-body>
+          Value: <span class="font-medium">{{ data.value }}</span>
+        </mf-mchart-tooltip-body>
+      </mf-mchart-tooltip>
+    </ng-template>
+  </mf-mchart-line>
+</div>

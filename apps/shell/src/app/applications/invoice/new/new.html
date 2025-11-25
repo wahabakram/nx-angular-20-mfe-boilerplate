@@ -1,0 +1,26 @@
+<mf-panel>
+  <mf-panel-header class="h-16">
+    <div class="flex h-full border-b border-b-surface-container items-center justify-between gap-5 px-6">
+      <div class="flex items-center gap-3">
+        <a mat-icon-button routerLink="/applications/invoice/list">
+          <mat-icon>arrow_back</mat-icon>
+        </a>
+        <div class="text-lg font-semibold">New Invoice</div>
+      </div>
+      <div class="flex items-center gap-4">
+        <button mat-button class="flex-none">
+          Save Draft
+        </button>
+        <button mat-flat-button class="w-full" [disabled]="!invoiceBuilder.isValid">
+          <mat-icon class="filled">mail</mat-icon> Send Invoice
+        </button>
+      </div>
+    </div>
+  </mf-panel-header>
+  <mf-panel-body>
+    <mf-overlay-scrollbar [absolute]="true">
+      <mf-invoice-builder #invoiceBuilder="mfInvoiceBuilder"
+                           class="p-7 lg:w-[800px] lg:mx-auto"/>
+    </mf-overlay-scrollbar>
+  </mf-panel-body>
+</mf-panel>

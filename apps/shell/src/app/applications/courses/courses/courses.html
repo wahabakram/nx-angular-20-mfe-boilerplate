@@ -1,0 +1,167 @@
+<mf-panel>
+  <mf-panel-sidebar class="w-[300px] border-e border-e-surface-container relative">
+    <mf-panel>
+      <mf-panel-header class="h-18 border-b border-b-surface-container px-7">
+        <div class="flex items-center h-full justify-between">
+          <h2 class="text-base font-semibold">Categories</h2>
+
+          @if (activeCategoryId()) {
+            <button mat-button (click)="clearCategory()">Clear</button>
+          }
+        </div>
+      </mf-panel-header>
+      <mf-panel-body class="relative">
+        <mf-overlay-scrollbar [absolute]="true">
+          <div class="px-3 py-5">
+            <mf-navigation [activeKey]="activeCategoryId()" appearance="secondary">
+              @for (cat of categories(); track cat) {
+                <mf-navigation-item [key]="cat.id" (click)="onCategorySelect(cat.id)">
+                  {{ cat.name }}
+                </mf-navigation-item>
+              }
+            </mf-navigation>
+          </div>
+        </mf-overlay-scrollbar>
+      </mf-panel-body>
+    </mf-panel>
+  </mf-panel-sidebar>
+  <mf-panel-body>
+    <mf-panel>
+      <mf-panel-header class="h-18 px-7 border-b border-b-surface-container">
+        <div class="flex items-center h-full justify-between">
+          <h1 class="text-base font-semibold">All Courses</h1>
+          <div class="flex items-center gap-3">
+            <button mat-button [matMenuTriggerFor]="levelMenu"
+                    [matBadge]="levelBadgeCount()"
+                    [matBadgeHidden]="levelBadgeCount() === 0">Level</button>
+            <button mat-button [matMenuTriggerFor]="priceMenu"
+                    [matBadge]="priceBadgeCount()"
+                    [matBadgeHidden]="priceBadgeCount() === 0">Price</button>
+            <button mat-button [matMenuTriggerFor]="typeMenu"
+                    [matBadge]="typeBadgeCount()"
+                    [matBadgeHidden]="typeBadgeCount() === 0">Type</button>
+            <button mat-icon-button [matMenuTriggerFor]="filtersMenu"
+                    [matBadge]="durationBadgeCount()"
+                    [matBadgeHidden]="durationBadgeCount() === 0"
+                    matTooltip="Other Filters">
+              <mat-icon>filter_list</mat-icon>
+            </button>
+            <div class="w-44">
+              <mat-select [(value)]="sortBy" class="border border-default px-3 py-2 text-sm rounded-full">
+                <mat-option [value]="'Most popular'">Most popular</mat-option>
+                <mat-option [value]="'Newest'">Newest</mat-option>
+                <mat-option [value]="'Duration asc'">Shortest first</mat-option>
+                <mat-option [value]="'Duration desc'">Longest first</mat-option>
+              </mat-select>
+            </div>
+          </div>
+        </div>
+        <mat-menu #levelMenu="matMenu" xPosition="before" class="w-[280px]">
+          <div class="p-4 flex flex-col gap-3" (click)="$event.stopPropagation()">
+            <div class="flex items-center justify-between">
+              <div class="text-sm font-semibold">Level</div>
+              <button mat-button color="primary" (click)="clearLevel()">Clear</button>
+            </div>
+            <div class="flex flex-col gap-1">
+              <mat-checkbox [checked]="levelFilters().has('Beginner')" (change)="toggleSet(levelFilters, 'Beginner')">Beginner</mat-checkbox>
+              <mat-checkbox [checked]="levelFilters().has('Intermediate')" (change)="toggleSet(levelFilters, 'Intermediate')">Intermediate</mat-checkbox>
+              <mat-checkbox [checked]="levelFilters().has('Advanced')" (change)="toggleSet(levelFilters, 'Advanced')">Advanced</mat-checkbox>
+            </div>
+          </div>
+        </mat-menu>
+
+        <mat-menu #priceMenu="matMenu" xPosition="before" class="w-[280px]">
+          <div class="p-4 flex flex-col gap-3" (click)="$event.stopPropagation()">
+            <div class="flex items-center justify-between">
+              <div class="text-sm font-semibold">Price</div>
+              <button mat-button color="primary" (click)="clearPrice()">Clear</button>
+            </div>
+            <div class="flex flex-col gap-1">
+              <mat-checkbox [checked]="priceFilters().has('Free')" (change)="toggleSet(priceFilters, 'Free')">Free</mat-checkbox>
+              <mat-checkbox [checked]="priceFilters().has('Paid')" (change)="toggleSet(priceFilters, 'Paid')">Paid</mat-checkbox>
+            </div>
+          </div>
+        </mat-menu>
+
+        <mat-menu #typeMenu="matMenu" xPosition="before" class="w-[320px]">
+          <div class="p-4 flex flex-col gap-3" (click)="$event.stopPropagation()">
+            <div class="flex items-center justify-between">
+              <div class="text-sm font-semibold">Type</div>
+              <button mat-button color="primary" (click)="clearType()">Clear</button>
+            </div>
+            <div class="flex flex-col gap-1">
+              <mat-checkbox [checked]="typeFilters().has('Career path')" (change)="toggleSet(typeFilters, 'Career path')">Career path</mat-checkbox>
+              <mat-checkbox [checked]="typeFilters().has('Skill path')" (change)="toggleSet(typeFilters, 'Skill path')">Skill path</mat-checkbox>
+              <mat-checkbox [checked]="typeFilters().has('Certification path')" (change)="toggleSet(typeFilters, 'Certification path')">Certification path</mat-checkbox>
+              <mat-checkbox [checked]="typeFilters().has('Course')" (change)="toggleSet(typeFilters, 'Course')">Course</mat-checkbox>
+            </div>
+          </div>
+        </mat-menu>
+
+        <mat-menu #filtersMenu="matMenu" xPosition="before" class="w-[320px]">
+          <div class="p-4 flex flex-col gap-3" (click)="$event.stopPropagation()">
+            <div class="flex items-center justify-between">
+              <div class="text-sm font-semibold">Duration</div>
+              <button mat-button color="primary" (click)="clearDuration()">Clear</button>
+            </div>
+            <div class="flex flex-col gap-1">
+              <mat-checkbox [checked]="durationFilter() === 'All'" (change)="durationFilter.set('All')">All</mat-checkbox>
+              <mat-checkbox [checked]="durationFilter() === 'Less than 5 hours'" (change)="durationFilter.set('Less than 5 hours')">Less than 5 hours</mat-checkbox>
+              <mat-checkbox [checked]="durationFilter() === '5–10 hours'" (change)="durationFilter.set('5–10 hours')">5–10 hours</mat-checkbox>
+              <mat-checkbox [checked]="durationFilter() === '10–20 hours'" (change)="durationFilter.set('10–20 hours')">10–20 hours</mat-checkbox>
+              <mat-checkbox [checked]="durationFilter() === '20–60 hours'" (change)="durationFilter.set('20–60 hours')">20–60 hours</mat-checkbox>
+              <mat-checkbox [checked]="durationFilter() === '60+ hours'" (change)="durationFilter.set('60+ hours')">60+ hours</mat-checkbox>
+            </div>
+          </div>
+        </mat-menu>
+      </mf-panel-header>
+      <mf-panel-body>
+        <mf-block-loader [loading]="loading()">
+          Loading Courses...
+        </mf-block-loader>
+        <mf-overlay-scrollbar [absolute]="true">
+          @if (pagedCourses().length === 0) {
+            <mf-block-state>
+              <mf-block-state-icon>
+                <mat-icon>search_off</mat-icon>
+              </mf-block-state-icon>
+              <mf-block-state-title>No courses found</mf-block-state-title>
+              <mf-block-state-content>
+                Try adjusting your filters or search term.
+              </mf-block-state-content>
+            </mf-block-state>
+          } @else {
+            <div class="p-7">
+              <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                @for (c of pagedCourses(); track c.id) {
+                  <mat-card class="overflow-hidden rounded-3xl p-0 h-full">
+                    <div class="p-4 border-b border-outline-variant/30 text-sm font-medium" [ngClass]="c.price === 'Paid' ? 'bg-amber-100 text-amber-700' : 'bg-primary/10 text-primary'">{{ c.price }} course</div>
+                    <img class="w-full h-40 object-cover" [src]="'https://picsum.photos/seed/course-'+c.id+'/600/300'" [alt]="c.name" />
+                    <div class="p-4">
+                      <h3 class="text-lg font-semibold mb-1">{{ c.name }}</h3>
+                      <p class="text-sm text-on-surface-variant line-clamp-3">{{ c.description }}</p>
+                    </div>
+                    <div class="px-4 py-3 border-t border-outline-variant/30 text-sm text-on-surface-variant flex items-center justify-between">
+                      <span>{{ c.level }} Friendly</span>
+                      <span>{{ c.hours }} hours</span>
+                    </div>
+                  </mat-card>
+                }
+              </div>
+            </div>
+          }
+        </mf-overlay-scrollbar>
+      </mf-panel-body>
+      <mf-panel-footer class="h-18 px-7 border-t border-t-surface-container">
+        <div class="h-full flex items-center justify-center">
+          <mat-paginator [length]="totalCount()"
+                         [pageSize]="pageSize()"
+                         [pageIndex]="pageIndex()"
+                         [pageSizeOptions]="[6,9,12,18]"
+                         [disabled]="loading()"
+                         (page)="onPage($event)" />
+        </div>
+      </mf-panel-footer>
+    </mf-panel>
+  </mf-panel-body>
+</mf-panel>

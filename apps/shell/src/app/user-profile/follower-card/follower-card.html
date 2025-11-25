@@ -1,0 +1,29 @@
+<div class="border border-surface-container-highest rounded-3xl p-4
+                flex items-center justify-between transition hover:shadow-md">
+  <div class="flex items-center gap-4">
+    <mf-dicebear [key]="follower().id"
+                  [image]="follower().avatar"
+                  [alt]="follower().name" class="size-12"/>
+    <div>
+      <div class="font-semibold truncate">{{ follower().name }}</div>
+      <div class="flex items-center text-sm text-neutral-500 whitespace-nowrap">
+        <mat-icon class="!text-[16px] !size-[16px] mr-1">location_on</mat-icon>
+        <span class="truncate">{{ follower().location }}</span>
+      </div>
+    </div>
+  </div>
+
+  @if (follower().isFollowed) {
+    <button
+      mat-flat-button
+      (click)="toggleFollow.emit(follower().id)">
+      Followed
+    </button>
+  } @else {
+    <button
+      mat-stroked-button
+      (click)="toggleFollow.emit(follower().id)">
+      Follow
+    </button>
+  }
+</div>

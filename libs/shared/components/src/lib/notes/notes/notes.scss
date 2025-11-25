@@ -1,0 +1,22 @@
+:host {
+  display: block;
+  width: 100%;
+
+  .masonry-container {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .masonry-column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .masonry-item {
+    width: 100%;
+    break-inside: avoid;
+  }
+}

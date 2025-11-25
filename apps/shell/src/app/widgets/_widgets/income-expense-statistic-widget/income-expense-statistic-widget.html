@@ -1,0 +1,25 @@
+<header class="flex justify-between items-center mb-4">
+  <div class="font-semibold">{{ widget().name }}</div>
+  <div class="flex items-center gap-5">
+    <mf-segmented [(ngModel)]="timeRange">
+      @for (period of timePeriods(); track period) {
+        <button mf-segmented-button [value]="period.type">{{ period.name }}</button>
+      }
+    </mf-segmented>
+
+    <div class="flex items-center gap-x-4">
+      <div class="flex items-center">
+        <span class="text-sm semibold">
+          <span class="font-semibold">Income</span>: ${{totalIncome()}}
+        </span>
+      </div>
+      <mf-vertical-divider/>
+      <div class="flex items-center">
+        <span class="text-sm">
+          <span class="font-semibold">Expense</span>: ${{totalExpense()}}
+        </span>
+      </div>
+    </div>
+  </div>
+</header>
+<div #chartContainer class="h-[var(--chart-height)] w-full"></div>

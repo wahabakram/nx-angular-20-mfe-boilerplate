@@ -1,0 +1,7 @@
+<mf-notification-list [notifications]="notifications">
+  <ng-template mfNotificationDef="inviteToEditFilesInFolder" let-notification>
+    @defer {
+      <app-invite-to-edit-files-in-folder [notification]="notification"/>
+    }
+  </ng-template>
+</mf-notification-list>

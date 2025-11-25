@@ -1,0 +1,9 @@
+@let priority = context.getValue();
+
+<div
+  class="priority-cell"
+  [class.priority-high]="priority.type === 'high'"
+  [class.priority-medium]="priority.type === 'medium'"
+  [class.priority-low]="priority.type === 'low'">
+  <span class="text">{{ priority.name }}</span>
+</div>

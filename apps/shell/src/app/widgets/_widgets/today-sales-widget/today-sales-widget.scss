@@ -1,0 +1,8 @@
+:host {
+  display: block;
+
+  .export {
+    --mat-button-outlined-outline-color: var(--color-border);
+    --mat-button-outlined-container-height: calc(var(--spacing) * 8);
+  }
+}

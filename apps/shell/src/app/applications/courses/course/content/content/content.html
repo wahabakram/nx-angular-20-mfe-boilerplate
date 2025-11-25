@@ -1,0 +1,11 @@
+<mf-overlay-scrollbar [absolute]="true">
+  <div class="p-10">
+    <div class="w-[900px] mx-auto">
+      @if (loaded()) {
+        <mf-course-builder [course]="course()"/>
+      } @else {
+        Loading...
+      }
+    </div>
+  </div>
+</mf-overlay-scrollbar>

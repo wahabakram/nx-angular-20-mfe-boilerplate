@@ -1,0 +1,185 @@
+<div class="p-7 container mx-auto">
+  <div class="grid grid-cols-12 gap-7">
+    <div class="col-span-9 card-container p-12">
+      <div class="flex justify-between items-center mb-10">
+        <div>
+          <h2 class="text-3xl font-bold">{{ data().headerTitle }}</h2>
+          <p class="text-neutral-500">{{ data().subtitle }}</p>
+        </div>
+        <div class="flex space-x-4">
+          <button mat-stroked-button color="primary">
+            <mat-icon class="mr-2">download</mat-icon>
+            Download
+          </button>
+          <button mat-flat-button color="primary">
+            <mat-icon class="mr-2">send</mat-icon>
+            Send Invoice
+          </button>
+          <div class="relative">
+            <button mat-icon-button aria-label="More actions">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="flex space-x-2 items-center mb-6">
+        @for (badge of data().badges; track badge) {
+          <span class="px-4 py-2 bg-primary-container text-on-primary-container text-sm font-medium uppercase rounded-full">{{ badge }}</span>
+        }
+      </div>
+      <div class="flex items-center space-x-4 mb-8">
+        <span class="text-sm font-medium text-neutral-500 uppercase">Reminders</span>
+        <div class="flex gap-3">
+          @for (r of data().reminders; track r) {
+            <button class="flex items-center gap-1 bg-surface-container-low text-tiny font-medium rounded-full px-3.5 py-1.5
+                           [&.checked]:bg-orange-container [&.checked]:text-on-orange-container"
+                    [class.checked]="r.checked">
+              @if (r.checked) {
+                <mat-icon class="-ms-1">check</mat-icon>
+              }
+              <span>{{ r.label }}</span>
+            </button>
+          }
+        </div>
+      </div>
+      <div>
+        <div class="bg-primary-100 dark:bg-primary-950 rounded-3xl p-6 mb-6">
+          <div class="grid grid-cols-2 gap-8">
+            <div>
+              <h3 class="text-sm font-medium text-neutral-600 mb-4 uppercase">Sender</h3>
+              <div class="flex gap-4">
+                <mf-dicebear [image]="data().sender.logo || ''"
+                              [alt]="data().sender.name + ' logo'" class="size-12 mt-1"/>
+                <div class="flex flex-col gap-0.5">
+                  <div class="font-semibold">{{ data().sender.name }}</div>
+                  <div class="text-sm text-neutral-500">{{ data().sender.address }}</div>
+                  <div class="text-sm text-tertiary mt">{{ data().sender.email }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-0.5">
+              <h3 class="text-sm font-medium text-neutral-600 mb-4 uppercase">Customer</h3>
+              <p class="font-semibold">{{ data().customer.name }}</p>
+              <p class="text-sm text-tertiary">{{ data().customer.email }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-neutral-100 dark:bg-neutral-950 rounded-3xl p-6 mb-6">
+          <h3 class="text-sm font-medium text-neutral-600 mb-5 uppercase">Invoice Details</h3>
+          <div class="grid grid-cols-4 gap-5 text-sm">
+            <div>
+              <p class="text-sm text-neutral-500">INVOICE NO.</p>
+              <p class="font-medium mt-1">{{ data().invoice.number }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-500">ISSUE DATE</p>
+              <p class="font-medium mt-1">{{ data().invoice.issueDate }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-500">DUE DATE</p>
+              <p class="font-medium mt-1">{{ data().invoice.dueDate }}</p>
+            </div>
+            <div>
+              <p class="text-sm text-neutral-500">BILLING CURRENCY</p>
+              <p class="font-medium mt-1">{{ data().invoice.currency }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="mt-12">
+          <h3 class="text-sm uppercase">Items</h3>
+          <table class="w-full text-left">
+            <tbody class="divide-y divide-border">
+              @for (it of data().items; track it) {
+                <tr class="text-sm">
+                  <td class="py-4">
+                    <p class="font-medium">{{ it.name }}</p>
+                    @if (it.description) {
+                      <p class="text-neutral-500 mt-1">{{ it.description }}</p>
+                    }
+                  </td>
+                  <td class="py-4 text-center text-neutral-500">{{ it.qty }}</td>
+                  <td class="py-4 text-right text-neutral-500">{{ it.unitPrice }}</td>
+                  <td class="py-4 text-right font-medium">{{ it.amount }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-8 flex justify-end">
+          <div class="w-1/2">
+            <div class="flex justify-between py-2">
+              <span class="text-neutral-500 uppercase">Subtotal</span>
+              <span class="font-medium">{{ data().totals.subtotal }}</span>
+            </div>
+            <div class="flex justify-between py-2">
+              <span class="text-neutral-500">{{ data().totals.discountLabel }}</span>
+              <span class="font-medium">{{ data().totals.discountAmount }}</span>
+            </div>
+            <div class="flex items-center justify-between py-4 mt-2 border-t-2 border-neutral-200">
+              <span class="text-lg font-semibold uppercase">Total Amount Due</span>
+              <span class="text-2xl font-bold">{{ data().totals.total }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-surface-container-low rounded-3xl p-6 mt-8">
+          <h3 class="text-sm font-medium text-neutral-600 mb-5 uppercase">Payment Information</h3>
+          <div class="grid grid-cols-4 gap-5 text-sm">
+            @for (f of data().paymentInfo; track f) {
+            <div>
+              <div class="text-sm text-neutral-500">{{ f.label }}</div>
+              <div class="font-medium mt-1">{{ f.value }}</div>
+            </div>
+            }
+          </div>
+        </div>
+        <div class="p-6 mt-6">
+          <h3 class="text-sm font-medium mb-2 uppercase">Note</h3>
+          <p class="text-neutral-500">{{ data().note }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-3">
+      <div class="sticky top-7">
+        <h3 class="text-lg font-semibold mb-6">Invoice Activity</h3>
+
+        <mf-timeline>
+          @for (ev of data().activity; track ev; let i = $index) {
+            <mf-timeline-item>
+              <ng-template mfTimelineItemIndicator>
+                <div class="size-9 bg-primary-500 rounded-full flex items-center justify-center text-white">
+                  @if (i === 0) {
+                    <span class="material-icons">arrow_upward</span>
+                  }
+                  @if (i === 1 || i === (data().activity.length - 1)) {
+                    <span class="material-icons">arrow_downward</span>
+                  }
+                  @if (ev.who === 'Payment Confirmed') {
+                    <span class="material-icons">check</span>
+                  }
+                </div>
+              </ng-template>
+              <mf-timeline-title>{{ ev.who }}</mf-timeline-title>
+              <mf-timeline-subtitle>
+                <time class="text-tiny">{{ ev.when }}</time>
+              </mf-timeline-subtitle>
+              <mf-timeline-content class="text-sm mt-1">
+                <div class="text-neutral-700">{{ ev.what }}</div>
+                @if (ev.links?.length) {
+                  <div class="flex gap-3 mt-3 text-tiny">
+                    @for (link of ev.links; track link) {
+                      @if (link.type === 'edit_payment') {
+                        <button class="text-primary hover:underline cursor-pointer">{{ link.label }}</button>
+                      } @else if (link.type === 'remove_payment') {
+                        <button class="text-red-600 hover:underline cursor-pointer">{{ link.label }}</button>
+                      }
+                    }
+                  </div>
+                }
+              </mf-timeline-content>
+            </mf-timeline-item>
+          }
+        </mf-timeline>
+      </div>
+    </div>
+  </div>
+</div>

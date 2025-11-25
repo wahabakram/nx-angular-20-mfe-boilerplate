@@ -1,0 +1,24 @@
+<div class="p-8 flex-grow flex items-center justify-center relative bg-surface-container
+            h-[220px] overflow-hidden">
+  @if (project().imageUrl) {
+    <img
+      [ngSrc]="project().imageUrl"
+      [alt]="project().name"
+      class="object-cover"
+      priority="true"
+      fill
+    />
+  }
+</div>
+<div class="px-5 pt-5 pb-3.5">
+  <a routerLink="/" class="block font-bold truncate hover:text-primary">{{ project().name }}</a>
+  <div class="text-xs text-neutral-500 mt-1 mb-5">Project Type: {{ project().projectType }}</div>
+  <div class="flex items-center gap-1 border-t pt-3 border-neutral-200">
+    <button mat-button (click)="edit.emit(project().id)">
+      <mat-icon>edit</mat-icon> Edit
+    </button>
+    <button mat-button (click)="delete.emit(project().id)" class="!text-neutral-600 hover:!text-red-600">
+      <mat-icon>delete</mat-icon> Delete
+    </button>
+  </div>
+</div>

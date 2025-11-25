@@ -1,0 +1,12 @@
+@reference 'tailwindcss';
+
+:host {
+  font-size: var(--mf-file-control-font-size);
+  cursor: pointer;
+  display: inline-flex;
+  color: var(--mf-file-control-color);
+
+  &:hover {
+    color: var(--mf-file-control-hover-color);
+  }
+}

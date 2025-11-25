@@ -1,0 +1,10 @@
+<ng-content select="mf-layout-topbar"/>
+<ng-content select="mf-layout-header"/>
+<div class="body">
+  <ng-content select="mf-layout-sidebar"/>
+  <div class="content">
+    <ng-content/>
+  </div>
+  <ng-content select="mf-layout-aside"/>
+</div>
+<ng-content select="mf-layout-footer"/>

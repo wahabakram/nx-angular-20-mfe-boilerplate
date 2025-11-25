@@ -1,0 +1,40 @@
+@reference 'tailwindcss';
+
+:host {
+  .name-cell {
+    display: flex;
+    align-items: center;
+    gap: --spacing(3);
+    cursor: pointer;
+  }
+
+  .thumbnail {
+    width: --spacing(8);
+    height: --spacing(8);
+    border-radius: theme(--radius-lg);
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid #eee;
+  }
+
+  .name-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .icon {
+    width: --spacing(8);
+    height: --spacing(8);
+    border-radius: theme(--radius-lg);
+    background: var(--color-surface-container-low);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-neutral-600);
+
+    .folder {
+      color: var(--color-primary);
+    }
+  }
+}

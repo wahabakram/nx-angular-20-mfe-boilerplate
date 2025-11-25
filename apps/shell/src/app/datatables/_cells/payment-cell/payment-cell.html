@@ -1,0 +1,18 @@
+@let payment = context.getValue();
+
+@switch (payment.method) {
+  @case ('paypal') {
+    <img src="assets/payment/paypal.svg" alt="Paypal" class="flex-none h-9">
+  }
+  @case ('mastercard') {
+    <img src="assets/payment/mastercard.svg" alt="Mastercard" class="flex-none h-9">
+  }
+  @case ('visa') {
+    <img src="assets/payment/visa.svg" alt="Visa" class="flex-none h-6">
+  }
+}
+@if (payment.method === 'paypal') {
+  <span>{{ payment.email }}</span>
+} @else {
+  <span>**** {{ payment.last4 }}</span>
+}

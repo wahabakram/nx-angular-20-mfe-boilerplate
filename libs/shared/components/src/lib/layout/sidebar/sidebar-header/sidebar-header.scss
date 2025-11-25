@@ -1,0 +1,49 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-sidebar-header-padding: --spacing(6);
+  --mf-sidebar-header-compact-padding: 0;
+
+  @apply flex items-center w-full justify-between;
+  flex: none;
+  width: 100%;
+  padding: var(--mf-sidebar-header-padding);
+
+  ::ng-deep {
+    .mf-sidebar-compact-view-mode {
+      display: none;
+    }
+  }
+}
+
+:host-context(.mf-sidebar.compact:not(:hover)) {
+  padding: var(--mf-sidebar-header-compact-padding);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  ::ng-deep {
+    .mf-sidebar-full-view-mode {
+      display: none;
+    }
+
+    .mf-sidebar-compact-view-mode {
+      display: block;
+    }
+  }
+}
+
+:host-context(.mf-sidebar.compact:hover) {
+  ::ng-deep {
+    .mf-sidebar-compact-view-mode {
+      display: none;
+    }
+
+    .mf-sidebar-full-view-mode {
+      display: block;
+    }
+  }
+}

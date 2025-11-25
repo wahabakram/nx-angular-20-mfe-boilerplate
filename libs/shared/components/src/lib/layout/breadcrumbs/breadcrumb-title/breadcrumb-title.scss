@@ -1,0 +1,8 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  font-size: var(--mf-breadcrumbs-title-font-size);
+  color: var(--mf-breadcrumbs-title-color);
+  line-height: var(--leading-relaxed);
+}

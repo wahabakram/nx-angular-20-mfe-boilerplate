@@ -1,0 +1,10 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  padding: --spacing(6);
+
+  .chart-container {
+    height: 300px;
+  }
+}

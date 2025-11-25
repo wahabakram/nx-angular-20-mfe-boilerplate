@@ -1,0 +1,60 @@
+<mf-panel>
+  <mf-panel-header class="h-16 border-b border-b-surface-container">
+    <div class="flex justify-between items-center h-full px-6">
+      <div class="flex items-center gap-5">
+        <h1 class="font-bold text-lg">Contacts ({{ totalContacts() }})</h1>
+        <input type="text"
+               class="h-10 w-64 bg-surface-container text-sm focus:outline-2
+                      focus:outline-primary rounded-3xl px-4"
+               placeholder="Search..."
+               [value]="searchTerm()"
+               (input)="onSearchTermChange($event)">
+      </div>
+      <button mat-flat-button>
+        <mat-icon>add</mat-icon>
+        Add Contact
+      </button>
+    </div>
+  </mf-panel-header>
+  <mf-panel-body>
+    <app-container>
+      <mf-overlay-scrollbar [absolute]="true">
+        @if (filteredGroupedContacts().size > 0) {
+          <div class="p-6">
+            @for (group of filteredGroupedContacts(); track group[0]) {
+              <div class="py-2 px-4 sticky top-0 z-1 text-neutral-500 font-bold text-sm bg-surface-container rounded-2xl">
+                {{ group[0] }}
+              </div>
+              <ul>
+                @for (contact of group[1]; track contact.name; let last = $last) {
+                  <li class="flex items-center p-4 hover:bg-surface-container-low
+                           rounded-2xl cursor-pointer transition-colors duration-150" matRipple>
+                    <mf-dicebear [key]="$index"
+                                  [image]="contact.avatarUrl || ''"
+                                  [alt]="contact.name"
+                                  class="size-10 mr-4"/>
+                    <div>
+                      <p class="font-medium">{{ contact.name }}</p>
+                      <p class="text-sm text-neutral-500">{{ contact.jobTitle }}</p>
+                    </div>
+                  </li>
+                  @if (!last) {
+                    <li class="h-[1px] w-full bg-neutral-300 dark:bg-neutral-900"></li>
+                  }
+                }
+              </ul>
+            }
+          </div>
+        } @else {
+          <mf-block-state class="h-full">
+            <mf-block-state-icon>
+              <mat-icon>search_off</mat-icon>
+            </mf-block-state-icon>
+            <mf-block-state-title>No contacts found</mf-block-state-title>
+            <mf-block-state-content>Try a different search term.</mf-block-state-content>
+          </mf-block-state>
+        }
+      </mf-overlay-scrollbar>
+    </app-container>
+  </mf-panel-body>
+</mf-panel>

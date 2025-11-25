@@ -1,0 +1,19 @@
+<div #container
+     class="masonry-container"
+     [style.gap.px]="gap()"
+     [@listAnimation]="items().length">
+  @for (column of columns(); track $index) {
+    <div class="masonry-column"
+         [style.gap.px]="gap()"
+         [id]="$index.toString()">
+      @for (item of column; track item.id) {
+        <div #itemWrapper class="masonry-item" [attr.data-item-id]="item.id">
+          <ng-container
+            [ngTemplateOutlet]="itemTemplate()"
+            [ngTemplateOutletContext]="{ $implicit: item }"/>
+        </div>
+      }
+    </div>
+  }
+</div>
+<ng-content/>

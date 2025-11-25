@@ -1,0 +1,61 @@
+<app-page>
+  <ng-container pageTitle>Dashboard</ng-container>
+  <ng-container pageActions>
+    <button mat-flat-button>Add Widget</button>
+  </ng-container>
+  <main appPageContent class="-mx-1">
+    <ktd-grid #grid
+              [backgroundConfig]="gridBackgroundConfig"
+              [cols]="cols"
+              [rowHeight]="rowHeight"
+              [layout]="layout()"
+              [gap]="gap"
+              [scrollSpeed]="4"
+              (layoutUpdated)="onLayoutUpdated($event)">
+      @for (item of layout(); track $index) {
+        <ktd-grid-item [id]="item.id" [resizable]="item.resizable" class="p-1 group">
+          @switch (item.type) {
+            @case ('purchasesByChannels') {
+              <app-purchases-by-channels-widget [widget]="item.widget"/>
+            }
+            @case ('totalTasks') {
+              <app-total-tasks-widget [widget]="item.widget"/>
+            }
+            @case ('totalProjects') {
+              <app-total-projects-widget [widget]="item.widget"/>
+            }
+          }
+
+          <div class="absolute end-3 top-3 opacity-0 group-hover:opacity-100 shadow-sm rounded-full
+                    bg-surface-container-lowest h-11 px-0.5 flex items-center justify-center cursor-move gap-1">
+            <button mat-icon-button mfDrawerIgnoreOutsideClick
+                    (click)="editWidget(item, widgetSettingsDrawer)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="removeWidget(item)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+          <div ktdGridDragHandle
+               class="absolute start-3 top-3 opacity-0 group-hover:opacity-100 shadow-sm rounded-full
+                    bg-surface-container-lowest size-9 flex items-center justify-center cursor-move">
+            <mat-icon>open_with</mat-icon>
+          </div>
+          @if (item.resizable) {
+            <div ktdGridResizeHandle
+                 class="absolute bottom-3 end-3 opacity-0 group-hover:opacity-100 bg-surface-container-lowest
+                    shadow-sm rounded-full size-9 flex items-center justify-center">
+              <mat-icon class="rotate-90 cursor-nwse-resize">open_in_full</mat-icon>
+            </div>
+          }
+        </ktd-grid-item>
+      }
+    </ktd-grid>
+  </main>
+</app-page>
+<mf-drawer #widgetSettingsDrawer="mfDrawer"
+            [showBackdrop]="false"
+            (closed)="onWidgetSettingsClosed()">
+  <ng-container [ngComponentOutlet]="widgetSettingsComponent()"
+                [ngComponentOutletInputs]="{ data: activeDashboardItem()?.widget }"/>
+</mf-drawer>

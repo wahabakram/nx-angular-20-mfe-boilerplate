@@ -1,0 +1,19 @@
+@let status = context.getValue();
+
+@switch (status.type) {
+  @case ('paid') {
+    <div class="text-on-green-container text-xs w-max bg-green-container h-6 px-3 rounded-full flex items-center">
+      {{ status.name }}
+    </div>
+  }
+  @case ('failed') {
+    <div class="text-on-red-container text-xs w-max bg-red-container h-6 px-3 rounded-full flex items-center">
+      {{ status.name }}
+    </div>
+  }
+  @case ('pending') {
+    <div class="text-amber-800 text-xs w-max  h-6 px-3 rounded-sm flex items-center">
+      {{ status.name }}
+    </div>
+  }
+}

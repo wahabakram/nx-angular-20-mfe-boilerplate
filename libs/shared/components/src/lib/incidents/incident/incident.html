@@ -1,0 +1,13 @@
+<div class="icon">
+  <ng-content select="[mfIncidentIcon]"/>
+</div>
+<div class="content">
+  <div class="data">
+    <ng-content select="mf-incident-title"/>
+    <ng-content select="mf-incident-details"/>
+  </div>
+  <ng-content select="[mfIncidentButton]"/>
+</div>
+<button mat-icon-button class="close -ms-2" (click)="close()">
+  <ng-content select="[mfIncidentClose]"/>
+</button>

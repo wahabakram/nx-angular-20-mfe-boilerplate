@@ -1,0 +1,224 @@
+<mf-panel>
+  <mf-panel-header class="h-18">
+    <div class="h-full px-7 flex items-center justify-between border-b border-b-surface-container">
+      <div class="flex items-center gap-3 -ms-3">
+        <a routerLink="/management/posts/list" mat-icon-button matTooltip="Back To Posts">
+          <mat-icon>arrow_backward</mat-icon>
+        </a>
+        @if (status()?.type === 'draft' || !status()) {
+          <div class="text-2xs font-semibold bg-secondary-fixed-dim text-on-secondary-fixed rounded-full px-3 py-1">
+            Draft
+          </div>
+        } @else if (status()?.type === 'published') {
+          <div class="text-2xs font-semibold bg-primary text-on-primary rounded-full px-3 py-1">
+            Published
+          </div>
+        }
+      </div>
+      <div class="flex items-center gap-5">
+        <div class="flex items-center justify-between gap-5">
+          <div class="flex items-center gap-5">
+            <div class="text-xs text-neutral-700 dark:text-neutral-500">
+              @if (saving()) {
+                Saving...
+              } @else {
+                @if (updatedAt()) {
+                  Last Update: {{ updatedAt() | timeAgo }}
+                }
+              }
+            </div>
+          </div>
+          <div class="flex items-center gap-5">
+            <button mat-button [matMenuTriggerFor]="coverImageMenu">Add Cover Image</button>
+
+<!--            @if (publicationChannel()) {-->
+<!--              <button mat-stroked-button (click)="addChannel(publicationChannel() || null)">{{ publicationChannel()?.name }}</button>-->
+<!--            } @else {-->
+<!--              <button mat-stroked-button (click)="addChannel()">Add Channel</button>-->
+<!--            }-->
+
+            <button mat-icon-button matTooltip="Publication Settings" (click)="settingsDrawer.open()">
+              <mat-icon>tune</mat-icon>
+            </button>
+          </div>
+        </div>
+        @if (status()?.type === 'draft') {
+          <button mat-flat-button (click)="publish()" [disabled]="form.invalid || !updatedAt()">
+            Publish
+          </button>
+        } @else {
+          <button mat-flat-button (click)="publish()"
+                  [disabled]="form.invalid || !hasChanges()">Publish Changes</button>
+        }
+      </div>
+    </div>
+  </mf-panel-header>
+  <mf-panel-body>
+    <mf-overlay-scrollbar [absolute]="true">
+      <div class="w-[900px] mx-auto my-10" [formGroup]="form">
+        <div>
+          @if (featuredImageUrl()) {
+            <div class="bg-surface-container-lowest mb-7 overflow-hidden rounded-2xl relative flex items-center justify-center p-4 min-h-20">
+              <div class="absolute end-3 top-3">
+                @if (featuredImageUploading()) {
+                  <div class="text-xs bg-neutral-950 text-white rounded-full
+                                  py-2 px-4 border-2 border-white">{{ 'uploading' }}...</div>
+                } @else {
+                  <button mat-raised-button (click)="deleteFeaturedImage()">
+                    <mat-icon>delete</mat-icon>
+                    {{ 'delete' }}
+                  </button>
+                }
+              </div>
+              <img [src]="featuredImageUrl()" alt="" class="max-w-full">
+            </div>
+          }
+          <textarea formControlName="title" placeholder="Post Title"
+                    cdkTextareaAutosize mfAutoFocus
+                    class="text-4xl leading-relaxed w-full outline-0 placeholder:text-neutral-400
+                               overflow-hidden resize-none font-bold bg-transparent"></textarea>
+        </div>
+
+        <mf-markdown-editor [imageUploadUrl]="imageUploadUrl"
+                             [content]="form.value.content || ''"
+                             (contentChange)="onContentChange($event)"
+                             class="mt-7"></mf-markdown-editor>
+      </div>
+    </mf-overlay-scrollbar>
+  </mf-panel-body>
+</mf-panel>
+<mat-menu #coverImageMenu="matMenu">
+  <button mat-menu-item mfUploadTrigger accept="image/*"
+          (fileSelected)="imageSelected($event)">Upload Image</button>
+  <button mat-menu-item
+          (click)="generateImage()">Generate Image</button>
+</mat-menu>
+<mf-drawer #settingsDrawer>
+  <mf-panel class="w-[620px]" [formGroup]="form">
+    <mf-panel-header>
+      <div class="h-full flex items-center justify-between ps-7 pe-2">
+        <div class="font-bold">Publication Settings</div>
+        <button mat-icon-button (click)="settingsDrawer.close()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mf-panel-header>
+    <mf-panel-body>
+      <mf-overlay-scrollbar [absolute]="true">
+        <div class="px-7 pb-7 mat-typography">
+          <div>
+            <mat-form-field class="w-full">
+              <mat-label>Topics</mat-label>
+              <mat-chip-grid #chipGrid>
+                @for (topic of topics(); track topic) {
+                  <mat-chip-row (removed)="removeTopic(topic)">
+                    {{ topic.name }}
+                    <button matChipRemove>
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                }
+              </mat-chip-grid>
+              <input placeholder="New Topic"
+                     #topicInput
+                     maxlength="30"
+                     [formControl]="topicNameControl"
+                     [matChipInputFor]="chipGrid"
+                     [matAutocomplete]="topicsAutocomplete"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     (matChipInputTokenEnd)="addTopic($event)">
+              <mat-autocomplete #topicsAutocomplete="matAutocomplete"
+                                (optionSelected)="topicSelected($event)">
+                @for (topic of filteredTopics(); track topic) {
+                  <mat-option [value]="topic"
+                              [disabled]="topics().length >= 6">{{ topic.name }}</mat-option>
+                }
+              </mat-autocomplete>
+              <mat-hint>Maximum of 6 topics</mat-hint>
+            </mat-form-field>
+            <div class="w-full mt-5">
+              <mat-checkbox formControlName="pinned">Pin publication</mat-checkbox>
+            </div>
+            <div class="w-full">
+              <mat-checkbox formControlName="discussionEnabled">Enable comments on this publication</mat-checkbox>
+            </div>
+          </div>
+          <div class="mt-8">
+            <h6>License</h6>
+            <ul class="bg-surface-container text-xs leading-relaxed p-4 flex flex-col gap-2 rounded-2xl mt-4">
+              @for (rule of licenseRules; track rule) {
+                <li class="flex gap-2">
+                  @if (rule.icon) {
+                    <img [src]="rule.icon" alt="" class="size-4 relative top-0.5">
+                  }
+                  {{ rule.name }}
+                </li>
+              }
+            </ul>
+            <div class="mt-5">
+              <mat-radio-group formControlName="licenseTypeId">
+                <mat-accordion>
+                  @for (license of licenseTypes(); track license.id) {
+                    <mat-expansion-panel>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>{{ license.name }}</mat-panel-title>
+                      </mat-expansion-panel-header>
+                      @if ((license.children?.length || 0) > 0) {
+                        <div class="flex flex-col">
+                          @for (child of (license.children ?? []); track child.id) {
+                            <div>
+                              <mat-radio-button [value]="child.id">{{ child.name }}</mat-radio-button>
+                            </div>
+                          }
+                        </div>
+                      } @else {
+                        <mat-radio-button [value]="license.id">{{ license.name }}</mat-radio-button>
+                      }
+                    </mat-expansion-panel>
+                  }
+                </mat-accordion>
+              </mat-radio-group>
+            </div>
+          </div>
+          <div class="mt-8">
+            <h6 class="flex items-center justify-between">
+              Seo & Settings
+              <button mat-button>Fill with AI</button>
+            </h6>
+            <div class="space-y-6 mt-4">
+              <mat-form-field class="w-full">
+                <mat-label>Meta Title</mat-label>
+                <input matInput formControlName="metaTitle">
+                <mat-hint>
+                  This should be between 50 and 60 characters. For help in writing quality meta titles, see best practices.
+                </mat-hint>
+              </mat-form-field>
+              <mat-form-field class="w-full">
+                <mat-label>Meta Description</mat-label>
+                <textarea matInput formControlName="metaDescription" rows="3" cdkTextareaAutosize></textarea>
+                <mat-hint>
+                  This should be between 100 and 150 characters. For help in writing quality meta descriptions, see best practices.
+                </mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="mt-12">
+            <h6>Advanced Settings</h6>
+            <div class="mt-4">
+              <mat-form-field class="w-full">
+                <mat-label>Canonical Url</mat-label>
+                <input type="url" matInput formControlName="canonicalUrl">
+                <mat-hint>If this publication was originally published elsewhere</mat-hint>
+              </mat-form-field>
+              <div class="bg-surface-container text-xs p-4 rounded-2xl mt-4 leading-relaxed">
+                When articles are published on more than one website, search engines use canonical links to determine and prioritize
+                the ultimate source of content. If your article was originally published on another platform, and
+                you want search engines to index that article instead of this Medium story, you can set the canonical link here.
+              </div>
+            </div>
+          </div>
+        </div>
+      </mf-overlay-scrollbar>
+    </mf-panel-body>
+  </mf-panel>
+</mf-drawer>

@@ -1,0 +1,22 @@
+@reference 'tailwindcss';
+
+:host {
+  :host {
+    display: block;
+    height: 100%;
+  }
+
+  -mchart-line {
+    ---mchart-line-line-bg: var(--color-amber-500);
+    ---mchart-line-area-bg: var(--color-amber-100);
+    ---mchart-line-marker-dot-bg: var(--color-amber-500);
+    ---mchart-line-area-gradient-start-color: var(--color-amber-200);
+  }
+}
+
+:host-context(html.dark) {
+  -mchart-line {
+    ---mchart-line-area-bg: #fef3c7;
+    ---mchart-line-area-gradient-start-color: var(--color-neutral-700);
+  }
+}

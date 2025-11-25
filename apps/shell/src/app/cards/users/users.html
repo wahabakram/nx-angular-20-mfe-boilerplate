@@ -1,0 +1,14 @@
+<div class="px-14 py-10 mat-typography">
+  <h1>Users</h1>
+
+  <main class="mt-12 flex gap-7 flex-wrap">
+    <app-community-join-card [community]="nycCoders()" class="w-92"/>
+    <app-team-card fullName="Pavel Salauyou"
+                   description="Lead Designer"
+                   email="email"
+                   phone="phone"
+                   class="w-92"/>
+    <app-user-logout-card userName="Pavel Salauyou"
+                          userStatus="Basic Member"/>
+  </main>
+</div>

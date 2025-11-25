@@ -1,0 +1,287 @@
+<div class="p-6 lg:p-10">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2 flex flex-col gap-4">
+      <div class="card-container p-12 mat-typography">
+        <div class="mb-5 -ms-3 -mt-2">
+          <a routerLink="/applications/courses/list" mat-button>
+            <mat-icon>arrow_back</mat-icon>
+            Back to courses
+          </a>
+        </div>
+
+        <h1 class="!text-4xl !mb-9">{{ course().title }}</h1>
+
+        <img class="w-full aspect-video object-cover rounded-3xl border border-outline-variant/30 mb-4"
+             src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop"
+             alt="Course preview">
+
+        <div class="mb-10">
+          <div class="flex flex-wrap items-center gap-4 text-sm mb-6">
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center gap-0.5 text-amber-500">
+                @for (s of getStars(course().rating); track $index) {
+                  <mat-icon class="w-5" [class.filled]="s === 'full'">
+                    {{ s === 'full' ? 'star' : s === 'half' ? 'star_half' : 'star_border' }}
+                  </mat-icon>
+                }
+              </span>
+              <span class="font-semibold">{{ course().rating }}</span>
+              <span class="text-on-surface-variant">({{ course().ratingsCount | number }})</span>
+            </div>
+            <div class="flex items-center gap-1 text-on-surface-variant">
+              <mat-icon class="w-6 inline-flex justify-center shrink-0">groups</mat-icon>
+              <span>{{ course().learners | number }} learners</span>
+            </div>
+            <div class="flex items-center gap-1 text-on-surface-variant">
+              <mat-icon class="w-6 inline-flex justify-center shrink-0">schedule</mat-icon>
+              <span>{{ course().hours }} hours</span>
+            </div>
+          </div>
+          <div class="text-on-surface-variant">{{ course().subtitle }}</div>
+        </div>
+
+        <mat-card appearance="outlined">
+          <mat-card-title class="p-5">What you'll learn</mat-card-title>
+          <mat-card-content>
+            <div class="grid sm:grid-cols-2 gap-3 text-sm">
+              @for (b of benefits; track b) {
+                <div class="flex items-start gap-2">
+                  <div class="w-7 flex-none text-green-600">
+                    <mat-icon>check</mat-icon>
+                  </div>
+                  <span>{{ b }}</span>
+                </div>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <section class="mt-12">
+          <div class="text-base font-semibold mb-4">Explore related topics</div>
+          <div class="flex flex-wrap gap-2">
+            @for (topic of relatedTopics; track topic) {
+              <a routerLink="/"
+                 class="px-3.5 py-2 rounded-full bg-secondary-container hover:bg-secondary-fixed
+                        hover:text-on-secondary-fixed text-on-secondary-container text-sm">
+                {{ topic }}
+              </a>
+            }
+          </div>
+        </section>
+
+        <section class="mt-12">
+          <div class="text-base font-semibold mb-4">This course includes:</div>
+          <div class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+            @for (inc of courseIncludes; track inc.text) {
+              <div class="flex items-center gap-2">
+                <mat-icon class="w-6">{{ inc.icon }}</mat-icon>
+                <span>{{ inc.text }}</span>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- New blocks below -->
+        <section class="mt-12">
+          <div class="text-base font-semibold mb-4">Course content</div>
+          <mat-accordion class="rounded-3xl overflow-hidden">
+            @for (sec of visibleSections(); track sec.title) {
+              <mat-expansion-panel [expanded]="$index === 0">
+                <mat-expansion-panel-header>
+                  <div class="w-full flex items-center justify-between">
+                    <div class="text-sm font-semibold">{{ sec.title }}</div>
+                    <div class="text-sm text-neutral-500 pe-5">{{ sec.lectures }} lectures • {{ sec.duration }}</div>
+                  </div>
+                </mat-expansion-panel-header>
+                <div>
+                  <div class="flex flex-col divide-y divide-outline-variant/30">
+                    @for (les of sec.lessons; track les.title) {
+                      <div class="py-2 flex items-center justify-between text-sm">
+                        <div class="flex items-center gap-2">
+                          <mat-icon class="w-6 inline-flex justify-center shrink-0 text-on-surface-variant">smart_display</mat-icon>
+                          <span>{{ les.title }}</span>
+                          @if (les.preview) {
+                            <button class="flex items-center hover:underline cursor-pointer">
+                              <button mat-button>
+                                <mat-icon>play_circle</mat-icon>
+                                <span class="text-primary">Preview</span>
+                              </button>
+                            </button>
+                          }
+                        </div>
+                        <div class="text-on-surface-variant">{{ les.duration }}</div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </mat-expansion-panel>
+            }
+          </mat-accordion>
+          @if (remainingCount() > 0 && !showAllSections()) {
+            <div class="text-center mt-4">
+              <button mat-button (click)="showAllSections.set(true)">{{ remainingCount() }} more sections</button>
+            </div>
+          }
+        </section>
+
+        <section class="mt-12">
+          <div class="text-base font-semibold mb-3">Requirements</div>
+          <ul class="list-disc ps-5 text-sm text-on-surface">
+            @for (req of requirements; track req) {
+              <li class="mb-1">{{ req }}</li>
+            }
+          </ul>
+        </section>
+
+        <!-- Instructor (detailed) -->
+        <section class="mt-12">
+          <div class="text-base font-semibold mb-3">Instructor</div>
+          <div class="grid grid-cols-[72px_1fr] gap-4 sm:gap-8">
+            <mf-dicebear [image]="instructor.avatar"
+                          alt="Instructor avatar" class="w-18 h-18 sm:w-20 sm:h-20"/>
+            <div>
+              <div class="text-lg sm:text-xl font-semibold leading-snug">{{ instructor.fullTitle }}</div>
+              <div class="text-on-surface-variant text-sm mt-2">{{ instructor.tagline }}</div>
+            </div>
+          </div>
+          <div class="mt-5">
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+              <div class="flex items-center gap-2"><mat-icon class="w-5 text-amber-500">star</mat-icon><span class="font-semibold">{{ instructor.rating }}</span> <span class="text-on-surface-variant">Instructor Rating</span></div>
+              <div class="flex items-center gap-2"><mat-icon class="w-5">notes</mat-icon><span>{{ instructor.reviews | number }} Reviews</span></div>
+              <div class="flex items-center gap-2"><mat-icon class="w-5">groups</mat-icon><span>{{ instructor.students | number }} Students</span></div>
+              <div class="flex items-center gap-2"><mat-icon class="w-5">library_books</mat-icon><span>{{ instructor.courses }} Courses</span></div>
+            </div>
+
+            <div class="text-sm mt-4 leading-relaxed text-neutral-600">
+              {{ instructor.bio }}
+            </div>
+
+            <button class="inline-flex items-center gap-1 mt-2 text-sm text-primary hover:underline cursor-pointer no-underline">
+              <span>Show more</span>
+              <mat-icon class="w-5">expand_more</mat-icon>
+            </button>
+          </div>
+        </section>
+
+        <!-- Student feedback / Reviews -->
+        <section class="mt-12">
+          <div class="text-base font-semibold mb-4">
+            <span class="align-middle">{{ course().rating }} course rating • {{ course().ratingsCount | number }} ratings</span>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            @for (rev of reviews; track rev.name) {
+              <div class="bg-surface-container-low rounded-3xl p-5">
+                <div class="flex items-start justify-between">
+                  <div class="flex items-center gap-3">
+                    <mf-dicebear [key]="rev.avatarKey" class="size-11"/>
+                    <div>
+                      <div class="font-semibold text-sm">{{ rev.name }}</div>
+                      <div class="text-xs text-on-surface-variant flex items-center gap-2">
+                          <span class="inline-flex items-center gap-0.5 text-amber-500">
+                            @for (s of getStars(rev.rating); track $index) {
+                              <mat-icon class="w-4" [class.filled]="s === 'full'">
+                                {{ s === 'full' ? 'star' : s === 'half' ? 'star_half' : 'star_border' }}
+                              </mat-icon>
+                            }
+                          </span>
+                        <span>{{ rev.timeAgo }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-sm mt-3 text-on-surface">{{ rev.text }}</div>
+                <div class="flex items-center gap-3 text-xs text-on-surface-variant mt-3">
+                  <span>Helpful?</span>
+                  <button mat-icon-button aria-label="Helpful">
+                    <mat-icon>thumb_up</mat-icon>
+                  </button>
+                  <button mat-icon-button aria-label="Not helpful">
+                    <mat-icon>thumb_down</mat-icon>
+                  </button>
+                  <button mat-icon-button aria-label="Report" (click)="openReport(rev)">
+                    <mat-icon>flag</mat-icon>
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <div class="lg:col-span-1">
+      <div class="sticky top-10">
+        <mat-card class="rounded-2xl p-0 overflow-hidden">
+          <img class="w-full aspect-video object-cover" src="https://images.unsplash.com/photo-1517433456452-f9633a875f6f?q=80&w=1200&auto=format&fit=crop" alt="Course image">
+          <div class="p-5 space-y-4">
+            <div class="flex items-end gap-2 py-3">
+              <div class="text-2xl font-bold">${{ course().price }}</div>
+              <div class="text-on-surface-variant line-through">${{ course().oldPrice }}</div>
+            </div>
+
+            <div>
+              <button mat-flat-button class="w-full">Add to cart</button>
+              <button mat-stroked-button class="w-full mt-4">Buy now</button>
+            </div>
+
+            <div class="text-sm text-on-surface-variant flex flex-col gap-3 mt-7">
+              <div class="flex items-center gap-2">
+                <mat-icon class="w-6">language</mat-icon> {{ course().language }}
+              </div>
+              <div class="flex items-center gap-2">
+                <mat-icon class="w-6">insights</mat-icon> {{ course().level }}
+              </div>
+              <div class="flex items-center gap-2">
+                <mat-icon class="w-6">play_circle</mat-icon> {{ course().lectures }} lectures • {{ course().hours }}h total
+              </div>
+            </div>
+
+<!--            <mat-form-field class="w-full mt-2">-->
+<!--              <mat-label>Enter coupon</mat-label>-->
+<!--              <mat-icon matPrefix class="w-6 ms-1">confirmation_number</mat-icon>-->
+<!--              <input matInput placeholder="Coupon code">-->
+<!--              <button mat-button matSuffix class="me-2">Apply</button>-->
+<!--            </mat-form-field>-->
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Report Abuse Dialog -->
+<ng-template #reportDialog>
+  <h2 mat-dialog-title>Report abuse</h2>
+  <mat-dialog-content>
+    <p class="text-sm text-on-surface-variant mb-4">
+      Flagged content is reviewed by Udemy staff to determine whether it violates Terms of Service or Community Guidelines.
+      If you have a question or technical issue, please contact our
+      <a href="#" class="text-primary hover:underline no-underline">Support team here</a>.
+    </p>
+
+    <mat-form-field class="w-full">
+      <mat-label>Issue type</mat-label>
+      <mat-select>
+        <mat-option value="spam">Spam</mat-option>
+        <mat-option value="inappropriate">Inappropriate content</mat-option>
+        <mat-option value="harassment">Harassment or hate</mat-option>
+        <mat-option value="other">Other</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
+      <mat-label>Issue details</mat-label>
+      <textarea matInput rows="4" placeholder="Describe the issue"></textarea>
+    </mat-form-field>
+
+    @if (selectedReviewName()) {
+          <div class="text-xs text-on-surface-variant mt-1">Reporting review by {{ selectedReviewName() }}</div>
+        }
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button color="primary" mat-dialog-close>Submit</button>
+  </mat-dialog-actions>
+</ng-template>

@@ -1,0 +1,60 @@
+<app-page>
+  <ng-container pageTitle>Invoices</ng-container>
+  <ng-container pageActions>
+    <a routerLink="/applications/invoice/new" mat-flat-button>
+      <mat-icon>add</mat-icon>New Invoice
+    </a>
+  </ng-container>
+  <div class="grid grid-cols-4 gap-7">
+    <div class="col-span-1">
+      <div class="p-7 flex bg-primary-200 dark:bg-primary-500 dark:text-white rounded-2xl gap-4">
+        <div class="size-12 flex items-center flex-none rounded-xl bg-primary text-on-primary dark:bg-white justify-center">
+          <mat-icon>receipt</mat-icon>
+        </div>
+        <div>
+          <div>Total</div>
+          <div class="font-semibold mt-1">11 Invoices</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-1">
+      <div class="p-7 flex bg-blue-100 dark:bg-blue-500 dark:text-white rounded-2xl gap-4">
+        <div class="size-12 flex items-center flex-none rounded-xl bg-blue-500 text-white
+                    dark:bg-white dark:text-blue-500 justify-center">
+          <mat-icon>shopping_bag_speed</mat-icon>
+        </div>
+        <div>
+          <div>Issued</div>
+          <div class="font-semibold mt-1">2 Invoices</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-1">
+      <div class="p-7 flex bg-green-100 dark:bg-green-500 dark:text-white rounded-2xl gap-4">
+        <div class="size-12 flex items-center flex-none rounded-xl bg-green-500
+                    dark:bg-white text-white dark:text-green-500 justify-center">
+          <mat-icon>check</mat-icon>
+        </div>
+        <div>
+          <div>Paid</div>
+          <div class="font-semibold mt-1">5 Invoices</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-span-1">
+      <div class="p-7 flex bg-amber-100 dark:bg-amber-500 dark:text-white rounded-2xl gap-4">
+        <div class="size-12 flex items-center flex-none rounded-xl bg-amber-500
+                    dark:bg-white text-white dark:text-amber-500 justify-center">
+          <mat-icon>pending_actions</mat-icon>
+        </div>
+        <div>
+          <div>Pending</div>
+          <div class="font-semibold mt-1">4 Invoices</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="widget-container mt-10">
+    <mf-datatable [columns]="columns()" [data]="data()"/>
+  </div>
+</app-page>

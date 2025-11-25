@@ -1,0 +1,96 @@
+<app-container>
+  <mf-panel>
+    <mf-panel-sidebar class="bg-surface-container-low border-r border-r-surface-container w-[340px]">
+      <mf-panel>
+        <mf-panel-body class="p-6">
+          <h1 class="font-semibold">Web LLM Chat</h1>
+          <div class="text-xs text-neutral-600 mt-0.5">AI Models Running In Browser</div>
+          <div class="mt-5">
+            <mf-navigation [activeKey]="selectedChat()" class="mt-5">
+              @for (chat of chats(); track chat) {
+                <mf-navigation-item [key]="chat"
+                                     (click)="selectChat(chat)">{{ chat.name }}</mf-navigation-item>
+              }
+            </mf-navigation>
+          </div>
+        </mf-panel-body>
+        <mf-panel-footer class="px-6 h-20">
+          <div class="h-full flex items-center justify-between">
+            <div class="flex items-center justify-center gap-1">
+              <button mat-icon-button matTooltip="Settings">
+                <mat-icon>discover_tune</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Prompt Library">
+                <mat-icon>chat</mat-icon>
+              </button>
+            </div>
+            <button mat-flat-button (click)="newChat()">New Chat</button>
+          </div>
+        </mf-panel-footer>
+      </mf-panel>
+    </mf-panel-sidebar>
+    <mf-panel-body>
+      @if (selectedChat()) {
+        <mf-panel class="h-full relative">
+          <mf-block-loader [loading]="!modelLoaded()">{{ loaderMessage() }}</mf-block-loader>
+          <mf-panel-body class="mat-typography relative">
+            <div #scrollContainer class="absolute inset-0 overflow-y-auto">
+              <div class="w-full max-w-[800px] prose mx-auto py-10">
+                <div class="flex flex-col gap-10">
+                  @for (message of fullChat(); track $index) {
+                    @switch (message.type) {
+                      @case ('prompt') {
+                        <div class="ms-auto p-3 rounded-2xl text-sm bg-secondary-200 max-w-8/12">{{ message.content }}</div>
+                      }
+                      @case ('reply') {
+                        <div class="p-3 rounded-2xl text-sm -m-3 border border-surface-container-lowest hover:border-default leading-relaxed">
+                          <div [innerHTML]="message.content | safeHtml"></div>
+                        </div>
+
+                      }
+                    }
+                  }
+
+                  @if (reply()) {
+                    <div class="p-3 rounded-2xl text-sm -m-3 border border-surface-container-lowest hover:border-default leading-relaxed">
+                      <div [innerHTML]="reply() | safeHtml"></div>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </mf-panel-body>
+          <mf-panel-footer class="h-auto px-10 py-4">
+            <div class="flex items-center gap-10 mx-auto">
+              <mat-form-field class="w-full max-w-[800px] mx-auto">
+                  <textarea matInput
+                            [(ngModel)]="prompt"
+                            [disabled]="loading()"
+                            placeholder="Your prompt"
+                            cdkTextareaAutosize></textarea>
+                <div matSuffix class="pe-4">
+                  <button mat-flat-button (click)="send()"
+                          [mfButtonLoading]="loading()"
+                          [disabled]="!prompt().trim()">Run</button>
+                </div>
+              </mat-form-field>
+            </div>
+          </mf-panel-footer>
+        </mf-panel>
+      } @else {
+        <div class="w-[800px] mat-typography flex flex-col items-center justify-center gap-10 mx-auto h-full">
+          <h1 class="text-center text-primary">Welcome to AI Studio</h1>
+          <mat-form-field class="w-full max-w-[800px] mx-auto">
+          <textarea matInput [(ngModel)]="prompt"
+                    placeholder="Your prompt" cdkTextareaAutosize></textarea>
+            <div matSuffix class="pe-4">
+              <button mat-flat-button (click)="send()"
+                      [mfButtonLoading]="loading()"
+                      [disabled]="!prompt().trim()">Run</button>
+            </div>
+          </mat-form-field>
+        </div>
+      }
+    </mf-panel-body>
+  </mf-panel>
+</app-container>

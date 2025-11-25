@@ -1,0 +1,14 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  padding: --spacing(6);
+
+  .rating-progress-bar {
+    position: relative;
+    top: 2px;
+    --mat-progress-bar-active-indicator-color: var(--color-amber-400);
+    --mat-progress-bar-track-height: --spacing(2);
+    --mat-progress-bar-active-indicator-height: --spacing(2);
+  }
+}

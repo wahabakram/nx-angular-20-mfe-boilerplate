@@ -1,0 +1,7 @@
+<mf-notification-list [notifications]="notifications">
+  <ng-template mfNotificationDef="mentionedInComment" let-notification>
+    @defer {
+      <app-mentioned-in-comment [notification]="notification"/>
+    }
+  </ng-template>
+</mf-notification-list>

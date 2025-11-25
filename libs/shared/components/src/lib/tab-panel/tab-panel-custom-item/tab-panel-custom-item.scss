@@ -1,0 +1,18 @@
+@reference 'tailwindcss';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  user-select: none;
+  width: var(--mf-tab-panel-item-width);
+  height: var(--mf-tab-panel-item-height);
+}
+
+:host-context(.mf-tab-panel.is-compact) {
+  width: var(--mf-tab-panel-compact-item-width);
+  height: var(--mf-tab-panel-compact-item-height);
+}

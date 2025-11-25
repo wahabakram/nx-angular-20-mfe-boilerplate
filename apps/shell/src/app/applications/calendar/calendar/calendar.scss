@@ -1,0 +1,36 @@
+@reference 'tailwindcss';
+
+:host {
+  full-calendar {
+    --fc-border-color: var(--color-surface-container-high);
+  }
+
+  -navigation {
+    ---navigation-item-height: --spacing(10);
+  }
+
+  ::ng-deep {
+    .fc-theme-standard {
+      .fc-scrollgrid {
+        border: none !important;
+      }
+    }
+
+    .fc-theme-standard td,
+    .fc-theme-standard th {
+      border-right: none !important;
+    }
+
+    .fc-theme-standard th {
+      font-weight: 600;
+      font-size: theme(--text-sm);
+    }
+
+    .fc-event {
+      border-radius: theme(--radius-lg);
+      padding-top: --spacing(0.4);
+      padding-left: --spacing(1);
+      padding-right: --spacing(1);
+    }
+  }
+}

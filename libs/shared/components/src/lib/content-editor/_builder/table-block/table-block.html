@@ -1,0 +1,52 @@
+<div class="table-overflow">
+  <div class="table-container">
+    <mf-draggable-table [disabled]="_resizeManging() || _columnManaging() || _rowManaging()"
+                         (columnMoved)="onColumnMoved($event)"
+                         (rowMoved)="onRowMoved($event)"
+                         (moveStart)="onMoveStart()"
+                         (moveEnd)="onMoveEnd()">
+      <table #table class="table"
+             mfResizableTable
+             cdkMonitorSubtreeFocus
+             (cdkFocusChange)="onTableFocusChange($event)"
+             (columnWidthChangeStart)="onColumnWidthChangeStart()"
+             (columnWidthChangeEnd)="onColumnWidthChangeEnd()"
+             (columnWidthChange)="onColumnWidthChange($event)">
+        <colgroup>
+          @for (cell of _content()[0]; track $index) {
+            <col [style.width.px]="cell.options.width || null">
+          }
+        </colgroup>
+        <tbody>
+          @for (row of _content(); track $index) {
+            <tr>
+              @for (cell of row; track $index) {
+                <td #cell
+                    [mfContentEditorContentEditable]="cell.content"
+                    [props]="cell.props"
+                    (contentChanged)="cell.content = $event"
+                    (blur)="clearCellsSelection()"
+                    [rowSpan]="cell.options.rowspan"
+                    [colSpan]="cell.options.colspan"></td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+      <div class="resize-end" mfTableColumnsManager
+           (columnManagingStart)="onColumnManagingStart()"
+           (columnManagingEnd)="onColumnManagingEnd()"
+           (columnAdded)="onColAdded()"
+           (columnDeleted)="onColDeleted()">
+        <mat-icon class="resize-icon">add</mat-icon>
+      </div>
+      <div class="resize-bottom" mfTableRowsManager
+           (rowManagingStart)="onRowManagingStart()"
+           (rowManagingEnd)="onRowManagingEnd()"
+           (rowAdded)="onRowAdded()"
+           (rowDeleted)="onRowDeleted()">
+        <mat-icon class="resize-icon">add</mat-icon>
+      </div>
+    </mf-draggable-table>
+  </div>
+</div>

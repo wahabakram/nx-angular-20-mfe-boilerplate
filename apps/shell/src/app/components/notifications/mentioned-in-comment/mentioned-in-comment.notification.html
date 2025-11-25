@@ -1,0 +1,21 @@
+<mf-notification>
+  <div class="relative" mfNotificationAvatar>
+    <mf-dicebear [key]="notification().actor.id"
+                  [image]="notification().actor.avatarUrl" class="size-10"/>
+    <div class="flex absolute justify-center z-10 text-white items-center right-0
+                  bottom-2 size-5 bg-green-400 rounded-full border border-default border-white ">
+      <mat-icon class="filled action-icon">comment</mat-icon>
+    </div>
+  </div>
+  <mf-notification-message>
+    <mf-notification-actor>{{ notification().actor.name }}</mf-notification-actor>
+    mentioned you in a comment:
+    <span class="font-medium text-primary hover:text-tertiary cursor-pointer">
+      &#64;{{ notification()['notifier'].username }}
+    </span>
+  </mf-notification-message>
+  <mf-notification-content>
+    {{ notification()['payload']['content'] }}
+  </mf-notification-content>
+  <mf-notification-time>{{ notification().createdAt }}</mf-notification-time>
+</mf-notification>

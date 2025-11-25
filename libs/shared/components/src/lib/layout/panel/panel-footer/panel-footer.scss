@@ -1,0 +1,12 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-panel-footer-height: --spacing(14);
+
+  flex: none;
+  grid-area: footer;
+
+  &:not([class*="h-"]) {
+    height: var(--mf-panel-footer-height);
+  }
+}

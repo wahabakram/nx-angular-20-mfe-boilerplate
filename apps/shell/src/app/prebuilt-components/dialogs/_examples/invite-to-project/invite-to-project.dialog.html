@@ -1,0 +1,121 @@
+<div class="flex items-center px-5 pt-5 pb-3">
+  <div class="flex items-center gap-3">
+    <div class="size-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
+      <mat-icon>group_add</mat-icon>
+    </div>
+    <div>
+      <div class="text-xl">Invite to Project</div>
+      <div class="text-sm text-neutral-500">Collaborate with members on this project.</div>
+    </div>
+  </div>
+  <div class="absolute right-2 top-2">
+    <button mat-icon-button mat-dialog-close aria-label="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+<div mat-dialog-content class="max-w-[720px]">
+  <div class="mb-5 flex flex-col gap-10">
+    <section class="bg-surface-container-low rounded-3xl p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="font-semibold">Link to Share</div>
+          <div class="text-sm text-neutral-500">Anyone with the link can access.</div>
+        </div>
+        <div>
+          <button mat-stroked-button [matMenuTriggerFor]="accessMenu">{{ shareForm.controls.access.value }} <mat-icon>arrow_drop_down</mat-icon></button>
+          <mat-menu #accessMenu="matMenu">
+            <button mat-menu-item (click)="shareForm.controls.access.setValue('Anyone with link')">Anyone with link</button>
+            <button mat-menu-item (click)="shareForm.controls.access.setValue('Only invited')">Only invited</button>
+          </mat-menu>
+        </div>
+      </div>
+      <div class="my-4">
+        <mat-divider/>
+      </div>
+      <form [formGroup]="shareForm" class="flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <mat-form-field class="flex-1 single-fom-field">
+            <input matInput formControlName="link" readonly>
+            <div matSuffix class="pe-2">
+              <button mat-flat-button color="primary" type="button" (click)="copyLink()">
+                <mat-icon>content_copy</mat-icon>
+                Copy
+              </button>
+            </div>
+          </mat-form-field>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <div class="font-semibold mb-3">Invite by email</div>
+      <form [formGroup]="invitesForm" (ngSubmit)="sendInvite()" class="flex flex-col gap-3">
+        <div formArrayName="items" class="flex flex-col gap-4">
+          @for (ctrl of items.controls; track $index; let idx = $index) {
+            <div class="flex items-center gap-3" [formGroup]="ctrl">
+              <mat-form-field class="flex-1 single-fom-field">
+                <input matInput placeholder="Email" formControlName="email" />
+                <div matSuffix class="pe-2 flex items-center gap-2">
+                  <button type="button" class="text-sm cursor-pointer text-primary hover:text-tertiary"
+                          [matMenuTriggerFor]="roleMenu"
+                          (click)="$event.stopPropagation()">
+                    {{ getRoleName(ctrl.get('role')?.value) }}
+                  </button>
+                  <button mat-icon-button type="button" aria-label="Remove" (click)="items.removeAt(idx)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </mat-form-field>
+              <mat-menu #roleMenu="matMenu">
+                <div mfMenuOptionGroup formControlName="role">
+                  @for (r of roles; track r.id) {
+                    <mat-option [value]="r.id" (click)="selectRole(ctrl, r)">{{ r.name }}</mat-option>
+                  }
+                </div>
+              </mat-menu>
+            </div>
+          }
+        </div>
+        <div class="flex items-center justify-between mt-1">
+          <div class="flex items-center gap-3">
+            <button mat-stroked-button type="button" (click)="addItem()">
+              <mat-icon>add</mat-icon> Add
+            </button>
+            <span class="text-sm text-neutral-500">Add rows and fill email with its role</span>
+          </div>
+          <div>
+            <button mat-flat-button type="submit" [disabled]="invitesForm.invalid || items.length === 0">Send Invite</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <div class="font-semibold">Project Members</div>
+      <form [formGroup]="membersForm" class="flex flex-col">
+        @for (m of members(); track m.email) {
+          <div class="flex items-center gap-2 py-2">
+            <mf-dicebear [key]="m.email" [image]="m.avatar" class="size-10 rounded-full"/>
+            <div class="info">
+              <div class="font-semibold">{{m.name}}</div>
+              <div>{{m.email}}</div>
+            </div>
+            <span class="flex-1"></span>
+            <mat-form-field class="w-36 single-fom-field">
+              <mat-select [formControlName]="memberControlName(m.email)">
+                @for (r of roles; track r.id) {
+                  <mat-option [value]="r">{{ r.name }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        }
+      </form>
+    </section>
+  </div>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-stroked-button mat-dialog-close>Close</button>
+</div>

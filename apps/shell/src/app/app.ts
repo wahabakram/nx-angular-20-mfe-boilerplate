@@ -1,127 +1,52 @@
+import { afterNextRender, Component, inject, OnInit } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs';
+import { PageLoadingBar } from '@ng-mf/components';
 import {
-  Component,
-  inputBinding,
-  OnInit,
-  outputBinding,
-  signal,
-  viewChild,
-  ViewContainerRef,
-} from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { loadRemote } from '@module-federation/enhanced/runtime';
-import {
-  MatDrawer,
-  MatDrawerContainer,
-  MatDrawerContent,
-} from '@angular/material/sidenav';
+  Analytics,
+  Environment,
+  InactivityTracker,
+  Seo,
+} from '@ng-mf/components';
+import { SplashScreen } from '@ng-mf/components';
+import { TextLogo } from '@ng-mf/components';
 
 @Component({
-  imports: [
-    RouterModule,
-    CommonModule,
-    MatDrawer,
-    MatDrawerContainer,
-    MatDrawerContent,
-  ],
-  selector: 'mf-root',
+  imports: [RouterOutlet, PageLoadingBar, SplashScreen, TextLogo],
+  selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App implements OnInit {
-  protected title = signal('demo-shell');
-  menuDrawer = viewChild.required('drawer', { read: MatDrawer });
-  settingsDrawer = viewChild.required('settingsDrawer', { read: MatDrawer });
+  private _analyticsService = inject(Analytics);
+  private _inactivityTracker = inject(InactivityTracker);
+  private _seoService = inject(Seo);
+  private _envService = inject(Environment);
+  private _router = inject(Router);
 
-  header = viewChild.required('header', { read: ViewContainerRef });
-  footer = viewChild.required('footer', { read: ViewContainerRef });
-  sidenav = viewChild.required('sidenav', { read: ViewContainerRef });
-  settings = viewChild.required('settings', { read: ViewContainerRef });
+  constructor() {
+    afterNextRender(() => {
+      // Scroll a page to top if url changed
+      this._router.events
+        .pipe(filter((event) => event instanceof NavigationEnd))
+        .subscribe(() => {
+          window.scrollTo({
+            top: 0,
+            left: 0,
+          });
+        });
 
-  protected isLoading = true;
-
-  async ngOnInit() {
-    // Footer component
-    await this.loadFooterComponent();
-
-    // Header component
-    await this.loadHeaderComponent();
-
-    // Sidenav component
-    await this.loadSidenavComponent();
-
-    // Settings component
-    await this.loadSettingsComponent();
-  }
-
-  onButtonClick(): void {
-    alert('Button from remote component clicked!');
-  }
-
-  async loadFooterComponent(): Promise<void> {
-    try {
-      const footerComponent = (
-        (await loadRemote<typeof import('webcomponents/Footer')>(
-          'webcomponents/Footer'
-        )) as any
-      ).Footer;
-      this.footer()?.createComponent(footerComponent, {
-        bindings: [inputBinding('appTitle', this.title)],
+      this._analyticsService.trackPageViews();
+      this._inactivityTracker.setupInactivityTimer().subscribe(() => {
+        // console.log('Inactive mode has been activated!');
+        // this._inactivityTracker.reset();
       });
-    } catch (error) {
-      console.error('Failed to load remote footer:', error);
-    }
+    });
   }
 
-  async loadSidenavComponent(): Promise<void> {
-    try {
-      const sidenavComponent = (
-        (await loadRemote<typeof import('webcomponents/Sidenav')>(
-          'webcomponents/Sidenav'
-        )) as any
-      ).Sidenav;
-      this.sidenav()?.createComponent(sidenavComponent, {
-        bindings: [],
-      });
-    } catch (error) {
-      console.error('Failed to load remote sidenav:', error);
-    }
-  }
-
-  async loadHeaderComponent(): Promise<void> {
-    try {
-      const headerComponent = (
-        (await loadRemote<typeof import('webcomponents/Header')>(
-          'webcomponents/Header'
-        )) as any
-      ).Header;
-      this.header()?.createComponent(headerComponent, {
-        bindings: [
-          outputBinding('menuToggle', () => {
-            this.menuDrawer().toggle();
-          }),
-          outputBinding('settingsToggle', () => {
-            this.settingsDrawer().toggle();
-          }),
-        ],
-      });
-    } catch (error) {
-      console.error('Failed to load remote header:', error);
-    }
-  }
-
-  async loadSettingsComponent(): Promise<void> {
-    try {
-      const settingsComponent = (
-        (await loadRemote<typeof import('webcomponents/SettingsDrawer')>(
-          'webcomponents/SettingsDrawer'
-        )) as any
-      ).SettingsDrawer;
-      this.settings()?.createComponent(settingsComponent, {
-        bindings: [],
-      });
-    } catch (error) {
-      console.error('Failed to load remote settings:', error);
-    }
+  ngOnInit(): void {
+    this._seoService.trackCanonicalChanges(
+      this._envService.getValue('siteUrl')
+    );
   }
 }

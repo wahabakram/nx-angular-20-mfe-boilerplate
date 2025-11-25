@@ -1,0 +1,48 @@
+@reference 'tailwindcss';
+
+:host {
+  .expense-item {
+    --amount-color: theme('colors.neutral.800');
+
+    &[data-category-type="travel"] {
+      --icon-container-bg: theme('colors.indigo.100');
+      --icon-color: theme('colors.indigo.500');
+      --progress-bar-bg: theme('colors.indigo.100');
+      --progress-bar-color: theme('colors.indigo.600');
+    }
+
+    &[data-category-type="shopping"] {
+      --icon-container-bg: theme('colors.orange.100');
+      --icon-color: theme('colors.orange.500');
+      --progress-bar-bg: theme('colors.orange.100');
+      --progress-bar-color: theme('colors.orange.500');
+    }
+
+    &[data-category-type="food"] {
+      --icon-container-bg: theme('colors.green.100');
+      --icon-color: theme('colors.green.500');
+      --progress-bar-bg: theme('colors.green.100');
+      --progress-bar-color: theme('colors.green.600');
+    }
+
+    .expense-item__icon-container {
+      background-color: var(--icon-container-bg);
+    }
+
+    .expense-item__icon {
+      color: var(--icon-color);
+    }
+
+    .expense-item__progress-bar-bg {
+      background-color: var(--progress-bar-bg);
+    }
+
+    .expense-item__progress-bar {
+      background-color: var(--progress-bar-color);
+    }
+
+    .expense-item__amount {
+      color: var(--amount-color);
+    }
+  }
+}

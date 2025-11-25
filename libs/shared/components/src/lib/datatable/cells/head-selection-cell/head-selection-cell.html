@@ -1,0 +1,3 @@
+<mat-checkbox [checked]="context.table.getIsAllRowsSelected()"
+              [indeterminate]="context.table.getIsSomeRowsSelected()"
+              (change)="context.table.toggleAllRowsSelected()"></mat-checkbox>

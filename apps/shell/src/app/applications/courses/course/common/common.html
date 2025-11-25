@@ -1,0 +1,63 @@
+<mf-panel>
+  <mf-panel-header class="h-18">
+    <div class="h-full px-7 border-b border-b-surface-container flex items-center justify-between">
+      @if (loading()) {
+        Loading...
+      } @else {
+        <div class="flex items-center gap-2">
+          <a routerLink="/applications/courses" mat-icon-button matTooltip="Back To Courses" class="-ms-3">
+            <mat-icon>arrow_backward</mat-icon>
+          </a>
+          <div class="flex items-center gap-4">
+            <h1 class="font-semibold">{{ course().name }}</h1>
+            @if (course().status.type === 'draft') {
+              <div class="text-2xs font-semibold bg-secondary-fixed-dim text-on-secondary-fixed rounded-full px-3 py-1">
+                Draft
+              </div>
+            } @else if (course().status.type === 'published') {
+              <div class="text-2xs font-semibold bg-primary text-on-primary rounded-full px-3 py-1">
+                Published
+              </div>
+            }
+          </div>
+        </div>
+        <div class="flex items-center gap-5">
+          <div class="flex items-center justify-between gap-5">
+            <div class="flex items-center gap-5">
+              <div class="text-xs text-neutral-700 dark:text-neutral-500">
+                @if (saving()) {
+                  Saving...
+                } @else {
+                  @if (course().updatedAt) {
+                    Last update: {{ course().updatedAt | timeAgo }}
+                  }
+                }
+              </div>
+            </div>
+          </div>
+          @if (course().status.type === 'draft') {
+            <button mat-flat-button (click)="publish()">Publish</button>
+          } @else {
+            <button mat-flat-button (click)="publish()">Publish Changes</button>
+          }
+        </div>
+      }
+    </div>
+  </mf-panel-header>
+  <mf-panel-body>
+    <mf-panel>
+      <mf-panel-sidebar class="w-[300px] border-r border-r-surface-container">
+        <mf-navigation activateByRoute class="p-5" appearance="secondary">
+          @for (navItem of navItems(); track navItem) {
+            <a mf-navigation-item
+               [key]="navItem.key"
+               [routerLink]="navItem.route">{{ navItem.name }}</a>
+          }
+        </mf-navigation>
+      </mf-panel-sidebar>
+      <mf-panel-body>
+        <router-outlet [routerOutletData]="{ course: course() }"/>
+      </mf-panel-body>
+    </mf-panel>
+  </mf-panel-body>
+</mf-panel>

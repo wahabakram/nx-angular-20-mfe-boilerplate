@@ -1,0 +1,45 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-gauge-value-color: var(--color-neutral-700);
+  --mf-gauge-bg: var(--color-neutral-300);
+  --mf-gauge-fill: var(--color-primary);
+  --mf-gauge-size: calc(var(--spacing) * 20);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex: none;
+  user-select: none;
+
+  &:not([class*="w-"]):not([class*="size-"]) {
+    width: var(--mf-gauge-size);
+  }
+
+  &:not([class*="h-"]):not([class*="size-"]) {
+    height: var(--mf-gauge-size);
+  }
+
+  .bg {
+    color: var(--mf-gauge-bg);
+  }
+
+  .fill {
+    transition: stroke-dasharray 1s ease 0s, stroke 1s ease 0s;
+    animation: mf-gauge-fill 1s ease forwards;
+    color: var(--mf-gauge-fill);
+  }
+
+  @keyframes mf-gauge-fill {
+    from {
+      stroke-dashoffset: 332;
+    }
+  }
+}
+
+:host-context(html.dark) {
+  --mf-gauge-value-color: var(--color-neutral-300);
+  --mf-gauge-bg: var(--color-neutral-600);
+}

@@ -1,0 +1,20 @@
+<div class="container mx-auto flex items-center flex-col justify-center min-h-screen px-5 py-7 md:p-7">
+  <main class="text-center flex items-center flex-col justify-center">
+    <div class="text-primary text-xs py-1 px-2 rounded-full font-semibold bg-primary-200">500 Error</div>
+    <h1 class="font-extrabold text-2xl sm:text-3xl lg:text-4xl leading-[1.25] mt-4">
+      Oops! Internal server error.
+    </h1>
+    <p class="mt-5 mb-10 text-neutral-600 md:w-[600px]">
+      Sorry, unexpected error. We are working on fixing the problem. Be back soon.
+    </p>
+    <div class="flex items-center flex-col sm:flex-row justify-center gap-4 sm:ap-3">
+      <button mat-stroked-button (click)="goBack()" class="w-full sm:w-auto">
+        <mat-icon>arrow_back_ios</mat-icon> Go back
+      </button>
+      <a routerLink="/" mat-flat-button class="w-full sm:w-auto">
+        <mat-icon>home</mat-icon> Go home
+      </a>
+    </div>
+  </main>
+  <app-error-help/>
+</div>

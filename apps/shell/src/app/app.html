@@ -1,25 +1,5 @@
-<mat-drawer-container class="h-screen" [hasBackdrop]="true">
-  <!-- Left Drawer (Navigation) -->
-  <mat-drawer #drawer [mode]="'side'" (backdropClick)="drawer.close()" class="w-64 flex-shrink-0">
-    <ng-container #sidenav />
-  </mat-drawer>
-
-  <!-- Main Content -->
-  <mat-drawer-content class="flex flex-col min-h-0 w-full">
-    <!-- Header -->
-    <ng-container #header />
-
-    <!-- Content Area -->
-    <main class="flex-1 min-h-0 overflow-auto p-4">
-      <router-outlet />
-    </main>
-
-    <!-- Footer -->
-    <ng-container #footer />
-  </mat-drawer-content>
-
-  <!-- Right Drawer (Settings) -->
-  <mat-drawer #settingsDrawer [mode]="'over'" position="end" (backdropClick)="settingsDrawer.close()" class="w-80">
-    <ng-container #settings />
-  </mat-drawer>
-</mat-drawer-container>
+<mf-page-loading-bar fixed />
+<mf-splash-screen>
+  <mf-text-logo>ELEMENTAR</mf-text-logo>
+</mf-splash-screen>
+<router-outlet />

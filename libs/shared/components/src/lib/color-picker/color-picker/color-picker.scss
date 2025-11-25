@@ -1,0 +1,87 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-color-picker-bg: var(--color-surface-container);
+  --mf-color-picker-border-radius: theme(--radius-md);
+  --mf-color-picker-margin-offset: --spacing(2);
+  --mf-color-picker-border: 0 solid var(--color-neutral-200);
+  --mf-color-picker-padding: --spacing(3);
+  --mf-color-picker-gap: --spacing(2.5);
+  --mf-color-picker-as-dropdown-shadow: theme(--shadow-lg);
+
+  --mf-color-picker-saturation-width: 260px;
+  --mf-color-picker-saturation-height: 110px;
+  --mf-color-picker-saturation-pointer-size: --spacing(5);
+  --mf-color-picker-saturation-pointer-shadow: theme(--shadow-md);
+  --mf-color-picker-saturation-pointer-border: 2px solid white;
+
+  --mf-color-picker-hue-width: var(--mf-color-picker-saturation-width);
+  --mf-color-picker-hue-height: --spacing(3);
+  --mf-color-picker-hue-pointer-size: --spacing(5);
+  --mf-color-picker-hue-pointer-shadow: theme(--shadow-md);
+  --mf-color-picker-hue-pointer-border: 2px solid white;
+
+  --mf-color-picker-alpha-width: var(--mf-color-picker-saturation-width);
+  --mf-color-picker-alpha-height: --spacing(3);
+  --mf-color-picker-alpha-pointer-size: --spacing(5);
+  --mf-color-picker-alpha-pointer-shadow: theme(--shadow-md);
+  --mf-color-picker-alpha-pointer-border: 2px solid white;
+
+  display: inline-grid;
+  user-select: none;
+  position: relative;
+  flex: none;
+  gap: var(--mf-color-picker-gap);
+  background: var(--mf-color-picker-bg);
+  border-radius: var(--mf-color-picker-border-radius);
+  border: var(--mf-color-picker-border);
+  padding: var(--mf-color-picker-padding);
+
+  &.is-disabled {
+    pointer-events: none;
+  }
+
+  &.as-dropdown {
+    box-shadow: var(--mf-color-picker-as-dropdown-shadow);
+  }
+
+  @keyframes mf-color-picker-animation {
+    0% {
+      transform: scale(.9);
+      opacity: 0;
+    }
+
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+
+:host-context(.mf-color-picker-overlay-panel) {
+  animation: .15s mf-color-picker-animation;
+}
+
+:host-context(.mf-color-picker-above) {
+  margin-bottom: var(--mf-color-picker-margin-offset);
+  transform-origin: bottom;
+}
+
+:host-context(.mf-color-picker-below) {
+  margin-top: var(--mf-color-picker-margin-offset);
+  transform-origin: top;
+}
+
+:host-context(.mf-color-picker-before) {
+  margin-inline-end: var(--mf-color-picker-margin-offset);
+  transform-origin: right;
+}
+
+:host-context(.mf-color-picker-after) {
+  margin-inline-start: var(--mf-color-picker-margin-offset);
+  transform-origin: left;
+}
+
+:host-context(html.dark) {
+
+}

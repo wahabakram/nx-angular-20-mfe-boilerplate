@@ -1,0 +1,99 @@
+@reference 'tailwindcss';
+
+:host {
+  .dialog-container {
+    display: flex;
+    flex-direction: column;
+    height: 90vh; // Чтобы занять большую часть экрана
+  }
+
+  .dialog-content {
+    flex-grow: 1;
+    padding: 24px;
+    overflow-y: auto;
+  }
+
+  .title-field, .note-field, .task-input-field {
+    width: 100%;
+  }
+
+  .title-input {
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  .note-textarea {
+    min-height: 80px;
+  }
+
+  // Убираем подчеркивание у стандартных полей для чистого вида
+  ::ng-deep .mat-mdc-form-field .mdc-line-ripple::before,
+  ::ng-deep .mat-mdc-form-field .mdc-line-ripple::after {
+    border-bottom-style: none !important;
+  }
+
+  .tasks-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 16px;
+  }
+
+  .task-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .task-input-field {
+      flex-grow: 1;
+    }
+
+    input {
+      outline: none;
+      flex-grow: 1;
+    }
+
+    input.completed {
+      text-decoration: line-through;
+      color: #999;
+    }
+  }
+
+  .add-task-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 --spacing(2);
+    margin-top: --spacing(2);
+
+    input {
+      outline: none;
+      flex-grow: 1;
+      padding-left: --spacing(2);
+      color: var(--color-neutral-500);
+    }
+  }
+
+  .add-task-button {
+    margin-top: 8px;
+    color: #5f6368;
+  }
+
+  .chip-list-field {
+    margin-top: 24px;
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 24px;
+    border-top: 1px solid #e0e0e0;
+
+    .left-actions,
+    .right-actions {
+      display: flex;
+      gap: 4px;
+    }
+  }
+}

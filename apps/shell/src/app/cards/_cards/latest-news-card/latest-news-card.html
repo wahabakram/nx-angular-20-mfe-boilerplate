@@ -1,0 +1,34 @@
+<div class="text-primary font-bold tracking-wider mb-5 text-sm">
+  Latest News
+</div>
+
+<div class="space-y-4">
+  @for (article of articles(); track article.id; let isLast = $last) {
+    <div class="flex items-center justify-between space-x-4">
+      <div class="flex-1">
+        <div class="text-neutral-500 text-xs mb-1">{{ article.date }}</div>
+        <a routerLink="/" class="font-semibold inline-block text-sm leading-relaxed hover:underline">
+          {{ article.title }}
+        </a>
+      </div>
+
+      <div class="flex-shrink-0">
+        <img
+          [ngSrc]="article.imageUrl"
+          [alt]="article.title"
+          width="96"
+          height="64"
+          class="w-24 h-16 object-cover rounded-lg"
+        />
+      </div>
+    </div>
+
+    @if (!isLast) {
+      <mf-horizontal-divider class="!my-5"/>
+    }
+  }
+</div>
+
+<div class="mt-6 p-0">
+  <button mat-stroked-button class="w-full">More News</button>
+</div>

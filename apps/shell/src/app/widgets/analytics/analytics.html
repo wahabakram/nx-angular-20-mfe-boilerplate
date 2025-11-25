@@ -1,0 +1,59 @@
+<div class="p-12">
+  <h1 class="text-xl font-semibold">Analytics</h1>
+
+  <main class="mt-12 flex flex-col gap-10">
+    <section class="flex flex-wrap gap-7">
+      <app-lead-generation-widget [widget]="leadGenerationWidget()" class="w-96"/>
+      <app-sales-conversion-widget [widget]="salesConversionWidget()" class="w-96"/>
+      <app-engagement-widget [widget]="engagementWidget()" class="w-96"/>
+    </section>
+    <section>
+      <app-traffic-by-location-widget [widget]="trafficByLocationWidget()" class="w-2/3"/>
+    </section>
+    <section>
+      <app-traffic-chart-widget [trafficData]="deviceData()" class="w-2/3"/>
+    </section>
+    <section>
+      <app-sales-overview-widget class="w-1/2"/>
+    </section>
+    <section>
+      <app-transactions-overview-widget
+        widgetName="Transactions Overview"
+        [chartDatasets]="chartSeriesData"
+        earningValue="4235.00"
+        timePeriod="year"/>
+    </section>
+    <section class="flex flex-wrap gap-7">
+      <app-total-subscribers-widget class="w-72"/>
+      <app-unique-visitors-widget class="w-72"/>
+      <app-avg-click-rate-widget class="w-72"/>
+      <app-avg-open-rate-widget class="w-72"/>
+    </section>
+    <section>
+      <app-today-sales-widget/>
+    </section>
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-7">
+      <app-analytics-active-users-widget class="col-span-1"/>
+      <app-analytics-avg-order-value-widget class="col-span-1"/>
+      <app-analytics-comments-widget class="col-span-1"/>
+      <app-analytics-conversion-rate-widget class="col-span-1"/>
+      <app-analytics-ended-projects-widget class="col-span-1"/>
+      <app-analytics-followers-widget class="col-span-1"/>
+      <app-analytics-gross-revenue-widget class="col-span-1"/>
+      <app-analytics-likes-widget class="col-span-1"/>
+      <app-analytics-new-signups-widget class="col-span-1"/>
+      <app-analytics-pending-projects-widget class="col-span-1"/>
+      <app-analytics-running-projects-widget class="col-span-1"/>
+      <app-analytics-total-orders-widget class="col-span-1"/>
+      <app-analytics-total-projects-widget class="col-span-1"/>
+      <app-analytics-total-users-widget class="col-span-1"/>
+    </section>
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-7">
+      <app-productive-time-widget
+        [hours]="productiveHours()"
+        [percentageChange]="change()"
+        [data]="chartData()"
+      />
+    </section>
+  </main>
+</div>

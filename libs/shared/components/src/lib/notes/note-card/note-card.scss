@@ -1,0 +1,101 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  width: 100%;
+  position: relative;
+  background-color: var(--color-surface-container-lowest);
+  border-radius: theme(--radius-2xl);
+
+  .controls-container {
+    position: absolute;
+    top: --spacing(1);
+    right: --spacing(1);
+    opacity: 0;
+    background: var(--color-surface-container-lowest);
+    padding: --spacing(1);
+    border-radius: 999px;
+  }
+
+  &:hover {
+    .controls-container {
+      opacity: 1;
+    }
+  }
+
+  .note-card-wrapper {
+    width: 100%;
+    border-radius: theme(--radius-2xl);
+    box-shadow: theme(--shadow-sm);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .note-image-container {
+    &::slotted(img) {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .note-body-container {
+    padding: 16px;
+    flex-grow: 1;
+  }
+
+  .note-title-container {
+    &::slotted(h3) {
+      margin: 0 0 12px 0;
+      font-size: 1.1em;
+      font-weight: 600;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  .note-content-container {
+    &:empty {
+      display: none;
+    }
+
+    &::slotted(p) {
+      margin: 0;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  }
+
+  .note-labels-container {
+    &:empty {
+      display: none;
+    }
+
+    padding: 0 16px 16px 16px;
+
+    &::slotted(div) {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+  }
+
+  .note-tasks-container {
+    &:empty {
+      display: none;
+    }
+
+    margin-top: 16px;
+
+    &::slotted(ul) {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+}

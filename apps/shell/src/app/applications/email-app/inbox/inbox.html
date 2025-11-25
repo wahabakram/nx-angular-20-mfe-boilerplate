@@ -1,0 +1,90 @@
+<mat-tab-group class="h-full" mat-stretch-tabs="false" mat-align-tabs="start">
+  <mat-tab class="h-full">
+    <ng-template mat-tab-label>
+      <div class="flex items-center gap-3">
+        <mat-icon>inbox</mat-icon> Unsorted
+      </div>
+    </ng-template>
+    <mf-panel>
+      <mf-panel-header class="border-b border-b-surface-container px-4">
+        <div class="h-full flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <mat-checkbox [indeterminate]="isIntermediate()"
+                          (change)="onAllSelected($event, datatable)" />
+            @if (rowSelectionLength() > 0) {
+              <div class="flex items-center">
+                <div>Selected {{ rowSelectionLength() }} of {{ data().length }}</div>
+                <mf-vertical-divider class="ms-5 me-2"/>
+                <div class="flex items-center gap-2">
+                  <button mat-icon-button matTooltip="Archive">
+                    <mat-icon>archive</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="Spam">
+                    <mat-icon>warning</mat-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="Delete">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <button mat-icon-button>
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                </div>
+              </div>
+            } @else {
+              <mf-segmented [value]="view()">
+                <button mf-segmented-button value="all">All</button>
+                <button mf-segmented-button value="unread">Unread</button>
+                <button mf-segmented-button value="read">Read</button>
+              </mf-segmented>
+            }
+          </div>
+          <div class="flex items-center gap-3">
+            @if (datatable.table) {
+              <button mat-icon-button
+                      [disabled]="!datatable.table.getCanPreviousPage()"
+                      (click)="datatable.table.previousPage()">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+              </button>
+              <div class="text-sm">
+                {{ getPaginatedFrom(datatable) }} &ndash; {{ getPaginatedTo(datatable) }}
+                <span class="text-neutral-600">of</span> {{ datatable.table.getRowCount() }}
+              </div>
+              <button mat-icon-button
+                      [disabled]="!datatable.table.getCanNextPage()"
+                      (click)="datatable.table.nextPage()">
+                <mat-icon>keyboard_arrow_right</mat-icon>
+              </button>
+            }
+          </div>
+        </div>
+      </mf-panel-header>
+      <mf-panel-body>
+        <mf-overlay-scrollbar [absolute]="true">
+          <mf-datatable #datatable="mfDatatable"
+                         [columns]="columns()"
+                         [data]="data()"
+                         [showHeader]="false"
+                         compact
+                         enableRowSelection
+                         (rowSelectionChanged)="onRowSelectionChanged($event)"/>
+        </mf-overlay-scrollbar>
+      </mf-panel-body>
+    </mf-panel>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <div class="flex items-center gap-3">
+        <mat-icon>groups</mat-icon> Social
+      </div>
+    </ng-template>
+    Social
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <div class="flex items-center gap-3">
+        <mat-icon>sell</mat-icon> Promotions
+      </div>
+    </ng-template>
+    Promotions
+  </mat-tab>
+</mat-tab-group>

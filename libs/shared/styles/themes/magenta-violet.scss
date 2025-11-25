@@ -1,0 +1,78 @@
+@use '@angular/material' as mat;
+@use "../_common" with (
+  $m3-light-theme: mat.define-theme((
+    color: (
+      theme-type: light,
+      primary: mat.$violet-palette,
+      tertiary: mat.$magenta-palette,
+      use-system-variables: true,
+      system-variables-prefix: sys,
+    ),
+    typography: (
+      brand-family: 'var(--font-sans)',
+      plain-family: 'var(--font-sans)',
+      use-system-variables: true,
+      system-variables-prefix: sys,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )),
+  $m3-dark-theme: mat.define-theme((
+    color: (
+      theme-type: dark,
+      primary: mat.$violet-palette,
+      tertiary: mat.$magenta-palette,
+      use-system-variables: true,
+      system-variables-prefix: sys,
+    ),
+    typography: (
+      brand-family: 'var(--font-sans)',
+      plain-family: 'var(--font-sans)',
+      use-system-variables: true,
+      system-variables-prefix: sys,
+    ),
+    density: (
+      scale: 0,
+    ),
+  ))
+);
+// Note: This theme uses Angular Material's built-in palettes (mat.$violet-palette and mat.$magenta-palette)
+// The high-contrast function and mixin are included for consistency, but use generic Material Design values
+// For full customization, define custom $_palettes like other themes
+
+@function _high-contrast-value($light, $dark, $theme-type) {
+  @if ($theme-type == light) {
+    @return $light;
+  }
+  @if ($theme-type == dark) {
+    @return $dark;
+  }
+  @if ($theme-type == color-scheme) {
+    @return light-dark(#{$light}, #{$dark});
+  }
+
+  @error 'Unknown theme-type #{$theme-type}. Expected light, dark, or color-scheme';
+}
+
+@mixin high-contrast-overrides($theme-type) {
+  @include mat.theme-overrides((
+    primary: _high-contrast-value(#381e72, #eaddff, $theme-type),
+    on-primary: _high-contrast-value(#ffffff, #000000, $theme-type),
+    primary-container: _high-contrast-value(#553098, #d0bcff, $theme-type),
+    on-primary-container: _high-contrast-value(#ffffff, #21005d, $theme-type),
+    secondary: _high-contrast-value(#70003c, #ffd8e8, $theme-type),
+    on-secondary: _high-contrast-value(#ffffff, #000000, $theme-type),
+    secondary-container: _high-contrast-value(#a20057, #ffb0cc, $theme-type),
+    on-secondary-container: _high-contrast-value(#ffffff, #3b0020, $theme-type),
+    background: _high-contrast-value(#fffbff, #1c1b1f, $theme-type),
+    on-background: _high-contrast-value(#1c1b1f, #e6e1e5, $theme-type),
+    surface: _high-contrast-value(#fffbff, #1c1b1f, $theme-type),
+    on-surface: _high-contrast-value(#000000, #ffffff, $theme-type),
+    error: _high-contrast-value(#690005, #ffedea, $theme-type),
+    on-error: _high-contrast-value(#ffffff, #000000, $theme-type),
+  ))
+}
+
+@include mat.elevation-classes();
+@include mat.app-background();

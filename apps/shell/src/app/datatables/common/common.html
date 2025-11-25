@@ -1,0 +1,14 @@
+<mf-panel>
+  <mf-panel-sidebar class="w-[300px] py-7 px-5 border-r border-r-surface-container">
+    <mf-navigation [activeKey]="activeLinkId" appearance="secondary">
+      @for (navItem of navItems; track navItem) {
+        <a [routerLink]="navItem.link" mf-navigation-item [key]="navItem.link">{{ navItem.name }}</a>
+      }
+    </mf-navigation>
+  </mf-panel-sidebar>
+  <mf-panel-body>
+    <app-container>
+      <router-outlet/>
+    </app-container>
+  </mf-panel-body>
+</mf-panel>

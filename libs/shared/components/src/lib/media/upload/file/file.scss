@@ -1,0 +1,80 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-file-padding: --spacing(4);
+  --mf-file-border-radius: theme(--radius-2xl);
+  --mf-file-bg: var(--color-surface-container);
+  --mf-file-error-bg: var(--color-error-200);
+  --mf-file-controls-gap: --spacing(1.5);
+  --mf-file-progress-margin: --spacing(2) 0 0 0;
+  --mf-file-progress-bg: var(--color-surface-container-highest);
+  --mf-file-progress-height: --spacing(1);
+  --mf-file-progress-border-radius: theme(--radius-lg);
+  --mf-file-progress-bar-bg: var(--color-primary);
+  --mf-file-control-color: var(--color-neutral-500);
+  --mf-file-control-hover-color: var(--color-primary);
+  --mf-file-control-font-size: theme(--text-xl);
+  --mf-file-name-font-size: theme(--text-sm);
+  --mf-file-info-font-size: theme(--text-xs);
+  --mf-file-info-color: var(--color-neutral-600);
+  --mf-file-error-font-size: theme(--text-xs);
+  --mf-file-error-color: var(--color-error-500);
+
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: var(--mf-file-padding);
+  border-radius: var(--mf-file-border-radius);
+  background: var(--mf-file-bg);
+
+  .name {
+    font-size: var(--mf-file-name-font-size);
+  }
+
+  .info {
+    font-size: var(--mf-file-info-font-size);
+    color: var(--mf-file-info-color);
+  }
+
+  .content {
+    min-width: 0;
+    flex-grow: 1;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: var(--mf-file-controls-gap)
+  }
+
+  .progress {
+    background: var(--mf-file-progress-bg);
+    height: var(--mf-file-progress-height);
+    flex: none;
+    border-radius: var(--mf-file-progress-border-radius);
+    margin: var(--mf-file-progress-margin);
+  }
+
+  .progress-bar {
+    background: var(--mf-file-progress-bar-bg);
+    border-radius: var(--mf-file-progress-border-radius);
+    height: 100%;
+  }
+
+  .error {
+    font-size: var(--mf-file-error-font-size);
+    color: var(--mf-file-error-color);
+  }
+
+  &.has-error {
+    background: var(--mf-file-error-bg);
+  }
+}
+
+:host-context(html.dark) {
+  --mf-file-error-color: theme(--color-red-300);
+  --mf-file-progress-bg: var(--color-neutral-500);
+  --mf-file-control-hover-color: var(--color-neutral-300);
+}

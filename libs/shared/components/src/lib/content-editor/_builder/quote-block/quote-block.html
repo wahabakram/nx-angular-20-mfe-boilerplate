@@ -1,0 +1,21 @@
+<blockquote #contentRef
+            #contentEditableRef="mfContentEditorContentEditable"
+            class="content"
+            mfContentEditorContentEditable
+            [props]="_citeProps()"
+            (propsChanged)="onCitePropsChanged($event)"
+            [attr.data-empty-placeholder]="placeholder()"
+            [innerHTML]="_citeContent() | safeHtml"
+            (contentChanged)="onContentChanged(contentEditableRef, captionEditableRef)"
+            (pressedEnter)="onPressedEnter($event)"
+            (initialized)="onContentEditableInitialized()"></blockquote>
+<div class="caption"
+     #captionRef
+     #captionEditableRef="mfContentEditorContentEditable"
+     mfContentEditorContentEditable
+     [props]="_captionProps()"
+     (propsChanged)="onCaptionPropsChanged($event)"
+     [attr.data-empty-placeholder]="placeholder()"
+     [innerHTML]="_captionContent() | safeHtml"
+     (contentChanged)="onContentChanged(contentEditableRef, captionEditableRef)"
+     (pressedEnter)="onPressedEnter($event)"></div>

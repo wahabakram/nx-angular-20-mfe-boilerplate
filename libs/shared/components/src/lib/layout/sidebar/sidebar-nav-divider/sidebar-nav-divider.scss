@@ -1,0 +1,8 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  height: var(--mf-sidebar-nav-divider-height);
+  background-color: var(--mf-sidebar-nav-divider-bg);
+  margin: var(--mf-sidebar-nav-divider-margin);
+}

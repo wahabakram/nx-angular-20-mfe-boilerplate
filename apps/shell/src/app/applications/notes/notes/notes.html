@@ -1,0 +1,111 @@
+<mf-panel>
+  <mf-panel-sidebar class="w-72 px-5 py-6 border-e border-e-surface-container">
+    <mf-navigation [activeKey]="activeLinkId()" appearance="secondary">
+      @for (navItem of navigation(); track navItem) {
+        <mf-navigation-item [key]="navItem.key" (click)="onNavItemClicked(navItem)">
+          <mat-icon mfNavigationItemIcon>{{ navItem.icon }}</mat-icon>
+          {{ navItem.name }}
+        </mf-navigation-item>
+      }
+    </mf-navigation>
+    <div class="flex items-center justify-between mt-7 mb-3">
+      <div class="font-bold text-sm px-5">Labels</div>
+      <button mat-icon-button (click)="addNewLabel()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <mf-navigation [activeKey]="activeLinkId()" appearance="secondary">
+      @for (label of allLabels(); track label) {
+        <div class="relative group">
+          <div class="absolute opacity-0 right-0 z-1 top-1/2 -translate-y-1/2 group-hover:opacity-100">
+            <button mat-icon-button (click)="editLabel(label)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+          <mf-navigation-item [key]="label.id" (click)="onSortByLabelChange(label)">
+            <mat-icon mfNavigationItemIcon>label</mat-icon>
+            {{ label.name }}
+          </mf-navigation-item>
+        </div>
+      }
+    </mf-navigation>
+  </mf-panel-sidebar>
+  <mf-panel-body>
+    <mf-panel>
+      <mf-panel-header class="px-7 h-16 border-b border-b-surface-container">
+        <div class="h-full flex items-center justify-between gap-5">
+          <div class="flex items-center gap-5">
+            <div class="text-base font-semibold">Notes</div>
+            <input type="text"
+                   class="h-10 w-64 bg-surface-container text-sm focus:outline-2
+                          focus:outline-primary rounded-3xl px-4"
+                   placeholder="Search..."
+                   [(ngModel)]="searchTerm">
+            </div>
+          <button mat-flat-button (click)="addNew()">
+            <mat-icon>add</mat-icon> New
+          </button>
+        </div>
+      </mf-panel-header>
+      <mf-panel-body>
+        <mf-overlay-scrollbar [absolute]="true">
+          <mf-notes [items]="filteredNotes()"
+                     (itemsChange)="onItemsChange($event)" class="p-6">
+            <ng-template let-item>
+              <mf-note-card [color]="item.color">
+                <div noteControls class="flex items-center gap-2">
+                  <button mat-icon-button (click)="edit(item)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="deleteNoteById(item.id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+
+                @if (item.imageUrl) {
+                  <img [src]="item.imageUrl" alt="Note image" noteImage loading="lazy" />
+                }
+
+                <h3 noteTitle class="font-bold">{{ item.title }}</h3>
+
+                @if (item.content) {
+                  <p noteContent class="text-sm mt-2">{{ item.content }}</p>
+                }
+
+                @if (item.tasks?.length > 0) {
+                  <ul noteTasks>
+                    @for(task of item.tasks; track task) {
+                      <li class="task-item">
+                        <mat-checkbox
+                          [checked]="task.completed"
+                          (change)="toggleTask(item, task)">
+                          <span [class.completed]="task.completed">{{ task.content }}</span>
+                        </mat-checkbox>
+                      </li>
+                    }
+                  </ul>
+                }
+
+                @if (item.labels?.length) {
+                  <div noteLabels class="flex items-center flex-wrap gap-2">
+                    @for (label of item.labels; track label) {
+                      <span class="text-3xs border border-scrim rounded-full px-2 py-1 flex items-center">{{ label.name }}</span>
+                    }
+                  </div>
+                }
+              </mf-note-card>
+            </ng-template>
+
+            @if (filteredNotes().length === 0 && searchTerm().trim().length > 0) {
+              <div class="text-sm">There are no search results.</div>
+            }
+
+            @if (filteredNotes().length === 0 && searchTerm().trim().length === 0 && filterByLabel()) {
+              <div class="text-sm">There are no filtered results.</div>
+            }
+          </mf-notes>
+        </mf-overlay-scrollbar>
+      </mf-panel-body>
+    </mf-panel>
+  </mf-panel-body>
+</mf-panel>

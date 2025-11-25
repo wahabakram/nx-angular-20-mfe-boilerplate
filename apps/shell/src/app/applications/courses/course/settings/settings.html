@@ -1,0 +1,131 @@
+<mf-overlay-scrollbar [absolute]="true">
+  <form class="w-[900px] mx-auto" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="p-7">
+      <h1 class="text-2xl font-semibold mb-1">Course Settings</h1>
+      <p class="text-sm text-on-surface-variant mb-10">
+        Manage your course details, enrollment options, content, and more.
+      </p>
+      <div class="flex flex-col gap-7">
+        <!-- Basic Information -->
+        <section class="card-container p-7">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="rounded-xl bg-surface-container-low flex items-center justify-center size-10">
+              <mat-icon>info</mat-icon>
+            </div>
+            <h2 class="text-lg font-semibold">Basic Information</h2>
+          </div>
+
+          <div class="grid gap-4">
+            <mat-form-field class="w-full">
+              <mat-label>Course Name</mat-label>
+              <input matInput placeholder="Introduction to Angular" formControlName="courseName" />
+              @if (form.get('courseName')?.touched && form.get('courseName')?.hasError('required')) {
+                <mat-error>Course Name is required</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+              <mat-label>Course Description</mat-label>
+              <textarea matInput rows="3"
+                        cdkTextareaAutosize
+                        formControlName="courseDescription"
+                        placeholder="A comprehensive guide to building modern web applications with Angular."></textarea>
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+              <mat-label>Instructor Biography</mat-label>
+              <textarea matInput rows="3"
+                        cdkTextareaAutosize
+                        formControlName="instructorBio"
+                        placeholder="Tell us a little about yourself."></textarea>
+              <mat-hint>500 character limit</mat-hint>
+            </mat-form-field>
+
+            <div>
+              <div class="text-sm font-medium mb-2">Course Banner</div>
+              <mf-upload-area>
+                <ng-container mfUploadAreaMainState>
+                  Drag & drop <button class="text-primary cursor-pointer" type="button">or choose image</button> to upload
+                </ng-container>
+                <ng-container mfUploadAreaDropState>
+                  Drop image here
+                </ng-container>
+                <ng-container mfUploadAreaInvalidState>
+                  Invalid file to drop, images accept only.
+                </ng-container>
+              </mf-upload-area>
+              <div class="text-xs mt-2">JPG, PNG up to 10MB. Recommended dimensions: 920x480 pixels</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Enrollment Options -->
+        <section class="card-container p-7">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="rounded-xl bg-surface-container-low flex items-center justify-center size-10">
+              <mat-icon>group</mat-icon>
+            </div>
+            <h2 class="text-lg font-semibold">Enrollment Options</h2>
+          </div>
+
+          <div class="grid gap-4">
+            <div class="flex items-center justify-between rounded-xl p-3 bg-surface-container-low">
+              <div>
+                <div class="text-sm font-medium">Open Enrollment</div>
+                <div class="text-xs text-on-surface-variant">Anyone can enroll in this course.</div>
+              </div>
+              <mat-slide-toggle color="primary" formControlName="openEnrollment"></mat-slide-toggle>
+            </div>
+
+            <mat-form-field class="w-full">
+              <mat-label>Prerequisites</mat-label>
+              <textarea matInput placeholder="e.g., Basic JavaScript knowledge"
+                        cdkTextareaAutosize
+                        formControlName="prerequisites"></textarea>
+            </mat-form-field>
+          </div>
+        </section>
+
+        <!-- Content Settings -->
+        <section class="card-container p-7">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="rounded-xl bg-surface-container-low flex items-center justify-center size-10">
+              <mat-icon>tune</mat-icon>
+            </div>
+            <h2 class="text-lg font-semibold">Content Settings</h2>
+          </div>
+          <div class="grid md:grid-cols-2 gap-4">
+            <mat-form-field class="w-full">
+              <mat-label>Modules</mat-label>
+              <input matInput placeholder="e.g., Introduction, Components, Services" formControlName="modules" />
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+              <mat-label>Assignments</mat-label>
+              <input matInput placeholder="e.g., Project 1, Final Exam" formControlName="assignments" />
+            </mat-form-field>
+          </div>
+        </section>
+
+        <!-- Visibility -->
+        <section class="card-container p-7">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="rounded-xl bg-surface-container-low flex items-center justify-center size-10">
+              <mat-icon>visibility</mat-icon>
+            </div>
+            <h2 class="text-lg font-semibold">Visibility</h2>
+          </div>
+
+          <div class="grid gap-4">
+            <div class="text-sm font-medium">Course Status</div>
+            <mat-radio-group class="grid gap-2 md:flex md:items-center md:gap-6" formControlName="courseStatus">
+              <mat-radio-button value="publish">Publish Course</mat-radio-button>
+              <mat-radio-button value="unpublish">Unpublish Course</mat-radio-button>
+            </mat-radio-group>
+            <div class="text-xs text-on-surface-variant">Control whether the course is visible to students.</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </form>
+</mf-overlay-scrollbar>

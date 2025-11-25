@@ -1,0 +1,13 @@
+@let access = context.getValue();
+
+<div class="access-cell">
+  <span class="access-text">
+    @if (access.type === 'only_you') {
+      Only you
+    } @else if (access.type === 'everyone') {
+      Everyone
+    } @else if (access.type === 'members') {
+      Members ({{ access.count }})
+    }
+  </span>
+</div>

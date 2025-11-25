@@ -1,0 +1,14 @@
+<app-page>
+  <ng-container pageTitle>Ecommerce</ng-container>
+  <mat-form-field class="date-range-input" pageActions>
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate placeholder="Start date">
+      <input matEndDate placeholder="End date">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+  <mf-dashboard [configs]="configs()" [items]="items()" plain/>
+</app-page>
+
+<mat-date-range-picker #picker/>

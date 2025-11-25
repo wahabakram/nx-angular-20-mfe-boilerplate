@@ -1,0 +1,40 @@
+<header class="mb-4 px-6 pt-6 flex justify-between items-center">
+  <div class="font-semibold">Recent events</div>
+  <a routerLink="/" class="text-primary hover:underline text-sm inline-block">See all</a>
+</header>
+<mat-tab-group animationDuration="0ms" mat-stretch-tabs>
+  <mat-tab label="Creator highlights">
+    <div class="p-6 flex flex-col gap-4">
+      @for (post of creatorHighlights(); track post.title) {
+        <div class="flex items-center gap-4">
+          <div class="bg-neutral-100 relative size-20 flex-none
+                      overflow-hidden rounded-xl flex items-center justify-center">
+            <img
+              [ngSrc]="post.image"
+              [alt]="post.title"
+              fill
+              class="object-cover">
+          </div>
+          <a routerLink="/" class="grow  hover:underline">{{ post.title }}</a>
+        </div>
+      }
+    </div>
+  </mat-tab>
+  <mat-tab label="Product updates">
+    <div class="p-6 flex flex-col gap-4">
+      @for (post of productUpdates(); track post.title) {
+        <div class="flex items-center gap-4">
+          <div class="bg-neutral-100 relative size-20 flex-none
+                      overflow-hidden rounded-xl flex items-center justify-center">
+            <img
+              [ngSrc]="post.image"
+              [alt]="post.title"
+              fill
+              class="object-cover">
+          </div>
+          <a routerLink="/" class="grow hover:underline">{{ post.title }}</a>
+        </div>
+      }
+    </div>
+  </mat-tab>
+</mat-tab-group>

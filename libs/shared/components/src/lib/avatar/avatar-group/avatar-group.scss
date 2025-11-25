@@ -1,0 +1,28 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-avatar-group-item-offset: calc(var(--spacing) * 2.5);
+  --mf-avatar-group-item-border: 2px solid white;
+
+  display: flex;
+  flex: none;
+  position: relative;
+  align-items: center;
+
+  ::ng-deep {
+    * + * {
+      margin-left: calc(var(--mf-avatar-group-item-offset) * -1);
+    }
+
+    .mf-avatar,
+    .mf-avatar-total,
+    .mf-avatar-more {
+      border: var(--mf-avatar-group-item-border);
+      z-index: 0;
+
+      &:hover {
+        z-index: 1;
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+<mf-panel>
+  <mf-panel-header class="h-16 border-b border-b-surface-container">
+    <div class="h-full flex items-center justify-between px-6">
+      <div class="flex items-center gap-4">
+        <div class="text-lg font-bold">Tasks</div>
+      </div>
+      <div class="flex items-center gap-4">
+        <mf-segmented value="assignedToMe">
+          <button mf-segmented-button value="all">All</button>
+          <button mf-segmented-button value="assignedToMe">Assigned to me</button>
+        </mf-segmented>
+        <button mat-stroked-button>
+          <mat-icon>add</mat-icon>Invite
+        </button>
+        <mf-avatar-group>
+          <mf-avatar label="am"/>
+          <mf-avatar label="ps" class="bg-cyan-500"/>
+          <mf-avatar label="br" class="bg-red-500"/>
+          <mf-avatar-total>+20</mf-avatar-total>
+        </mf-avatar-group>
+        <button mat-icon-button>
+          <mat-icon>settings</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mf-panel-header>
+  <mf-panel-body>
+    <app-container>
+      <mf-kanban-board [columns]="columns" class="absolute inset-0">
+        <ng-template mfKanbanItemDef let-item let-column>
+          <div class="font-medium text-sm">{{ item.name }}</div>
+          <div class="flex items-center justify-between mt-3.5">
+            <mf-dicebear [key]="item.assignee.id" class="size-7"/>
+            <mat-icon [style.color]="item.priority.color" class="filled">flag</mat-icon>
+          </div>
+        </ng-template>
+      </mf-kanban-board>
+    </app-container>
+  </mf-panel-body>
+</mf-panel>

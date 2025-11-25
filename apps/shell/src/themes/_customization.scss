@@ -1,0 +1,35 @@
+:root {
+  --mat-sys-corner-medium: theme(--radius-3xl);
+  --mat-card-outlined-container-shape: theme(--radius-3xl);
+  --mat-card-elevated-container-shape: theme(--radius-3xl);
+  --mat-card-filled-container-shape: theme(--radius-3xl);
+  --mat-expansion-container-shape: theme(--radius-3xl);
+}
+
+.widget-container,
+.card-container {
+  display: block;
+  background: var(--color-surface-container-lowest);
+  border-radius: theme(--radius-3xl);
+  box-shadow: theme(--shadow-xs);
+  overflow: hidden;
+  flex: none;
+
+  &:not([class*="h-"]) {
+    height: 100%;
+  }
+}
+
+.single-fom-field {
+  .mat-mdc-form-field-subscript-wrapper,
+  .mat-mdc-form-field-bottom-align {
+    display: none !important;
+  }
+}
+
+html.dark {
+  .widget-container,
+  .card-container {
+    background: var(--color-surface-container);
+  }
+}

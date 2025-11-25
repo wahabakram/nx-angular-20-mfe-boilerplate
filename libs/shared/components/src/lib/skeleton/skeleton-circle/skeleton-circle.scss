@@ -1,0 +1,29 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-skeleton-circle-size: calc(var(--spacing) * 14);
+
+  animation: mf-skeleton-loading 1s linear infinite alternate;
+
+  display: inline-flex;
+  border-radius: calc(infinity * 1px);
+  flex: none;
+
+  &:not([class*="w-"]):not([class*="size-"]) {
+    width: var(--mf-skeleton-circle-size);
+  }
+
+  &:not([class*="h-"]):not([class*="size-"]) {
+    height: var(--mf-skeleton-circle-size);
+  }
+
+  @keyframes mf-skeleton-loading {
+    0% {
+      background: var(--mf-skeleton-from-bg);
+    }
+
+    100% {
+      background: var(--mf-skeleton-to-bg);
+    }
+  }
+}

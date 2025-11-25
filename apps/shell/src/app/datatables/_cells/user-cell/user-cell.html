@@ -1,0 +1,7 @@
+@let user = context.getValue();
+
+<mf-dicebear [image]="user.avatarUrl" [alt]="user.name"/>
+<div>
+  <div>{{ user.name }}</div>
+  <div class="text-neutral-600">{{ user.relationship }}</div>
+</div>

@@ -1,0 +1,170 @@
+<div class="p-12">
+  <header>
+    <h1 class="text-lg font-semibold">Plans & Billing</h1>
+    <div class="text-neutral-500 text-sm mb-8">Manage your plans and billing details.</div>
+  </header>
+
+  <section class="relative mt-10 mb-12">
+    <mf-carousel>
+      @for (plan of plans(); track plan.id) {
+        <mf-carousel-card>
+          <div class="border-2 border-neutral-300 dark:border-neutral-800 relative w-[300px] flex-none
+                    [&.popular]:bg-amber-50 [&.popular]:border-amber-400
+                    [&.current]:bg-primary-50 [&.current]:border-primary
+                    p-6 rounded-3xl flex flex-col justify-between flex flex-col gap-4 min-h-60"
+               [class.popular]="plan.isPopular"
+               [class.current]="plan.id === currentPlanId()">
+            <div>
+              <div class="flex justify-between items-center">
+                <h2 class="text-xl flex items-center gap-2 font-semibold">
+                  {{ plan.name }}
+                  @if (plan.isPopular) {
+                    <span class="bg-amber-300 text-amber-900 text-2xs font-semibold px-2 py-1 rounded-full">Popular</span>
+                  }
+                </h2>
+                @if (plan.id === currentPlanId()) {
+                  <span class="text-white bg-primary rounded-full size-7 flex-none flex items-center justify-center">
+                  <mat-icon>check</mat-icon>
+                </span>
+                }
+              </div>
+              <div class="mt-4 flex items-end gap-0.5">
+                <span class="font-bold text-3xl">{{ plan.price | currency }}</span>
+                <span>/</span>
+                <span class="text-base text-neutral-700">month</span>
+              </div>
+              <div class="mt-2 text-neutral-500 text-sm">{{ plan.description }}</div>
+            </div>
+            <footer>
+              @if (plan.id === currentPlanId()) {
+                <button mat-flat-button class="w-full" disabled>Current Plan</button>
+              } @else {
+                @if (plan.isPopular) {
+                  <button mat-button class="w-full !bg-amber-300 !text-amber-900" (click)="handlePlanUpgrade(plan.id)">Upgrade Plan</button>
+                } @else {
+                  <button mat-button class="w-full !bg-neutral-200" (click)="handlePlanUpgrade(plan.id)">Upgrade Plan</button>
+                }
+              }
+            </footer>
+          </div>
+        </mf-carousel-card>
+      }
+    </mf-carousel>
+  </section>
+
+  <section class="mb-12">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-base font-semibold">Billing History</h2>
+      <div class="flex items-center gap-4">
+        <div>
+          <input type="text"
+                 class="h-10 w-60 bg-surface-container-low text-sm focus:outline-2
+                        focus:outline-primary rounded-3xl px-4"
+                 placeholder="Search transactions...">
+        </div>
+        <button mat-raised-button [matMenuTriggerFor]="exportMenu">Download</button>
+      </div>
+    </div>
+    <mf-datatable [columns]="columns()"
+                   [data]="data()"
+                   showHeader="false"
+                   showPagination
+                   pageSize="5"
+                   class="border border-default rounded-3xl overflow-hidden"/>
+  </section>
+
+  <section class="mb-8">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-base font-semibold">Billing Address</h2>
+      <button mat-icon-button (click)="toggleAddressEditMode()">
+        <mat-icon>{{ isAddressEditing() ? 'close' : 'edit' }}</mat-icon>
+      </button>
+    </div>
+    <form [formGroup]="addressForm" (ngSubmit)="saveAddressChanges()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
+        <mat-form-field>
+          <mat-label>First name</mat-label>
+          <input matInput formControlName="firstName">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Last name</mat-label>
+          <input matInput formControlName="lastName">
+        </mat-form-field>
+        <mat-form-field class="md:col-span-2">
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="address">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>City</mat-label>
+          <input matInput formControlName="city">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>State</mat-label>
+          <input matInput formControlName="state">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>ZIP code</mat-label>
+          <input matInput formControlName="zipCode">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Country</mat-label>
+          <mf-country-select formControlName="country" placeholder="Select your country"/>
+        </mat-form-field>
+      </div>
+
+      @if(isAddressEditing()) {
+        <div class="md:col-span-2 flex justify-end space-x-4 mt-4">
+          <button mat-stroked-button type="button" (click)="cancelAddressEdit()">Cancel</button>
+          <button mat-flat-button color="primary" type="submit" [disabled]="addressForm.invalid">Save Changes</button>
+        </div>
+      }
+    </form>
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-base font-semibold mb-4">Frequently Asked Questions</h2>
+    <mat-accordion>
+      @for(item of faqItems(); track item.question) {
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title class="text-md">{{ item.question }}</mat-panel-title>
+          </mat-expansion-panel-header>
+          <p class="text-sm text-neutral-700">{{ item.answer }}</p>
+        </mat-expansion-panel>
+      }
+    </mat-accordion>
+  </section>
+
+  <section>
+    <h2 class="text-base font-semibold mb-4">Contact Customer Support</h2>
+    <div class="bg-primary-100 dark:bg-secondary-1000 rounded-3xl p-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="flex">
+          <mat-icon class="mr-6 mt-1">email</mat-icon>
+          <div>
+            <h3 class="text-base font-semibold">Email Support</h3>
+            <p class="text-neutral-600 text-sm mb-1">Send us an email and we'll get back to you within 24 hours.</p>
+            <a href="mailto:support@example.com" class="text-tertiary text-sm hover:underline">support&#64;example.com</a>
+          </div>
+        </div>
+        <div class="flex">
+          <mat-icon class="mr-6 mt-1">phone</mat-icon>
+          <div>
+            <h3 class="text-base font-semibold">Phone Support</h3>
+            <p class="text-neutral-600 text-sm mb-1">Our phone lines are open Monday to Friday, 9am - 5pm EST.</p>
+            <a href="tel:+1-123-555-0199" class="text-tertiary text-sm hover:underline">+1-123-555-0199</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<mat-menu #exportMenu="matMenu" xPosition="before">
+  <button mat-menu-item>
+    Download PDF
+  </button>
+  <button mat-menu-item>
+    Download CSV
+  </button>
+</mat-menu>

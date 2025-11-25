@@ -1,0 +1,19 @@
+@let status = context.getValue();
+
+@switch (status.type) {
+  @case ('pending') {
+    <div class="pending bg-amber-100 text-2xs font-bold px-4 py-1.5 rounded-full text-amber-600 w-max">
+      {{ status.name }}
+    </div>
+  }
+  @case ('success') {
+    <div class="success bg-primary-200 text-2xs font-bold px-4 py-1.5 rounded-full text-primary w-max">
+      {{ status.name }}
+    </div>
+  }
+  @case ('failed') {
+    <div class="failed bg-red-100 text-2xs font-bold px-4 py-1.5 rounded-full text-red-600 w-max">
+      {{ status.name }}
+    </div>
+  }
+}

@@ -1,0 +1,34 @@
+@if (uploading()) {
+  <div class="upload-container">
+    <div class="upload-overlay">
+      <mat-progress-bar mode="indeterminate" class="progress-bar"/>
+      <div class="remove-button">
+        <button mat-icon-button (click)="cancelUploading()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+      <div class="upload-overlay-text">Loading...</div>
+    </div>
+    <img [src]="selectedImage()" [alt]="_alt()">
+  </div>
+} @else if (_src()) {
+  <mat-form-field class="w-full mt-5">
+    <mat-label>Alt text</mat-label>
+    <input matInput [(ngModel)]="_alt" (ngModelChange)="_onAltChange()">
+  </mat-form-field>
+  <div class="uploaded-image">
+    <mf-image-resizer (imageResized)="_onImageResized($event)" [imageMaxWidth]="704">
+      <img [src]="_src()" [alt]="_alt()" mfImageResizerImage [attr.width]="options().width || null">
+    </mf-image-resizer>
+  </div>
+} @else {
+  <mf-upload-area #uploadArea="mfUploadArea"
+                   mfUploadTrigger accept="image/*"
+                   (fileSelected)="onFileSelected($event)" multiple="false" class="upload-area">
+    @if (!uploadArea.api.isDropActive) {
+      Drag & drop image here or click to upload
+    } @else {
+      <div class="font-medium">Drop image here</div>
+    }
+  </mf-upload-area>
+}

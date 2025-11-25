@@ -1,0 +1,16 @@
+<mf-panel>
+  <mf-panel-body>
+    <mf-overlay-scrollbar [absolute]="true">
+      <router-outlet/>
+    </mf-overlay-scrollbar>
+  </mf-panel-body>
+  <mf-panel-sidebar class="w-[300px] py-9 border-r border-r-surface-container">
+    <div class="h-full px-5">
+      <mf-navigation [activeKey]="activeLinkId" appearance="secondary">
+        @for (navItem of navItems; track navItem) {
+          <a [routerLink]="navItem.link" mf-navigation-item [key]="navItem.link">{{ navItem.name }}</a>
+        }
+      </mf-navigation>
+    </div>
+  </mf-panel-sidebar>
+</mf-panel>

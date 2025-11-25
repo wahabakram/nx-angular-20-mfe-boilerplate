@@ -1,0 +1,55 @@
+<div class="grid col-span-1 lg:grid-cols-2 h-screen">
+  <div class="col-span-1">
+    <div class="container mx-auto flex items-center flex-col justify-center min-h-screen px-5 py-7 md:p-20">
+      <main class="flex flex-col justify-center">
+        <div class="text-primary text-xs py-1 px-2 rounded-full font-semibold bg-primary-200 w-max">505 Error</div>
+        <h1 class="font-extrabold text-2xl sm:text-4xl lg:text-6xl lg:w-[600px] leading-[1.25] mt-4">
+          We’re Under Maintenance
+        </h1>
+        <p class="mt-5 mb-10 text-neutral-600 md:w-[600px]">
+          Sorry for trouble. Please come back later.
+        </p>
+        <div class="flex items-center flex-col sm:flex-row gap-4 sm:ap-3">
+          <button mat-stroked-button (click)="goBack()" class="w-full sm:w-auto">
+            <mat-icon>arrow_back_ios</mat-icon> Go back
+          </button>
+          <a routerLink="/" mat-flat-button class="w-full sm:w-auto">
+            <mat-icon>home</mat-icon> Go Home
+          </a>
+        </div>
+
+        <mf-horizontal-divider class="my-12"/>
+Ò
+        <div class="flex flex-col gap-6 md:gap-8">
+          <div>
+            <a routerLink="/" class="flex items-center hover:underline gap-1 text-tertiary">
+              <span class="font-semibold text-sm">Documentation</span>
+              <mat-icon class="!text-[20px] !size-[20px]">arrow_forward</mat-icon>
+            </a>
+            <p class="text-sm text-neutral-500 mt-1">Why not read  our comprehensive documentation while wait?</p>
+          </div>
+          <div>
+            <a routerLink="/" class="flex items-center hover:underline gap-1 text-tertiary">
+              <span class="font-semibold text-sm">Customer Support</span>
+              <mat-icon class="!text-[20px] !size-[20px]">arrow_forward</mat-icon>
+            </a>
+            <p class="text-sm text-neutral-500 mt-1">Or chat our customer support, just annoy the guy forever</p>
+          </div>
+          <div>
+            <a routerLink="/" class="flex items-center hover:underline gap-1 text-tertiary">
+              <span class="font-semibold text-sm">Read Blog</span>
+              <mat-icon class="!text-[20px] !size-[20px]">arrow_forward</mat-icon>
+            </a>
+            <p class="text-sm text-neutral-500 mt-1">If you’re a fan of words, why not read out blog?</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div class="col-span-1 hidden lg:flex relative overflow-hidden
+              items-center justify-center bg-surface-container-low p-5 lg:p-10">
+    <img src="https://images.pexels.com/photos/2516426/pexels-photo-2516426.jpeg" alt=""
+         class="object-cover absolute inset-0">
+<!--    <img src="assets/maintenance.svg" alt="" class="max-w-full max-h-full">-->
+  </div>
+</div>

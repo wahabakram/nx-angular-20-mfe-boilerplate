@@ -1,0 +1,12 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  border-right: var(--mf-tab-panel-border-end);
+  flex: none;
+  width: var(--mf-tab-panel-aside-width);
+}
+
+:host-context(.mf-tab-panel.is-hide-content-if-tab-not-selected):empty {
+  display: none;
+}

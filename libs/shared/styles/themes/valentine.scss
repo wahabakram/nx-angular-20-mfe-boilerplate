@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use '@angular/material' as mat;
 
 // Valentine Theme - Pink/red romantic theme
 $_palettes: (
@@ -121,3 +122,113 @@ $_rest: (
 
 $primary-palette: map.merge(map.get($_palettes, primary), $_rest);
 $tertiary-palette: map.merge(map.get($_palettes, tertiary), $_rest);
+
+@use "../_common" with (
+  $m3-light-theme: mat.define-theme((
+    color: (
+      theme-type: light,
+      primary: $primary-palette,
+      tertiary: $tertiary-palette,
+      use-system-variables: true,
+      system-variables-prefix: sys,
+    ),
+    typography: (
+      brand-family: 'var(--font-sans)',
+      plain-family: 'var(--font-sans)',
+      use-system-variables: true,
+      system-variables-prefix: sys,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )),
+  $m3-dark-theme: mat.define-theme((
+    color: (
+      theme-type: dark,
+      primary: $primary-palette,
+      tertiary: $tertiary-palette,
+      use-system-variables: true,
+      system-variables-prefix: sys,
+    ),
+    typography: (
+      brand-family: 'var(--font-sans)',
+      plain-family: 'var(--font-sans)',
+      use-system-variables: true,
+      system-variables-prefix: sys,
+    ),
+    density: (
+      scale: 0,
+    ),
+  ))
+);
+
+@function _high-contrast-value($light, $dark, $theme-type) {
+  @if ($theme-type == light) {
+    @return $light;
+  }
+  @if ($theme-type == dark) {
+    @return $dark;
+  }
+  @if ($theme-type == color-scheme) {
+    @return light-dark(#{$light}, #{$dark});
+  }
+
+  @error 'Unknown theme-type #{$theme-type}. Expected light, dark, or color-scheme';
+}
+
+@mixin high-contrast-overrides($theme-type) {
+  @include mat.theme-overrides((
+    primary: _high-contrast-value(#5f0033, #ffd9ea, $theme-type),
+    on-primary: _high-contrast-value(#ffffff, #000000, $theme-type),
+    primary-container: _high-contrast-value(#920057, #ff8dc5, $theme-type),
+    on-primary-container: _high-contrast-value(#ffffff, #1f000f, $theme-type),
+    inverse-primary: _high-contrast-value(#ff8dc5, #a40064, $theme-type),
+    primary-fixed: _high-contrast-value(#920057, #ffb8db, $theme-type),
+    primary-fixed-dim: _high-contrast-value(#6f003f, #ff8dc5, $theme-type),
+    on-primary-fixed: _high-contrast-value(#ffffff, #000000, $theme-type),
+    on-primary-fixed-variant: _high-contrast-value(#ffffff, #1f000f, $theme-type),
+    secondary: _high-contrast-value(#4c1127, #ffd9ea, $theme-type),
+    on-secondary: _high-contrast-value(#ffffff, #000000, $theme-type),
+    secondary-container: _high-contrast-value(#742f49, #f5a1bc, $theme-type),
+    on-secondary-container: _high-contrast-value(#ffffff, #170009, $theme-type),
+    secondary-fixed: _high-contrast-value(#742f49, #ffbdd8, $theme-type),
+    secondary-fixed-dim: _high-contrast-value(#591a32, #f5a1bc, $theme-type),
+    on-secondary-fixed: _high-contrast-value(#ffffff, #000000, $theme-type),
+    on-secondary-fixed-variant: _high-contrast-value(#ffffff, #170009, $theme-type),
+    tertiary: _high-contrast-value(#5a0030, #ffd9ea, $theme-type),
+    on-tertiary: _high-contrast-value(#ffffff, #000000, $theme-type),
+    tertiary-container: _high-contrast-value(#8c0052, #ff8dc2, $theme-type),
+    on-tertiary-container: _high-contrast-value(#ffffff, #1e000e, $theme-type),
+    tertiary-fixed: _high-contrast-value(#8c0052, #ffb8da, $theme-type),
+    tertiary-fixed-dim: _high-contrast-value(#6a003b, #ff8dc2, $theme-type),
+    on-tertiary-fixed: _high-contrast-value(#ffffff, #000000, $theme-type),
+    on-tertiary-fixed-variant: _high-contrast-value(#ffffff, #1e000e, $theme-type),
+    background: _high-contrast-value(#fff8f8, #0f0c0d, $theme-type),
+    on-background: _high-contrast-value(#201a1b, #ede1e2, $theme-type),
+    surface: _high-contrast-value(#fff8f8, #0f0c0d, $theme-type),
+    surface-dim: _high-contrast-value(#e1d9da, #0f0c0d, $theme-type),
+    surface-bright: _high-contrast-value(#fff8f8, #595152, $theme-type),
+    surface-container-low: _high-contrast-value(#fbeff0, #1d2024, $theme-type),
+    surface-container-lowest: _high-contrast-value(#ffffff, #000000, $theme-type),
+    surface-container: _high-contrast-value(#ede1e2, #362f30, $theme-type),
+    surface-container-high: _high-contrast-value(#e0d5d6, #413a3b, $theme-type),
+    surface-container-highest: _high-contrast-value(#d0c5c6, #4d4546, $theme-type),
+    on-surface: _high-contrast-value(#000000, #ffffff, $theme-type),
+    shadow: _high-contrast-value(#000000, #000000, $theme-type),
+    scrim: _high-contrast-value(#000000, #000000, $theme-type),
+    surface-tint: _high-contrast-value(#a40064, #ff8dc5, $theme-type),
+    inverse-surface: _high-contrast-value(#362f30, #ede1e2, $theme-type),
+    inverse-on-surface: _high-contrast-value(#ffffff, #000000, $theme-type),
+    outline: _high-contrast-value(#3a2e30, #f9edef, $theme-type),
+    outline-variant: _high-contrast-value(#524447, #d5c4c6, $theme-type),
+    error: _high-contrast-value(#690005, #ffedea, $theme-type),
+    on-error: _high-contrast-value(#ffffff, #000000, $theme-type),
+    error-container: _high-contrast-value(#a80710, #ffb4ab, $theme-type),
+    on-error-container: _high-contrast-value(#ffffff, #200001, $theme-type),
+    surface-variant: _high-contrast-value(#f2e0e2, #524447, $theme-type),
+    on-surface-variant: _high-contrast-value(#000000, #ffffff, $theme-type),
+  ))
+}
+
+@include mat.elevation-classes();
+@include mat.app-background();

@@ -1,0 +1,42 @@
+import { DestroyRef, Directive, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatDialog } from '@angular/material/dialog';
+import { COMMENT_EDITOR, ICommentEditor } from '../types';
+import { YoutubeDialog } from '../youtube-dialog/youtube-dialog';
+
+@Directive({
+  selector: '[mfCommentEditorCommandYoutube]',
+  host: {
+    '[attr.disabled]': `(commentEditor && commentEditor.api.isCommandDisabled('toggleBlockquote')) ? '' : null`,
+    '[class.active]': `commentEditor && commentEditor.api.isActive('blockquote')`,
+    '(click)': `onClick()`
+  }
+})
+export class CommentEditorCommandYoutubeDirective {
+  protected commentEditor = inject<ICommentEditor>(COMMENT_EDITOR);
+  private _dialog = inject(MatDialog);
+  private _destroyRef = inject(DestroyRef);
+
+  protected onClick(): void {
+    const dialogRef = this._dialog.open(YoutubeDialog, {
+      data: {
+        linkUrl: (this.commentEditor.api.editor().getAttributes('iframe') as HTMLIFrameElement).src
+      }
+    });
+    dialogRef
+      .afterClosed()
+      .pipe(
+        takeUntilDestroyed(this._destroyRef)
+      )
+      .subscribe((linkUrl: string) => {
+        if (typeof linkUrl === 'undefined') {
+          return;
+        }
+
+        this.commentEditor.api.editor().commands.setYoutubeVideo({
+          src: linkUrl
+        });
+      })
+    ;
+  }
+}

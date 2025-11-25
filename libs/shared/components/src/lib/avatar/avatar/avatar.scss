@@ -1,0 +1,126 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-avatar-font-weight: 500;
+  --mf-avatar-size: --spacing(10);
+  --mf-avatar-border-radius: calc(infinity * 1px);
+  --mf-avatar-bg: #778da9;
+  --mf-avatar-color: #fff;
+  --mf-avatar-presence-indicator-size: 20%;
+  --mf-avatar-presence-indicator-position-top: 5%;
+  --mf-avatar-presence-indicator-position-end: 5%;
+  --mf-avatar-presence-indicator-online-bg: #57cc99;
+  --mf-avatar-presence-indicator-offline-bg: var(--color-surface-variant);
+  --mf-avatar-presence-indicator-away-bg: #ffd60a;
+  --mf-avatar-presence-indicator-outline: white solid 2px;
+  --mf-avatar-inner-border: inset 0 0 2px var(--color-border);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  flex: none;
+  text-transform: uppercase;
+  position: relative;
+  font-weight: var(--mf-avatar-font-weight);
+
+  &:not([class*="shadow-"]) {
+    box-shadow: var(--mf-avatar-inner-border);
+  }
+
+  &:not([class*="text-"]) {
+    color: var(--mf-avatar-color);
+  }
+
+  &:not([class*="rounded"]) {
+    border-radius: var(--mf-avatar-border-radius);
+  }
+
+  &:not([class*="w-"]):not([class*="size-"]) {
+    width: var(--mf-avatar-size);
+  }
+
+  &:not([class*="h-"]):not([class*="size-"]) {
+    height: var(--mf-avatar-size);
+  }
+
+  &:not([class*="bg-"]):not(.has-loaded-image) {
+    background: var(--mf-avatar-bg);
+  }
+
+  .text {
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &.has-loaded-image {
+    .text {
+      display: none;
+    }
+  }
+
+  &.is-clickable {
+    cursor: pointer;
+  }
+
+  &.is-hidden {
+    display: none;
+  }
+
+  &.is-clickable {
+    &:active {
+      scale: .97;
+    }
+  }
+
+  .image {
+    display: inline;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    z-index: 1;
+  }
+
+  .presence-indicator {
+    position: absolute;
+    z-index: 1;
+    outline: var(--mf-avatar-presence-indicator-outline);
+    border-radius: 6.1875rem;
+    width: var(--mf-avatar-presence-indicator-size);
+    height: var(--mf-avatar-presence-indicator-size);
+    top: var(--mf-avatar-presence-indicator-position-top);
+    inset-inline-end: var(--mf-avatar-presence-indicator-position-end);
+
+    &.is-online {
+      background: var(--mf-avatar-presence-indicator-online-bg);
+    }
+
+    &.is-offline {
+      background: var(--mf-avatar-presence-indicator-offline-bg);
+    }
+
+    &.is-away {
+      background: var(--mf-avatar-presence-indicator-away-bg);
+    }
+  }
+
+  ::ng-deep {
+    .mat-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  &.has-automatic-color {
+    border: 1px solid var(--mf-avatar-border-color);
+  }
+}
+
+:host-context(html.dark) {
+  --mf-avatar-group-item-border: 0.125rem solid var(--color-neutral-950);
+  --mf-avatar-presence-indicator-outline: var(--color-neutral-950) solid 2px;
+}

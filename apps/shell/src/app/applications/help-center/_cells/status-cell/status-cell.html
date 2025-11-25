@@ -1,0 +1,9 @@
+@let status = context.getValue();
+
+<span
+  class="badge"
+  [class.status-open]="status.type === 'open'"
+  [class.status-in-progress]="status.type === 'inProgress'"
+  [class.status-closed]="status.type === 'closed'">
+  {{ status.name }}
+</span>

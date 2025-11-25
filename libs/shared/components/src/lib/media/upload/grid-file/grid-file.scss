@@ -1,0 +1,54 @@
+@reference 'tailwindcss';
+
+:host {
+  --mf-file-padding: --spacing(3) --spacing(2) --spacing(3) --spacing(3);
+  --mf-file-gap: --spacing(4);
+  --mf-file-border-radius: theme(--radius-2xl);
+  --mf-file-bg: var(--color-surface-container);
+  --mf-file-error-bg: var(--color-error-200);
+  --mf-file-controls-gap: --spacing(1);
+  --mf-file-error-font-size: var(--text-2xs);
+  --mf-file-error-color: var(--color-error-500);
+
+  display: flex;
+  min-width: 240px;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: var(--mf-file-padding);
+  gap: var(--mf-file-gap);
+  border-radius: var(--mf-file-border-radius);
+  background: var(--mf-file-bg);
+
+
+  .icon {
+    &:empty {
+      display: none;
+    }
+
+    width: 32px;
+    max-height: 40px;
+  }
+
+  .controls {
+    display: flex;
+    gap: var(--mf-file-controls-gap);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  .error {
+    font-size: var(--mf-file-error-font-size);
+    color: var(--mf-file-error-color);
+    position: absolute;
+    bottom: 0;
+    transform: translateY(100%);
+    left: --spacing(2);
+  }
+
+  &.has-error {
+    background: var(--mf-file-error-bg);
+  }
+}

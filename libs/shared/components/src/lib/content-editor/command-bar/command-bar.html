@@ -1,0 +1,88 @@
+<div class="flex items-center gap-1">
+  <button mat-icon-button (click)="toggleBold()"
+          [class.is-active]="isActive('strong')">
+    <mat-icon>format_bold</mat-icon>
+  </button>
+  <button mat-icon-button (click)="toggleItalic()"
+          [class.is-active]="isActive('em')">
+    <mat-icon>format_italic</mat-icon>
+  </button>
+  <button mat-icon-button (click)="toggleStrike()"
+          [class.is-active]="isActive('s')">
+    <mat-icon>strikethrough_s</mat-icon>
+  </button>
+  <button mat-icon-button (click)="toggleUnderline()"
+          [class.is-active]="isActive('u')">
+    <mat-icon>format_underlined</mat-icon>
+  </button>
+  <button mat-icon-button (click)="toggleSuperscript()"
+          [class.is-active]="isActive('sup')">
+    <mat-icon>superscript</mat-icon>
+  </button>
+  <button mat-icon-button (click)="toggleSubscript()"
+          [class.is-active]="isActive('sub')">
+    <mat-icon>subscript</mat-icon>
+  </button>
+  <button mat-icon-button (click)="toggleCode()"
+          [class.is-active]="isActive('code')">
+    <mat-icon>code</mat-icon>
+  </button>
+
+  @if (isLinkActive()) {
+    <button mat-icon-button (click)="editLink()">
+      <mat-icon>link</mat-icon>
+    </button>
+  } @else {
+    <button mat-icon-button (click)="addLink()">
+      <mat-icon>add_link</mat-icon>
+    </button>
+  }
+  <button mat-icon-button [matMenuTriggerFor]="alignMenu">
+    @switch (alignment()) {
+      @case ('left') {
+        <mat-icon>format_align_left</mat-icon>
+      }
+      @case ('center') {
+        <mat-icon>format_align_center</mat-icon>
+      }
+      @case ('right') {
+        <mat-icon>format_align_right</mat-icon>
+      }
+    }
+  </button>
+  <button mat-icon-button [matMenuTriggerFor]="formatColorText" (menuOpened)="onMenuOpen()">
+    <mat-icon>format_color_text</mat-icon>
+  </button>
+</div>
+
+<mat-menu #alignMenu="matMenu" [hasBackdrop]="false">
+  <button class="[&.is-active]:!bg-secondary-container"
+          [class.is-active]="isTextAlignment('left')"
+          mat-menu-item
+          (click)="setTextAlignment('left')">
+    <mat-icon>format_align_left</mat-icon>
+    Align Left
+  </button>
+  <button class="[&.is-active]:!bg-secondary-container"
+          [class.is-active]="isTextAlignment('center')"
+          mat-menu-item
+          (click)="setTextAlignment('center')">
+    <mat-icon>format_align_center</mat-icon>
+    Align Center
+  </button>
+  <button class="[&.is-active]:!bg-secondary-container"
+          [class.is-active]="isTextAlignment('right')"
+          mat-menu-item (click)="setTextAlignment('right')">
+    <mat-icon>format_align_right</mat-icon>
+    Align Right
+  </button>
+</mat-menu>
+
+<mat-menu #formatColorText="matMenu"
+          [hasBackdrop]="false"
+          (closed)="onMenuClose()">
+  <div class="px-4 py-3" (mousedown)="preventMenuClose($event)">
+    <mf-text-color (textColorChanged)="onTextColorChanged($event)"
+                    (backgroundColorChanged)="onBackgroundColorChanged($event)"/>
+  </div>
+</mat-menu>

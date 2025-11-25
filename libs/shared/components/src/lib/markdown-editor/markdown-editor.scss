@@ -1,0 +1,29 @@
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  border-radius: theme(--radius-2xl);
+  min-height: 100%;
+
+  ::ng-deep {
+    .milkdown,
+    .ProseMirror {
+      --crepe-font-title: var(--font-sans);
+      --crepe-font-default: var(--font-sans);
+      display: block;
+      border-radius: theme(--radius-3xl);
+      width: 100%;
+      min-height: calc(100% - --spacing(10));
+    }
+
+    .milkdown {
+      .ProseMirror {
+        padding: 40px 40px 40px 100px;
+      }
+    }
+  }
+}
+
+:host-context(html.dark) {
+
+}

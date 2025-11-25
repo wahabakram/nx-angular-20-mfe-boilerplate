@@ -1,0 +1,26 @@
+<div class="py-12 px-14">
+  <h1 class="text-xl font-semibold">Finance</h1>
+
+  <main class="mt-12 flex flex-col gap-10">
+    <section>
+      <app-income-expense-statistic-widget [widget]="incomeExpenseChartWidget()"/>
+    </section>
+    <section class="grid grid-cols-2 gap-7">
+      @for (stat of stats(); track stat) {
+        <app-common-stats [data]="stat" class="col-span-1"/>
+      }
+    </section>
+    <section>
+      <app-purchases-by-channels-widget [widget]="purchasesByChannelsWidget()"/>
+    </section>
+    <section>
+      <app-card-balance-widget/>
+    </section>
+    <section>
+      <app-finance-information-widget/>
+    </section>
+    <section>
+      <app-finance-expenses-widget class="w-96"/>
+    </section>
+  </main>
+</div>

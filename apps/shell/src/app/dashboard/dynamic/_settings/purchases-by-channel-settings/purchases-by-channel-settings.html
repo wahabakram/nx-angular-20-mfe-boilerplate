@@ -1,0 +1,24 @@
+<mf-panel>
+  <mf-panel-header class="ps-6 pe-2 h-14 border-b border-b-default flex items-center justify-between">
+    <div class="font-semibold">Widget Settings</div>
+    <button mat-icon-button (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mf-panel-header>
+  <mf-panel-body class="p-6">
+    <div [formGroup]="form">
+      <mat-form-field class="w-full">
+        <mat-label>Widget Name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+    </div>
+  </mf-panel-body>
+  <mf-panel-footer class="px-2 h-14 border-t gap-2 border-t-default flex items-center justify-end">
+    <button mat-button (click)="close()">
+      Cancel
+    </button>
+    <button mat-flat-button [disabled]="form.invalid" (click)="save()">
+      Save
+    </button>
+  </mf-panel-footer>
+</mf-panel>

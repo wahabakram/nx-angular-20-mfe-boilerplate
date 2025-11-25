@@ -1,0 +1,95 @@
+<mf-panel>
+  <mf-panel-sidebar class="w-[340px] border-r border-r-surface-container">
+    <mf-overlay-scrollbar [absolute]="true">
+      <div class="p-6 flex flex-col gap-8">
+        <div>
+          <h3 class="font-semibold mb-3">Calendar</h3>
+          <mat-card class="p-0">
+            <mat-calendar
+              [selected]="viewDate()"
+              (selectedChange)="onDateChange($event)">
+            </mat-calendar>
+          </mat-card>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-3">My Schedules</h3>
+          <ul class="flex flex-col gap-1 -ms-2.5">
+            @for (schedule of scheduleFilters(); track schedule.id) {
+              <li>
+                <mat-checkbox
+                  [checked]="schedule.enabled"
+                  (change)="onFilterChange(schedule.id, $event.checked)"
+                  color="primary">
+                  {{ schedule.name }}
+                </mat-checkbox>
+              </li>
+            }
+          </ul>
+        </div>
+        <div>
+          <div class="mb-3 flex items-center justify-between">
+            <h3 class="font-semibold">Categories</h3>
+            @if (selectedCategoryFilter()) {
+              <button type="button" (click)="clearCategoryFilter()"
+                      class="text-primary hover:text-tertiary text-tiny cursor-pointer">Clear</button>
+            }
+          </div>
+          <mf-navigation [activeKey]="selectedCategoryFilter()" class="-ms-4">
+            @for (category of categories(); track category.id) {
+              <button mf-navigation-item
+                      [key]="category.id"
+                      (click)="onCategoryFilterSelect(category.id)">
+                <div class="flex items-center">
+                  <span class="size-2 flex-none rounded-full mr-2"
+                        [style.background-color]="category.color"></span>
+                  <span>{{ category.name }}</span>
+                </div>
+                <ng-container mfNavigationItemBadge>{{ category.count }}</ng-container>
+              </button>
+            }
+          </mf-navigation>
+        </div>
+      </div>
+    </mf-overlay-scrollbar>
+  </mf-panel-sidebar>
+  <mf-panel-body>
+    <app-container>
+      <mf-panel>
+        <mf-panel-header class="h-16">
+          <header class="flex px-5 h-full border-b border-b-surface-container-high justify-between items-center">
+            <div class="flex items-center gap-2">
+              <button mat-icon-button (click)="calendarComponent().getApi().prev()">
+                <mat-icon>chevron_left</mat-icon>
+              </button>
+              <h2 class="text-lg font-semibold">{{ viewDate() | date: 'longDate' }}</h2>
+              <button mat-icon-button (click)="calendarComponent().getApi().next()">
+                <mat-icon>chevron_right</mat-icon>
+              </button>
+            </div>
+            <div class="flex items-center gap-3">
+              <button mat-icon-button><mat-icon>search</mat-icon></button>
+              <mf-segmented [value]="currentView()"
+                             (valueChange)="onViewChange($event)">
+                <button mf-segmented-button value="timeGridDay">Day</button>
+                <button mf-segmented-button value="timeGridWeek">Week</button>
+                <button mf-segmented-button value="dayGridMonth">Month</button>
+                <button mf-segmented-button value="dayGridYear">Year</button>
+              </mf-segmented>
+              <mf-vertical-divider/>
+              <button mat-flat-button (click)="openAddEventDialog()">
+                <mat-icon>add</mat-icon>Create Event
+              </button>
+            </div>
+          </header>
+        </mf-panel-header>
+        <mf-panel-body class="relative">
+          <div #calendarContainer class="absolute inset-0">
+            <full-calendar #calendar
+                           [options]="calendarOptions()"
+                           class="absolute inset-0"></full-calendar>
+          </div>
+        </mf-panel-body>
+      </mf-panel>
+    </app-container>
+  </mf-panel-body>
+</mf-panel>

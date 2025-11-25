@@ -1,0 +1,11 @@
+@reference 'tailwindcss';
+
+:host {
+  -carousel {
+    ---carousel-gap: --spacing(6);
+  }
+
+  mat-expansion-panel:not(.mat-expanded) {
+    box-shadow: none;
+  }
+}

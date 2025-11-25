@@ -1,0 +1,17 @@
+<div class="container mx-auto flex items-center flex-col justify-center min-h-screen text-center px-5 py-7 md:p-7">
+  <div class="text-primary sm:text-lg font-semibold">401 Error</div>
+  <h1 class="font-extrabold text-3xl sm:text-4xl lg:text-5xl leading-[1.25] max-w-[600px] mt-4">
+    Oops! Unauthorized.
+  </h1>
+  <p class="mt-5 mb-10 text-sm text-neutral-600">
+    This page is not publicly available. To access it, please login first.
+  </p>
+  <div class="flex items-center flex-col sm:flex-row justify-center gap-4 sm:ap-3">
+    <button mat-stroked-button (click)="goBack()" class="w-full sm:w-auto">
+      <mat-icon>arrow_back_ios</mat-icon> Go back
+    </button>
+    <a routerLink="/auth/sign-in" mat-flat-button class="w-full sm:w-auto">
+      <mat-icon>login</mat-icon> Sign in
+    </a>
+  </div>
+</div>

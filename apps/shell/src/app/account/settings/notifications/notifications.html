@@ -1,0 +1,79 @@
+<div class="p-12" [formGroup]="notificationsForm">
+  <h1 class="text-lg font-semibold mb-8">Notifications</h1>
+
+  <section>
+    <div class="flex flex-col gap-7">
+      <div class="relative group">
+        <div class="flex items-center justify-between gap-14 text-sm">
+          <div>
+            <div class="font-semibold">Enable Desktop Notifications</div>
+            <div class="mt-2 text-neutral-500">
+              Receive notifications all of messages.
+            </div>
+          </div>
+          <mat-slide-toggle formControlName="desktopNotifications"/>
+        </div>
+      </div>
+      <div class="relative group">
+        <div class="flex items-center justify-between gap-14 text-sm">
+          <div>
+            <div class="font-semibold">Enable Unread Notification Badge</div>
+            <div class="mt-2 text-neutral-500">
+              Show a red badge on the notifications icon when you have unread messages.
+            </div>
+          </div>
+          <mat-slide-toggle formControlName="unreadBadge"/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <mf-horizontal-divider class="my-12"/>
+
+  <section>
+    <h3 class="text-base font-semibold mb-7">Email Notifications</h3>
+    <div class="flex flex-col gap-7">
+      <div class="relative group">
+        <div class="flex items-center justify-between gap-14 text-sm">
+          <div>
+            <div class="font-semibold">Communication Emails</div>
+            <div class="mt-2 text-neutral-500">
+              Receive emails for messages or actions.
+            </div>
+          </div>
+          <mat-slide-toggle formControlName="emailCommunication"/>
+        </div>
+      </div>
+      <div class="relative group">
+        <div class="flex items-center justify-between gap-14 text-sm">
+          <div>
+            <div class="font-semibold">Announcements &amp; Updates</div>
+            <div class="mt-2 text-neutral-500">
+              Receive emails about product updates, improvements, etc.
+            </div>
+          </div>
+          <mat-slide-toggle formControlName="emailAnnouncements"/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <mf-horizontal-divider class="my-12"/>
+
+  <section>
+    <h3 class="text-base font-semibold mb-7">Sounds</h3>
+    <div class="flex flex-col gap-7">
+      <div class="relative group">
+        <div class="flex items-center justify-between gap-14 text-sm">
+          <div>
+            <div class="font-semibold">Disable All Notifications Sounds</div>
+            <div class="mt-2 text-neutral-500">
+              Mute all notification of messages or actions.
+            </div>
+          </div>
+          <mat-slide-toggle formControlName="disableSounds"/>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
