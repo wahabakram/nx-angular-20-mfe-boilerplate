@@ -4,42 +4,42 @@
   display: block;
   height: 100%;
   position: relative;
-  min-width: var(---layout-sidebar-compact-width);
+  min-width: var(--mf-layout-sidebar-compact-width);
 
-  -sidebar {
-    ---sidebar-width: 260px;
-    ---sidebar-bg: var(--color-background);
+  mf-sidebar {
+    --mf-sidebar-width: 260px;
+    --mf-sidebar-bg: var(--color-background);
   }
 
-  -sidebar-body {
-    ---sidebar-body-padding: 0 --spacing(4) 0 0;
+  mf-sidebar-body {
+    --mf-sidebar-body-padding: 0 --spacing(4) 0 0;
   }
 
-  -sidebar-nav {
-    ---sidebar-nav-item-icon-color: #a2aebd;
-    ---sidebar-nav-item-hover-icon-color: var(--color-primary);
-    ---sidebar-nav-item-active-icon-color: var(--color-primary-700);
-    ---sidebar-nav-item-active-bg: var(--color-secondary-container);
-    ---sidebar-nav-item-hover-bg: var(--color-primary-200);
-    ---sidebar-nav-item-padding: 0 --spacing(6);
-    ---sidebar-nav-group-toggle-active-bg: var(--color-secondary-container);
-    ---sidebar-nav-nested-item-hover-bg: var(--color-primary-200);
-    ---sidebar-nav-nested-item-active-bg: var(--color-secondary-container);
-    ---sidebar-nav-group-tree-lines-color: var(--color-neutral-300);
-    ---sidebar-nav-group-toggle-active-icon-color: var(--color-primary-700);
-    ---sidebar-nav-group-toggle-icon-color: #a2aebd;
-    ---sidebar-nav-item-border-radius: 0 100px 100px 0;
+  mf-sidebar-nav {
+    --mf-sidebar-nav-item-icon-color: #a2aebd;
+    --mf-sidebar-nav-item-hover-icon-color: var(--color-primary);
+    --mf-sidebar-nav-item-active-icon-color: var(--color-primary-700);
+    --mf-sidebar-nav-item-active-bg: var(--color-secondary-container);
+    --mf-sidebar-nav-item-hover-bg: var(--color-primary-200);
+    --mf-sidebar-nav-item-padding: 0 --spacing(6);
+    --mf-sidebar-nav-group-toggle-active-bg: var(--color-secondary-container);
+    --mf-sidebar-nav-nested-item-hover-bg: var(--color-primary-200);
+    --mf-sidebar-nav-nested-item-active-bg: var(--color-secondary-container);
+    --mf-sidebar-nav-group-tree-lines-color: var(--color-neutral-300);
+    --mf-sidebar-nav-group-toggle-active-icon-color: var(--color-primary-700);
+    --mf-sidebar-nav-group-toggle-icon-color: #a2aebd;
+    --mf-sidebar-nav-item-border-radius: 0 100px 100px 0;
   }
 
-  -sidebar-footer {
-    ---sidebar-footer-padding: --spacing(2);
+  mf-sidebar-footer {
+    --mf-sidebar-footer-padding: --spacing(2);
   }
 
-  -sidebar-nav-group-menu {
-    ---sidebar-nav-item-border-radius: 100px;
+  mf-sidebar-nav-group-menu {
+    --mf-sidebar-nav-item-border-radius: 100px;
   }
 
-  -sidebar-nav-item {
+  mf-sidebar-nav-item {
     transition: background-color 0.2s ease-in-out;
   }
 
@@ -49,16 +49,16 @@
 
   &.compact {
     &:not(:hover) {
-      -sidebar-body {
-        ---sidebar-body-padding: 0 0 0 0;
+      mf-sidebar-body {
+        --mf-sidebar-body-padding: 0 0 0 0;
       }
 
-      -sidebar-nav {
-        ---sidebar-nav-item-border-radius: 0;
+      mf-sidebar-nav {
+        --mf-sidebar-nav-item-border-radius: 0;
       }
 
-      -sidebar-footer {
-        ---sidebar-footer-compact-padding: --spacing(2);
+      mf-sidebar-footer {
+        --mf-sidebar-footer-compact-padding: --spacing(2);
       }
     }
 
@@ -75,15 +75,15 @@
 }
 
 :host-context(html.dark) {
-  -sidebar-nav {
-    ---sidebar-nav-group-toggle-active-bg: var(--color-primary-300);
-    ---sidebar-nav-group-toggle-active-color: var(--color-neutral-800);
-    ---sidebar-nav-item-active-icon-color: var(--color-primary-800);
-    ---sidebar-nav-group-tree-lines-color: var(--color-neutral-900);
-    ---sidebar-nav-group-toggle-active-icon-color: var(--color-primary-800);
-    ---sidebar-nav-nested-item-color: var(--color-secondary-200);
-    ---sidebar-nav-nested-item-active-bg: var(--color-secondary-fixed);
-    ---sidebar-nav-nested-item-hover-color: var(--color-secondary-200);
-    ---sidebar-nav-nested-item-active-color: var(--color-secondary-950);
+  mf-sidebar-nav {
+    --mf-sidebar-nav-group-toggle-active-bg: var(--color-primary-300);
+    --mf-sidebar-nav-group-toggle-active-color: var(--color-neutral-800);
+    --mf-sidebar-nav-item-active-icon-color: var(--color-primary-800);
+    --mf-sidebar-nav-group-tree-lines-color: var(--color-neutral-900);
+    --mf-sidebar-nav-group-toggle-active-icon-color: var(--color-primary-800);
+    --mf-sidebar-nav-nested-item-color: var(--color-secondary-200);
+    --mf-sidebar-nav-nested-item-active-bg: var(--color-secondary-fixed);
+    --mf-sidebar-nav-nested-item-hover-color: var(--color-secondary-200);
+    --mf-sidebar-nav-nested-item-active-color: var(--color-secondary-950);
   }
 }
