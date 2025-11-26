@@ -18,7 +18,8 @@
     "paths": {
       "@/*": ["apps/shell/src/app/*"],
       "@ng-mf/components": ["libs/shared/components/src"],
-      "@ng-mf/theme": ["libs/shared/ui-theme/src"]
+      "@ng-mf/theme": ["libs/shared/ui-theme/src"],
+      "webcomponents/Routes": ["apps/webcomponents/src/app/remote-entry/entry.routes.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "npx nx serve shell --devRemotes=webcomponents"
+    "start": "npx nx serve shell --devRemotes=webcomponents",
+    "start:invoicely": "npx nx serve invoicely"
   },
   "private": true,
   "devDependencies": {
