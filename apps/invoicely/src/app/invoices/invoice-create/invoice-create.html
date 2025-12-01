@@ -1,0 +1,229 @@
+<mf-panel>
+  <mf-panel-header class="px-10 h-16">
+    <div class="border-b border-b-default h-full flex items-center justify-between">
+      <div class="text-lg font-bold">Create New Invoice</div>
+      <button mat-icon-button (click)="cancel()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mf-panel-header>
+
+  <mf-panel-body class="p-10">
+    <form [formGroup]="invoiceForm" class="invoice-form">
+      <!-- Client & Date Information -->
+      <div class="form-section">
+        <h3 class="section-title">Invoice Details</h3>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Client</mat-label>
+            <mat-select formControlName="clientId" required>
+              @for (client of clientStore.activeClients(); track client.id) {
+                <mat-option [value]="client.id">
+                  {{ client.name }}
+                </mat-option>
+              }
+            </mat-select>
+            @if (submitted() && invoiceForm.get('clientId')?.hasError('required')) {
+              <mat-error>
+                Client is required
+              </mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Currency</mat-label>
+            <mf-currency-select formControlName="currencyId" [required]="true"></mf-currency-select>
+            @if (submitted() && invoiceForm.get('currencyId')?.hasError('required')) {
+              <mat-error>
+                Currency is required
+              </mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Issue Date</mat-label>
+            <input matInput [matDatepicker]="issuePicker" formControlName="issueDate" required>
+            <mat-datepicker-toggle matIconSuffix [for]="issuePicker"></mat-datepicker-toggle>
+            <mat-datepicker #issuePicker></mat-datepicker>
+            @if (submitted() && invoiceForm.get('issueDate')?.hasError('required')) {
+              <mat-error>
+                Issue date is required
+              </mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Due Date</mat-label>
+            <input matInput [matDatepicker]="duePicker" formControlName="dueDate" required>
+            <mat-datepicker-toggle matIconSuffix [for]="duePicker"></mat-datepicker-toggle>
+            <mat-datepicker #duePicker></mat-datepicker>
+            @if (submitted() && invoiceForm.get('dueDate')?.hasError('required')) {
+              <mat-error>
+                Due date is required
+              </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Line Items -->
+      <div class="form-section">
+        <div class="section-header">
+          <h3 class="section-title">Line Items</h3>
+          <button mat-button (click)="addLineItem()" type="button" class="add-item-btn">
+            <mat-icon>add</mat-icon>
+            Add Item
+          </button>
+        </div>
+
+        <div class="line-items-container" formArrayName="items">
+          <div class="line-items-header">
+            <div class="col-description">Description</div>
+            <div class="col-quantity">Quantity</div>
+            <div class="col-rate">Rate</div>
+            <div class="col-amount">Amount</div>
+            <div class="col-actions"></div>
+          </div>
+
+          @for (item of items.controls; track $index) {
+            <div class="line-item-row" [formGroupName]="$index">
+              <mat-form-field appearance="outline" class="col-description">
+                <mat-label>Description</mat-label>
+                <input matInput formControlName="description" placeholder="Item description">
+                @if (submitted() && item.get('description')?.hasError('required')) {
+                  <mat-error>
+                    Required
+                  </mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="col-quantity">
+                <mat-label>Qty</mat-label>
+                <input matInput type="number" formControlName="quantity" min="1">
+                @if (submitted() && item.get('quantity')?.hasError('required')) {
+                  <mat-error>
+                    Required
+                  </mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="col-rate">
+                <mat-label>Rate</mat-label>
+                <input matInput type="number" formControlName="rate" min="0" step="0.01">
+                @if (submitted() && item.get('rate')?.hasError('required')) {
+                  <mat-error>
+                    Required
+                  </mat-error>
+                }
+              </mat-form-field>
+
+              <div class="col-amount">
+                {{ item.get('amount')?.value | currency }}
+              </div>
+
+              <div class="col-actions">
+                <button mat-icon-button
+                        (click)="removeLineItem($index)"
+                        type="button"
+                        [disabled]="items.length === 1"
+                        class="delete-btn">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Tax & Discount -->
+      <div class="form-section">
+        <h3 class="section-title">Additional Charges</h3>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Tax Rate (%)</mat-label>
+            <input matInput type="number" formControlName="taxRate" min="0" max="100" step="0.01">
+            <mat-hint>Enter tax percentage (e.g., 10 for 10%)</mat-hint>
+          </mat-form-field>
+
+          <div class="discount-group">
+            <mat-form-field appearance="outline" class="form-field flex-1">
+              <mat-label>Discount</mat-label>
+              <input matInput type="number" formControlName="discount" min="0" step="0.01">
+            </mat-form-field>
+
+            <mat-radio-group formControlName="discountType" class="discount-type">
+              <mat-radio-button value="percentage">%</mat-radio-button>
+              <mat-radio-button value="fixed">$</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes & Terms -->
+      <div class="form-section">
+        <h3 class="section-title">Additional Information</h3>
+
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>Notes</mat-label>
+          <textarea matInput formControlName="notes" rows="3" placeholder="Any additional notes for the client"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>Terms & Conditions</mat-label>
+          <textarea matInput formControlName="terms" rows="3" placeholder="Payment terms and conditions"></textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- Totals Summary -->
+      <div class="totals-section">
+        <div class="totals-container">
+          <div class="total-row">
+            <span class="total-label">Subtotal:</span>
+            <span class="total-value">{{ subtotal | currency }}</span>
+          </div>
+          <div class="total-row">
+            <span class="total-label">Tax ({{ invoiceForm.get('taxRate')?.value || 0 }}%):</span>
+            <span class="total-value">{{ taxAmount | currency }}</span>
+          </div>
+          <div class="total-row">
+            <span class="total-label">Discount:</span>
+            <span class="total-value discount">-{{ discountAmount | currency }}</span>
+          </div>
+          <div class="total-row total-final">
+            <span class="total-label">Total:</span>
+            <span class="total-value">{{ total | currency }}</span>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mf-panel-body>
+
+  <mf-panel-footer class="px-10 py-5">
+    <div class="footer-actions">
+      <button mat-button (click)="cancel()" type="button" [disabled]="loading()">
+        Cancel
+      </button>
+      <div class="action-buttons">
+        <button mat-stroked-button
+                (click)="saveAsDraft()"
+                type="button"
+                [disabled]="loading()">
+          <mat-icon>save</mat-icon>
+          Save as Draft
+        </button>
+        <button mat-raised-button
+                color="primary"
+                (click)="sendInvoice()"
+                type="button"
+                [disabled]="loading()">
+          <mat-icon>send</mat-icon>
+          Send Invoice
+        </button>
+      </div>
+    </div>
+  </mf-panel-footer>
+</mf-panel>

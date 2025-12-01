@@ -1,0 +1,66 @@
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding: 0 1.5rem;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .menu-button {
+      display: none;
+
+      @media (max-width: 768px) {
+        display: flex;
+      }
+    }
+
+    .page-title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .icon-button {
+      color: #6b7280;
+
+      &:hover {
+        color: #1f2937;
+      }
+    }
+
+    .user-menu-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      transition: background 0.2s;
+
+      .user-name {
+        font-weight: 500;
+        color: #1f2937;
+
+        @media (max-width: 640px) {
+          display: none;
+        }
+      }
+
+      &:hover {
+        background: #f3f4f6;
+      }
+    }
+  }
+}

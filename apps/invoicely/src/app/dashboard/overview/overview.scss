@@ -1,0 +1,150 @@
+.dashboard-overview {
+  .dashboard-header {
+    margin-bottom: 2rem;
+
+    h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    p {
+      margin: 0;
+      color: #6b7280;
+      font-size: 1rem;
+    }
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+
+    .metric-card {
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      mat-card-content {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1.5rem !important;
+
+        .metric-icon {
+          width: 56px;
+          height: 56px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          mat-icon {
+            color: white;
+            font-size: 28px;
+            width: 28px;
+            height: 28px;
+          }
+        }
+
+        .metric-details {
+          flex: 1;
+
+          .metric-title {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+
+          .metric-value {
+            margin: 0;
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1f2937;
+          }
+        }
+      }
+    }
+  }
+
+  .quick-actions {
+    margin-bottom: 3rem;
+
+    h2 {
+      margin: 0 0 1.5rem 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+
+      button {
+        height: 48px;
+        font-weight: 600;
+
+        mat-icon {
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    .empty-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      color: #d1d5db;
+      margin: 0 auto 1rem;
+    }
+
+    h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    p {
+      margin: 0 0 2rem 0;
+      color: #6b7280;
+      font-size: 1rem;
+    }
+
+    button {
+      height: 48px;
+      font-weight: 600;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-overview {
+    .metrics-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .quick-actions .actions-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

@@ -1,0 +1,51 @@
+<div class="dashboard-overview">
+  <div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p>Welcome back! Here's an overview of your business.</p>
+  </div>
+
+  <div class="metrics-grid">
+    <mat-card *ngFor="let metric of metrics" class="metric-card" [routerLink]="metric.route">
+      <mat-card-content>
+        <div class="metric-icon" [style.background-color]="metric.color">
+          <mat-icon>{{ metric.icon }}</mat-icon>
+        </div>
+        <div class="metric-details">
+          <h3 class="metric-title">{{ metric.title }}</h3>
+          <p class="metric-value">{{ metric.value }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="quick-actions">
+    <h2>Quick Actions</h2>
+    <div class="actions-grid">
+      <button mat-raised-button color="primary" routerLink="/invoices/create">
+        <mat-icon>add</mat-icon>
+        Create Invoice
+      </button>
+      <button mat-raised-button routerLink="/clients">
+        <mat-icon>person_add</mat-icon>
+        Add Client
+      </button>
+      <button mat-raised-button routerLink="/payments">
+        <mat-icon>payment</mat-icon>
+        Record Payment
+      </button>
+      <button mat-raised-button routerLink="/reports">
+        <mat-icon>assessment</mat-icon>
+        View Reports
+      </button>
+    </div>
+  </div>
+
+  <div class="empty-state">
+    <mat-icon class="empty-icon">inbox</mat-icon>
+    <h3>No data yet</h3>
+    <p>Start by creating your first invoice or adding a client.</p>
+    <button mat-raised-button color="primary" routerLink="/invoices/create">
+      Create First Invoice
+    </button>
+  </div>
+</div>

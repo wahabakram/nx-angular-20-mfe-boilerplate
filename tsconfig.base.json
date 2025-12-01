@@ -17,9 +17,14 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["apps/shell/src/app/*"],
+      "@invoicely/*": ["apps/invoicely/src/app/*"],
+      "@invoicely/domain/*": ["apps/invoicely/src/app/_domain/*"],
+      "@invoicely/infrastructure/*": ["apps/invoicely/src/app/_infrastructure/*"],
+      "@invoicely/shared/*": ["apps/invoicely/src/app/_shared/*"],
       "@ng-mf/components": ["libs/shared/components/src"],
       "@ng-mf/theme": ["libs/shared/ui-theme/src"],
-      "webcomponents/Routes": ["apps/webcomponents/src/app/remote-entry/entry.routes.ts"]
+      "webcomponents/Routes": ["apps/webcomponents/src/app/remote-entry/entry.routes.ts"],
+      "invoicely/Routes": ["apps/invoicely/src/app/remote-entry/entry.routes.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

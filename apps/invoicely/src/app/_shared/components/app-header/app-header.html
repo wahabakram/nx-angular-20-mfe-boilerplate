@@ -1,0 +1,41 @@
+<header class="app-header">
+  <div class="header-left">
+    <button mat-icon-button class="menu-button">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="page-title">Invoicely</h1>
+  </div>
+
+  <div class="header-right">
+    <!-- Notifications -->
+    <button mat-icon-button [matBadge]="3" matBadgeColor="warn" class="icon-button">
+      <mat-icon>notifications</mat-icon>
+    </button>
+
+    <!-- User Menu -->
+    <button mat-button [matMenuTriggerFor]="userMenu" class="user-menu-button">
+      <mf-avatar
+        [label]="authStore.userInitials()"
+        class="size-8">
+      </mf-avatar>
+      <span class="user-name">{{ authStore.userFullName() }}</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+
+    <mat-menu #userMenu="matMenu" class="user-menu">
+      <button mat-menu-item (click)="goToProfile()">
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
+      <button mat-menu-item (click)="goToSettings()">
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
+      <mf-h-divider></mf-h-divider>
+      <button mat-menu-item routerLink="/auth/signin">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+</header>

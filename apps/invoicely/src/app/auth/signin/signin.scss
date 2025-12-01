@@ -1,0 +1,86 @@
+.signin-page {
+  .signin-header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    p {
+      margin: 0;
+      color: #6b7280;
+      font-size: 0.9375rem;
+    }
+  }
+
+  .error-alert {
+    margin-bottom: 1.5rem;
+  }
+
+  .signin-form {
+    .full-width {
+      width: 100%;
+    }
+
+    mat-form-field {
+      margin-bottom: 1rem;
+    }
+
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+
+      .forgot-link {
+        color: #667eea;
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .submit-button {
+      width: 100%;
+      height: 48px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: none;
+
+      mat-spinner {
+        display: inline-block;
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .signin-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+
+    p {
+      margin: 0;
+      color: #6b7280;
+      font-size: 0.9375rem;
+
+      .signup-link {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        margin-left: 0.25rem;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

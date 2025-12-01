@@ -1,0 +1,218 @@
+<mf-panel>
+  <mf-panel-header class="px-10 h-16">
+    <div class="border-b border-b-default h-full flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <button mat-icon-button (click)="backToInvoices()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="text-lg font-bold">Invoice Details</div>
+      </div>
+
+      <div class="actions">
+        <button mat-icon-button [matMenuTriggerFor]="actionsMenu" [disabled]="loading()">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #actionsMenu="matMenu">
+          <button mat-menu-item (click)="editInvoice()">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item (click)="duplicateInvoice()">
+            <mat-icon>content_copy</mat-icon>
+            <span>Duplicate</span>
+          </button>
+          <button mat-menu-item (click)="printInvoice()">
+            <mat-icon>print</mat-icon>
+            <span>Print</span>
+          </button>
+          <button mat-menu-item (click)="downloadPdf()">
+            <mat-icon>download</mat-icon>
+            <span>Download PDF</span>
+          </button>
+          <mf-h-divider></mf-h-divider>
+          <button mat-menu-item (click)="deleteInvoice()" class="text-red-600">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </mf-panel-header>
+
+  <mf-panel-body class="p-10">
+    @if (loading() && !invoice()) {
+      <div class="loading-state">
+        <mat-icon>hourglass_empty</mat-icon>
+        <p>Loading invoice...</p>
+      </div>
+    } @else if (invoice()) {
+      <div class="invoice-detail-container">
+        <!-- Invoice Header -->
+        <div class="invoice-header">
+          <div class="invoice-header-top">
+            <div>
+              <div class="invoice-number">{{ invoice()!.invoiceNumber }}</div>
+              <div class="invoice-status">
+                <span [class]="getStatusClass(invoice()!.status)">
+                  {{ getStatusLabel(invoice()!.status) }}
+                </span>
+              </div>
+            </div>
+
+            <div class="invoice-actions">
+              @if (invoice()!.status === 'draft') {
+                <button mat-raised-button color="primary" (click)="sendInvoice()" [disabled]="loading()">
+                  <mat-icon>send</mat-icon>
+                  Send Invoice
+                </button>
+              }
+              @if (invoice()!.status === 'sent' || invoice()!.status === 'overdue') {
+                <button mat-raised-button color="accent" (click)="markAsPaid()" [disabled]="loading()">
+                  <mat-icon>check_circle</mat-icon>
+                  Mark as Paid
+                </button>
+              }
+              <button mat-stroked-button (click)="editInvoice()" [disabled]="loading()">
+                <mat-icon>edit</mat-icon>
+                Edit
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Invoice Info Grid -->
+        <div class="invoice-info-grid">
+          <!-- Client Information -->
+          <div class="info-section">
+            <h3 class="section-title">Bill To</h3>
+            <div class="info-content">
+              <div class="client-name">{{ invoice()!.client?.name || 'N/A' }}</div>
+              @if (invoice()!.client?.email) {
+                <div class="info-item">
+                  <mat-icon class="info-icon">email</mat-icon>
+                  <span>{{ invoice()!.client?.email }}</span>
+                </div>
+              }
+              @if (invoice()!.client?.phone) {
+                <div class="info-item">
+                  <mat-icon class="info-icon">phone</mat-icon>
+                  <span>{{ invoice()!.client?.phone }}</span>
+                </div>
+              }
+              @if (invoice()!.client?.company) {
+                <div class="info-item">
+                  <mat-icon class="info-icon">business</mat-icon>
+                  <span>{{ invoice()!.client?.company }}</span>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Invoice Dates -->
+          <div class="info-section">
+            <h3 class="section-title">Invoice Information</h3>
+            <div class="info-content">
+              <div class="info-row">
+                <span class="info-label">Issue Date:</span>
+                <span class="info-value">{{ invoice()!.issueDate | date }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Due Date:</span>
+                <span class="info-value">{{ invoice()!.dueDate | date }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Currency:</span>
+                <span class="info-value">
+                  {{ invoice()!.currency?.code || 'USD' }} ({{ invoice()!.currency?.symbol || '$' }})
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Line Items Table -->
+        <div class="line-items-section">
+          <h3 class="section-title">Line Items</h3>
+
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th class="text-left">Description</th>
+                <th class="text-right">Quantity</th>
+                <th class="text-right">Rate</th>
+                <th class="text-right">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of invoice()!.items; track item.id || $index) {
+                <tr>
+                  <td>{{ item.description }}</td>
+                  <td class="text-right">{{ item.quantity }}</td>
+                  <td class="text-right">{{ item.rate | currency }}</td>
+                  <td class="text-right font-semibold">{{ item.amount | currency }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+
+          <!-- Totals -->
+          <div class="totals-section">
+            <div class="totals-container">
+              <div class="total-row">
+                <span class="total-label">Subtotal:</span>
+                <span class="total-value">{{ invoice()!.subtotal | currency }}</span>
+              </div>
+              @if (invoice()!.tax > 0) {
+                <div class="total-row">
+                  <span class="total-label">Tax ({{ invoice()!.taxRate }}%):</span>
+                  <span class="total-value">{{ invoice()!.tax | currency }}</span>
+                </div>
+              }
+              @if (invoice()!.discount > 0) {
+                <div class="total-row">
+                  <span class="total-label">Discount:</span>
+                  <span class="total-value discount">-{{ invoice()!.discount | currency }}</span>
+                </div>
+              }
+              <div class="total-row total-final">
+                <span class="total-label">Total:</span>
+                <span class="total-value">{{ invoice()!.total | currency }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes & Terms -->
+        @if (invoice()!.notes || invoice()!.terms) {
+          <div class="additional-info-section">
+            @if (invoice()!.notes) {
+              <div class="info-block">
+                <h3 class="section-title">Notes</h3>
+                <p class="info-text">{{ invoice()!.notes }}</p>
+              </div>
+            }
+            @if (invoice()!.terms) {
+              <div class="info-block">
+                <h3 class="section-title">Terms & Conditions</h3>
+                <p class="info-text">{{ invoice()!.terms }}</p>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Timestamps -->
+        <div class="timestamps">
+          <div class="timestamp-item">
+            <mat-icon>schedule</mat-icon>
+            <span>Created: {{ invoice()!.createdAt | date:'medium' }}</span>
+          </div>
+          <div class="timestamp-item">
+            <mat-icon>update</mat-icon>
+            <span>Updated: {{ invoice()!.updatedAt | date:'medium' }}</span>
+          </div>
+        </div>
+      </div>
+    }
+  </mf-panel-body>
+</mf-panel>

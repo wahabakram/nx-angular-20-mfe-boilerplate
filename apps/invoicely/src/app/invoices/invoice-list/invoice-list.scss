@@ -1,0 +1,65 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-draft {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.status-sent {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.status-paid {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-overdue {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.status-cancelled {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+// Statistics cards
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+  }
+}
