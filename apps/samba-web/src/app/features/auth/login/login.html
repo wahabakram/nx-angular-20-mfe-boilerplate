@@ -1,0 +1,86 @@
+<div class="flex flex-wrap h-screen mat-typography">
+  <div class="flex w-full flex-col md:w-1/2 h-screen">
+    <div>
+      <a mf-logo routerLink="/" class="mt-7 ms-8">SAMBA ERP</a>
+    </div>
+    <div class="grow px-10 md:px-20 flex items-center justify-center overflow-y-auto">
+      <div class="w-[500px]">
+        <h2>Welcome back</h2>
+        <p class="mt-2 text-left text-neutral-500 text-sm">Please enter your credentials to continue.</p>
+
+        <!-- Error Alert -->
+        @if (error()) {
+          <div class="rounded-md bg-error/10 p-4 mt-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-error" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-error">
+                  {{ error() }}
+                </h3>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Login Form -->
+        <form class="flex flex-col pt-3 md:pt-8" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <mat-form-field>
+            <mat-label>Username</mat-label>
+            <input type="text" matInput formControlName="username" autocomplete="username">
+            @if (hasError('username', 'required')) {
+              <mat-error>Username is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input type="password" matInput formControlName="password" autocomplete="current-password">
+            @if (hasError('password', 'required')) {
+              <mat-error>Password is required</mat-error>
+            }
+            @if (hasError('password', 'minlength')) {
+              <mat-error>Password must be at least 6 characters</mat-error>
+            }
+          </mat-form-field>
+
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            class="!h-12 mt-5"
+            [disabled]="isLoading()">
+            @if (isLoading()) {
+              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Signing in...
+            } @else {
+              Sign in
+            }
+          </button>
+        </form>
+
+        <!-- Test Credentials Info -->
+        <div class="rounded-md bg-primary/10 p-4 mt-6">
+          <div class="text-sm text-primary">
+            <p class="font-medium">Test Credentials:</p>
+            <ul class="mt-2 space-y-1 list-disc list-inside">
+              <li>Admin: admin / admin123</li>
+              <li>Manager: manager / manager123</li>
+              <li>Cashier: cashier / cashier123</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pointer-events-none relative hidden h-screen flex items-center
+              justify-center select-none bg-surface-container md:flex md:w-1/2">
+    <img class="z-1 max-w-[80%] w-full mx-auto" ngSrc="assets/auth/login-illustration.svg" alt="SAMBA ERP" fill>
+  </div>
+</div>

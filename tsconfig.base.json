@@ -19,12 +19,26 @@
       "@/*": ["apps/shell/src/app/*"],
       "@invoicely/*": ["apps/invoicely/src/app/*"],
       "@invoicely/domain/*": ["apps/invoicely/src/app/_domain/*"],
-      "@invoicely/infrastructure/*": ["apps/invoicely/src/app/_infrastructure/*"],
+      "@invoicely/infrastructure/*": [
+        "apps/invoicely/src/app/_infrastructure/*"
+      ],
       "@invoicely/shared/*": ["apps/invoicely/src/app/_shared/*"],
       "@ng-mf/components": ["libs/shared/components/src"],
       "@ng-mf/theme": ["libs/shared/ui-theme/src"],
-      "webcomponents/Routes": ["apps/webcomponents/src/app/remote-entry/entry.routes.ts"],
-      "invoicely/Routes": ["apps/invoicely/src/app/remote-entry/entry.routes.ts"]
+      "webcomponents/Routes": [
+        "apps/webcomponents/src/app/remote-entry/entry.routes.ts"
+      ],
+      "invoicely/Routes": [
+        "apps/invoicely/src/app/remote-entry/entry.routes.ts"
+      ],
+      "@samba/product-domain": ["libs/samba/domain/product/src/index.ts"],
+      "@samba/branch-domain": ["libs/samba/domain/branch/src/index.ts"],
+      "@samba/user-domain": ["libs/samba/domain/user/src/index.ts"],
+      "@samba/sale-domain": ["libs/samba/domain/sale/src/index.ts"],
+      "@samba/customer-domain": ["libs/samba/domain/customer/src/index.ts"],
+      "@samba/category-domain": ["libs/samba/domain/category/src/index.ts"],
+      "@samba/inventory-domain": ["libs/samba/domain/inventory/src/index.ts"],
+      "@samba/infrastructure": ["libs/samba/infrastructure/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,0 +1,272 @@
+<div class="min-h-screen bg-surface mat-typography">
+  <!-- Material Toolbar -->
+  <mat-toolbar color="primary" class="shadow-sm">
+    <mat-icon class="mr-2">point_of_sale</mat-icon>
+    <span class="text-xl font-semibold">Point of Sale</span>
+    <span class="flex-1"></span>
+    <span class="text-sm mr-4">
+      {{ user()?.firstName }} {{ user()?.lastName }} - {{ user()?.role | uppercase }}
+    </span>
+    <button mat-icon-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
+      <mf-h-divider></mf-h-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4">
+    <!-- Left Panel - Product Search & Cart -->
+    <div class="lg:col-span-2">
+      @if (error()) {
+        <mat-card class="mb-4 bg-error-50 text-error border-l-4 border-error">
+          <mat-card-content class="p-4">
+            <div class="flex items-center">
+              <mat-icon class="mr-2">error</mat-icon>
+              <span>{{ error() }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+
+      <!-- Barcode Scanner / Product Search -->
+      <mat-card class="mb-4">
+        <mat-card-content class="p-4">
+          <div class="flex gap-2">
+            <mat-form-field class="flex-1">
+              <mat-label>Scan Barcode or Search Product</mat-label>
+              <input
+                matInput
+                [(ngModel)]="searchTerm"
+                (keyup.enter)="searchProduct(searchTerm())"
+                placeholder="Enter barcode or product name"
+                autofocus
+              >
+              <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="searchProduct(searchTerm())">
+              <mat-icon>search</mat-icon>
+              Search
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Shopping Cart -->
+      <mat-card>
+        <mat-card-content class="p-4">
+          <h3 class="text-lg font-semibold mb-4">Shopping Cart</h3>
+
+          @if (cart().length === 0) {
+            <div class="text-center py-12 text-neutral-500">
+              <mat-icon class="text-6xl mb-2">shopping_cart</mat-icon>
+              <p>Cart is empty</p>
+              <p class="text-sm">Scan or search products to add them</p>
+            </div>
+          } @else {
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="border-b">
+                    <th class="text-left py-2">Product</th>
+                    <th class="text-center py-2">Price</th>
+                    <th class="text-center py-2">Quantity</th>
+                    <th class="text-right py-2">Subtotal</th>
+                    <th class="text-center py-2">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of cart(); track item.product.id) {
+                    <tr class="border-b">
+                      <td class="py-3">
+                        <div>
+                          <div class="font-medium">{{ item.product.name }}</div>
+                          <div class="text-sm text-neutral-600">{{ item.product.sku }}</div>
+                        </div>
+                      </td>
+                      <td class="text-center">${{ item.product.price.toFixed(2) }}</td>
+                      <td class="text-center">
+                        <div class="flex items-center justify-center gap-2">
+                          <button
+                            mat-icon-button
+                            (click)="updateQuantity(item.product.id, item.quantity - 1)"
+                            [disabled]="item.quantity <= 1"
+                          >
+                            <mat-icon>remove</mat-icon>
+                          </button>
+                          <input
+                            type="number"
+                            [(ngModel)]="item.quantity"
+                            (change)="updateQuantity(item.product.id, item.quantity)"
+                            class="w-16 text-center border rounded"
+                            min="1"
+                            [max]="item.product.stockLevel"
+                          >
+                          <button
+                            mat-icon-button
+                            (click)="updateQuantity(item.product.id, item.quantity + 1)"
+                            [disabled]="item.quantity >= item.product.stockLevel"
+                          >
+                            <mat-icon>add</mat-icon>
+                          </button>
+                        </div>
+                        <div class="text-xs text-neutral-600 mt-1">
+                          Stock: {{ item.product.stockLevel }}
+                        </div>
+                      </td>
+                      <td class="text-right font-medium">${{ item.subtotal.toFixed(2) }}</td>
+                      <td class="text-center">
+                        <button
+                          mat-icon-button
+                          color="warn"
+                          (click)="removeFromCart(item.product.id)"
+                        >
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-4 flex justify-end">
+              <button mat-stroked-button color="warn" (click)="clearCart()">
+                <mat-icon>clear</mat-icon>
+                Clear Cart
+              </button>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Right Panel - Payment & Summary -->
+    <div class="lg:col-span-1">
+      <mat-card class="sticky top-4">
+        <mat-card-content class="p-4">
+          <h3 class="text-lg font-semibold mb-4">Payment Summary</h3>
+
+          <!-- Summary Details -->
+          <div class="space-y-3 mb-4">
+            <div class="flex justify-between">
+              <span class="text-neutral-600">Subtotal:</span>
+              <span class="font-medium">${{ subtotal().toFixed(2) }}</span>
+            </div>
+
+            <mf-h-divider></mf-h-divider>
+
+            <!-- Discount -->
+            <div>
+              <label class="text-sm text-neutral-600">Discount (%)</label>
+              <mat-form-field class="w-full">
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="discountRate"
+                  (ngModelChange)="calculateTotals()"
+                  min="0"
+                  max="100"
+                  placeholder="0"
+                >
+              </mat-form-field>
+            </div>
+            @if (discountAmount() > 0) {
+              <div class="flex justify-between text-success">
+                <span>Discount Amount:</span>
+                <span>-${{ discountAmount().toFixed(2) }}</span>
+              </div>
+            }
+
+            <mf-h-divider></mf-h-divider>
+
+            <!-- Tax -->
+            <div class="flex justify-between">
+              <span class="text-neutral-600">Tax ({{ (taxRate() * 100).toFixed(0) }}%):</span>
+              <span>${{ taxAmount().toFixed(2) }}</span>
+            </div>
+
+            <mf-h-divider></mf-h-divider>
+
+            <!-- Total -->
+            <div class="flex justify-between text-xl font-bold">
+              <span>Total:</span>
+              <span class="text-primary">${{ total().toFixed(2) }}</span>
+            </div>
+          </div>
+
+          <mf-h-divider></mf-h-divider>
+
+          <!-- Payment Method -->
+          <div class="mt-4 mb-4">
+            <label class="text-sm font-medium mb-2 block">Payment Method</label>
+            <mat-form-field class="w-full">
+              <mat-select [(ngModel)]="selectedPaymentMethod">
+                @for (method of paymentMethods; track method.value) {
+                  <mat-option [value]="method.value">
+                    {{ method.label }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- Notes -->
+          <div class="mb-4">
+            <label class="text-sm font-medium mb-2 block">Notes (Optional)</label>
+            <mat-form-field class="w-full">
+              <textarea
+                matInput
+                [(ngModel)]="customerNotes"
+                rows="2"
+                placeholder="Add notes about this sale"
+              ></textarea>
+            </mat-form-field>
+          </div>
+
+          <!-- Complete Sale Button -->
+          <button
+            mat-raised-button
+            color="primary"
+            class="w-full py-3"
+            (click)="completeSale()"
+            [disabled]="cart().length === 0 || isProcessing()"
+          >
+            @if (isProcessing()) {
+              <mat-spinner diameter="20" class="mr-2"></mat-spinner>
+            }
+            @if (!isProcessing()) {
+              <mat-icon>check_circle</mat-icon>
+            }
+            Complete Sale
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Quick Stats -->
+      <mat-card class="mt-4">
+        <mat-card-content class="p-4">
+          <h4 class="font-semibold mb-2">Today's Sales</h4>
+          <div class="text-2xl font-bold text-primary">
+            ${{ (saleStore.todayRevenue() || 0).toFixed(2) }}
+          </div>
+          <div class="text-sm text-neutral-600">
+            {{ saleStore.todaySales()?.length || 0 }} transactions
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

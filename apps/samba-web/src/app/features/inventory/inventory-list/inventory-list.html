@@ -1,0 +1,250 @@
+<div class="min-h-screen bg-surface mat-typography">
+  <!-- Material Toolbar -->
+  <mat-toolbar color="primary" class="shadow-sm">
+    <button mat-icon-button routerLink="/manager/dashboard">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span class="text-xl font-semibold ml-2">Inventory Management</span>
+    <span class="flex-1"></span>
+    <span class="text-sm mr-4">
+      Welcome, {{ user()?.firstName }} {{ user()?.lastName }}
+    </span>
+    <button mat-icon-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
+      <mf-h-divider></mf-h-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="px-4 py-6 sm:px-0">
+      <!-- Summary Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <mat-card>
+          <mat-card-content class="p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-neutral-600 mb-1">Total Products</p>
+                <p class="text-3xl font-bold">{{ products().length }}</p>
+              </div>
+              <mat-icon class="text-5xl text-primary">inventory</mat-icon>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="bg-error-50">
+          <mat-card-content class="p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-error mb-1">Low Stock Items</p>
+                <p class="text-3xl font-bold text-error">{{ lowStockCount().length }}</p>
+              </div>
+              <mat-icon class="text-5xl text-error">warning</mat-icon>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card class="bg-success-50">
+          <mat-card-content class="p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-success mb-1">In Stock</p>
+                <p class="text-3xl font-bold text-success">
+                  {{ products().length - lowStockCount().length }}
+                </p>
+              </div>
+              <mat-icon class="text-5xl text-success">check_circle</mat-icon>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Search and Filters -->
+      <mat-card class="mb-6">
+        <mat-card-content class="p-4">
+          <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
+            <mat-form-field class="flex-1">
+              <mat-label>Search inventory</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="Search by name, SKU, or barcode"
+                (input)="onSearch($event)"
+                [value]="searchTerm()"
+              >
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+
+            <div class="flex gap-2 flex-wrap">
+              <button mat-stroked-button (click)="clearFilters()">
+                <mat-icon>clear_all</mat-icon>
+                All
+              </button>
+              <button
+                mat-stroked-button
+                (click)="filterLowStock()"
+                [matBadge]="lowStockCount().length.toString()"
+                matBadgeColor="warn"
+                [matBadgeHidden]="lowStockCount().length === 0">
+                <mat-icon>warning</mat-icon>
+                Low Stock
+              </button>
+              <button mat-stroked-button (click)="filterByStatus('active')">Active</button>
+              <button mat-stroked-button (click)="filterByStatus('inactive')">Inactive</button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Loading State -->
+      @if (isLoading()) {
+        <div class="flex justify-center items-center py-12">
+          <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+        </div>
+      }
+
+      <!-- Inventory Table -->
+      @if (!isLoading() && products().length > 0) {
+        <mat-card>
+          <mat-card-content class="p-0">
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-neutral-50 border-b">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-neutral-600 uppercase tracking-wider">
+                      Product
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-neutral-600 uppercase tracking-wider">
+                      SKU
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-neutral-600 uppercase tracking-wider">
+                      Stock Level
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-neutral-600 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-neutral-600 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-neutral-200">
+                  @for (product of products(); track product.id) {
+                    <tr class="hover:bg-neutral-50">
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div>
+                          <div class="text-sm font-medium text-neutral-900">{{ product.name }}</div>
+                          <div class="text-xs text-neutral-500">{{ product.description }}</div>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-900">
+                        {{ product.sku }}
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex flex-col gap-1">
+                          <div class="flex items-center gap-2">
+                            <span
+                              class="text-sm font-semibold"
+                              [class.text-error]="getStockStatus(product) === 'low'"
+                              [class.text-success]="getStockStatus(product) === 'high'"
+                              [class.text-neutral-900]="getStockStatus(product) === 'normal'">
+                              {{ product.stockLevel }} {{ product.unit }}
+                            </span>
+                            @if (getStockStatus(product) === 'low') {
+                              <mat-icon class="text-error text-sm">warning</mat-icon>
+                            }
+                          </div>
+                          <div class="w-full bg-neutral-200 rounded-full h-2">
+                            <div
+                              class="h-2 rounded-full transition-all"
+                              [class.bg-error]="getStockStatus(product) === 'low'"
+                              [class.bg-success]="getStockStatus(product) === 'high'"
+                              [class.bg-primary]="getStockStatus(product) === 'normal'"
+                              [style.width.%]="getStockPercentage(product)"></div>
+                          </div>
+                          <div class="text-xs text-neutral-500">
+                            Max: {{ product.maxStockLevel }} | Min: {{ product.lowStockThreshold }}
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap">
+                        <mat-chip-set>
+                          <mat-chip
+                            [class.bg-success-50]="product.status === 'active'"
+                            [class.bg-neutral-100]="product.status === 'inactive'"
+                            [class.bg-error-50]="product.status === 'discontinued'">
+                            {{ product.status }}
+                          </mat-chip>
+                        </mat-chip-set>
+                      </td>
+                      <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <div class="flex gap-2">
+                          <button
+                            mat-mini-fab
+                            color="accent"
+                            (click)="adjustStock(product, -1)"
+                            [disabled]="product.stockLevel <= 0"
+                            matTooltip="Remove 1">
+                            <mat-icon>remove</mat-icon>
+                          </button>
+                          <button
+                            mat-mini-fab
+                            color="primary"
+                            (click)="adjustStock(product, 1)"
+                            matTooltip="Add 1">
+                            <mat-icon>add</mat-icon>
+                          </button>
+                          <button
+                            mat-mini-fab
+                            (click)="adjustStock(product, 10)"
+                            matTooltip="Add 10">
+                            <mat-icon>add_circle</mat-icon>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+
+      <!-- Empty State -->
+      @if (!isLoading() && products().length === 0) {
+        <mat-card>
+          <mat-card-content class="p-12 text-center">
+            <mat-icon class="text-6xl text-neutral-400 mb-4">inventory_2</mat-icon>
+            <h3 class="text-xl font-medium mb-2">No products found</h3>
+            <p class="text-neutral-600 mb-6">
+              @if (searchTerm()) {
+                Try adjusting your search criteria
+              } @else {
+                No inventory items available
+              }
+            </p>
+            <button mat-raised-button color="primary" (click)="clearFilters()">
+              <mat-icon>refresh</mat-icon>
+              Refresh
+            </button>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </main>
+</div>

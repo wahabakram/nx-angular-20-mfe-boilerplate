@@ -1,0 +1,213 @@
+<div class="min-h-screen bg-surface mat-typography">
+  <!-- Material Toolbar -->
+  <mat-toolbar color="primary" class="shadow-sm">
+    <button mat-icon-button routerLink="/admin/products">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span class="text-xl font-semibold ml-2">
+      {{ isEditMode() ? 'Edit Product' : 'Add New Product' }}
+    </span>
+    <span class="flex-1"></span>
+    <span class="text-sm mr-4">
+      Welcome, {{ user()?.firstName }} {{ user()?.lastName }}
+    </span>
+    <button mat-icon-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
+      <mf-h-divider></mf-h-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <!-- Main Content -->
+  <main class="max-w-5xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="px-4 py-6 sm:px-0">
+      @if (error()) {
+        <mat-card class="mb-6 bg-error-50 text-error border-l-4 border-error">
+          <mat-card-content class="p-4">
+            <div class="flex items-center">
+              <mat-icon class="mr-2">error</mat-icon>
+              <span>{{ error() }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+
+      <mat-card>
+        <mat-card-content class="p-6">
+          <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+            <!-- Basic Information -->
+            <div class="mb-6">
+              <h3 class="text-lg font-semibold mb-4">Basic Information</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <mat-form-field class="w-full">
+                  <mat-label>Product Name</mat-label>
+                  <input matInput formControlName="name" placeholder="Enter product name" required>
+                  @if (hasError('name', 'required')) {
+                    <mat-error>Product name is required</mat-error>
+                  }
+                  @if (hasError('name', 'minlength')) {
+                    <mat-error>{{ getErrorMessage('name') }}</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                  <mat-label>SKU</mat-label>
+                  <input matInput formControlName="sku" placeholder="Enter SKU" required>
+                  @if (hasError('sku', 'required')) {
+                    <mat-error>SKU is required</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                  <mat-label>Barcode</mat-label>
+                  <input matInput formControlName="barcode" placeholder="Enter barcode (optional)">
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                  <mat-label>Status</mat-label>
+                  <mat-select formControlName="status" required>
+                    @for (status of statusOptions; track status.value) {
+                      <mat-option [value]="status.value">{{ status.label }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- Pricing -->
+            <div class="mb-6">
+              <h3 class="text-lg font-semibold mb-4">Pricing</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <mat-form-field class="w-full">
+                  <mat-label>Selling Price</mat-label>
+                  <input matInput type="number" formControlName="price" placeholder="0.00" required>
+                  <span matPrefix>$&nbsp;</span>
+                  @if (hasError('price', 'required')) {
+                    <mat-error>Selling price is required</mat-error>
+                  }
+                  @if (hasError('price', 'min')) {
+                    <mat-error>Price must be positive</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                  <mat-label>Cost Price</mat-label>
+                  <input matInput type="number" formControlName="costPrice" placeholder="0.00" required>
+                  <span matPrefix>$&nbsp;</span>
+                  @if (hasError('costPrice', 'required')) {
+                    <mat-error>Cost price is required</mat-error>
+                  }
+                  @if (hasError('costPrice', 'min')) {
+                    <mat-error>Cost price must be positive</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+              @if (productForm.value.price && productForm.value.costPrice) {
+                <div class="p-3 bg-neutral-50 rounded">
+                  <span class="text-sm text-neutral-600">Profit Margin: </span>
+                  <span class="text-sm font-semibold">
+                    ${{ (productForm.value.price - productForm.value.costPrice).toFixed(2) }}
+                    ({{ ((productForm.value.price - productForm.value.costPrice) / productForm.value.price * 100).toFixed(1) }}%)
+                  </span>
+                </div>
+              }
+            </div>
+
+            <!-- Inventory -->
+            <div class="mb-6">
+              <h3 class="text-lg font-semibold mb-4">Inventory Management</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <mat-form-field class="w-full">
+                  <mat-label>Current Stock Level</mat-label>
+                  <input matInput type="number" formControlName="stockLevel" required>
+                  @if (hasError('stockLevel', 'required')) {
+                    <mat-error>Stock level is required</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                  <mat-label>Unit</mat-label>
+                  <mat-select formControlName="unit" required>
+                    @for (unit of unitOptions; track unit.value) {
+                      <mat-option [value]="unit.value">{{ unit.label }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                  <mat-label>Low Stock Threshold</mat-label>
+                  <input matInput type="number" formControlName="lowStockThreshold" required>
+                  <mat-hint>Alert when stock falls below this level</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                  <mat-label>Reorder Point</mat-label>
+                  <input matInput type="number" formControlName="reorderPoint" required>
+                  <mat-hint>Trigger automatic reorder</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                  <mat-label>Maximum Stock Level</mat-label>
+                  <input matInput type="number" formControlName="maxStockLevel" required>
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                  <mat-label>Category ID</mat-label>
+                  <input matInput type="number" formControlName="categoryId" required>
+                  <mat-hint>Temporary - will be dropdown later</mat-hint>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- Additional Information -->
+            <div class="mb-6">
+              <h3 class="text-lg font-semibold mb-4">Additional Information</h3>
+              <div class="grid grid-cols-1 gap-4">
+                <mat-form-field class="w-full">
+                  <mat-label>Description</mat-label>
+                  <textarea matInput formControlName="description" rows="4" placeholder="Product description"></textarea>
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                  <mat-label>Image URL</mat-label>
+                  <input matInput formControlName="imageUrl" placeholder="https://example.com/image.jpg">
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                  <mat-label>Supplier ID</mat-label>
+                  <input matInput type="number" formControlName="supplierId" placeholder="Optional">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="flex justify-end gap-4 pt-4 border-t">
+              <button mat-stroked-button type="button" (click)="onCancel()" [disabled]="isLoading()">
+                Cancel
+              </button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="isLoading() || productForm.invalid">
+                @if (isLoading()) {
+                  <mat-spinner diameter="20" class="mr-2"></mat-spinner>
+                }
+                {{ isEditMode() ? 'Update Product' : 'Create Product' }}
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </main>
+</div>

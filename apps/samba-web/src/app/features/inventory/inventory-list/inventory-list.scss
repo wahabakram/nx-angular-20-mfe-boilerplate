@@ -1,0 +1,41 @@
+table {
+  border-collapse: collapse;
+}
+
+.bg-error-50 {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.bg-success-50 {
+  background-color: rgba(34, 197, 94, 0.1);
+}
+
+.text-error {
+  color: rgb(239, 68, 68);
+}
+
+.text-success {
+  color: rgb(34, 197, 94);
+}
+
+mat-chip-set {
+  mat-chip {
+    font-size: 0.75rem;
+    min-height: 24px;
+  }
+}
+
+// Stock progress bar animations
+.h-2 {
+  transition: width 0.3s ease-in-out;
+}
+
+// Button groups
+.flex.gap-2 {
+  button {
+    &[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}

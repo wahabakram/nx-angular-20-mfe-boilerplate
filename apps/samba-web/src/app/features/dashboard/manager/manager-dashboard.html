@@ -1,0 +1,110 @@
+<div class="min-h-screen bg-surface mat-typography">
+  <!-- Material Toolbar -->
+  <mat-toolbar color="primary" class="shadow-sm">
+    <span class="text-xl font-semibold">SAMBA ERP - Manager Dashboard</span>
+    <span class="flex-1"></span>
+    <span class="text-sm mr-4">
+      Welcome, {{ user()?.firstName }} {{ user()?.lastName }}
+    </span>
+    <button mat-icon-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="px-4 py-6 sm:px-0">
+      <!-- Branch Info Card -->
+      <mat-card class="mb-6">
+        <mat-card-content class="p-6">
+          <h2 class="text-lg font-medium mb-2">Branch Dashboard</h2>
+          <p class="text-sm text-neutral-600">Manage your branch operations and inventory</p>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Stats Grid with Material Cards -->
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+        <!-- Today's Sales Card -->
+        <mat-card class="stat-card">
+          <mat-card-content class="flex items-center p-6">
+            <mat-icon class="stat-icon text-primary text-5xl mr-4">attach_money</mat-icon>
+            <div class="flex-1">
+              <p class="text-sm text-neutral-600 mb-1">Today's Sales</p>
+              <h3 class="text-2xl font-bold">$0</h3>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Inventory Items Card -->
+        <mat-card class="stat-card">
+          <mat-card-content class="flex items-center p-6">
+            <mat-icon class="stat-icon text-accent text-5xl mr-4">inventory_2</mat-icon>
+            <div class="flex-1">
+              <p class="text-sm text-neutral-600 mb-1">Inventory Items</p>
+              <h3 class="text-2xl font-bold">0</h3>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Low Stock Alerts Card -->
+        <mat-card class="stat-card">
+          <mat-card-content class="flex items-center p-6">
+            <mat-icon class="stat-icon text-warn text-5xl mr-4">warning</mat-icon>
+            <div class="flex-1">
+              <p class="text-sm text-neutral-600 mb-1">Low Stock Alerts</p>
+              <h3 class="text-2xl font-bold text-warn">0</h3>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Quick Actions -->
+      <div>
+        <h3 class="text-lg leading-6 font-medium mb-4">Quick Actions</h3>
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <!-- Open POS -->
+          <mat-card class="action-card cursor-pointer hover:shadow-lg transition-shadow">
+            <mat-card-content class="text-center p-8">
+              <mat-icon class="text-6xl mb-4 text-primary">point_of_sale</mat-icon>
+              <h4 class="text-lg font-medium">Open POS</h4>
+              <p class="text-sm text-neutral-600 mt-2">Start a new sales transaction</p>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Stock Adjustment -->
+          <mat-card class="action-card cursor-pointer hover:shadow-lg transition-shadow">
+            <mat-card-content class="text-center p-8">
+              <mat-icon class="text-6xl mb-4 text-primary">sync_alt</mat-icon>
+              <h4 class="text-lg font-medium">Stock Adjustment</h4>
+              <p class="text-sm text-neutral-600 mt-2">Update inventory levels</p>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Sales Report -->
+          <mat-card class="action-card cursor-pointer hover:shadow-lg transition-shadow">
+            <mat-card-content class="text-center p-8">
+              <mat-icon class="text-6xl mb-4 text-primary">receipt_long</mat-icon>
+              <h4 class="text-lg font-medium">Sales Report</h4>
+              <p class="text-sm text-neutral-600 mt-2">View daily sales summary</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

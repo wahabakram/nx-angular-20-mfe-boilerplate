@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "start": "npx nx serve shell --devRemotes=webcomponents",
-    "start:invoicely": "npx nx serve invoicely"
+    "start:invoicely": "npx nx serve invoicely",
+    "start:samba-web": "npx nx serve samba-web --devRemotes=webcomponents",
+    "mock-api": "node apps/samba-web/mock-api/server.mjs"
   },
   "private": true,
   "devDependencies": {
@@ -46,6 +48,7 @@
     "eslint-plugin-playwright": "^1.6.2",
     "jiti": "2.4.2",
     "jsdom": "~22.1.0",
+    "json-server": "^1.0.0-beta.3",
     "nx": "22.0.2",
     "prettier": "^2.6.2",
     "tslib": "^2.3.0",
