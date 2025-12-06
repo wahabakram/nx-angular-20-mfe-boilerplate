@@ -1,0 +1,36 @@
+<app-page>
+  <ng-container pageTitle>Sales History</ng-container>
+  <ng-container pageDescription>View all completed sales transactions</ng-container>
+  <ng-container pageActions>
+    <button mat-stroked-button (click)="loadSales()">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+  </ng-container>
+
+  @if (error()) {
+    <div class="rounded-md bg-error/10 p-4 mb-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <mat-icon class="text-error">error</mat-icon>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-error">{{ error() }}</h3>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (isLoading()) {
+    <div class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    </div>
+  } @else {
+    <mf-datatable
+      [data]="sales()"
+      [columns]="columns()"
+      (click)="onTableInteraction($event)"
+      class="w-full">
+    </mf-datatable>
+  }
+</app-page>

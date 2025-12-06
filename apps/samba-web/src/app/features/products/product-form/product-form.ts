@@ -1,37 +1,32 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatMenuModule } from '@angular/material/menu';
-import { ProductService, ProductStore, Product, CreateProductDto, ProductStatus } from '@samba/product-domain';
+import { ProductService, ProductStore, CreateProductDto, ProductStatus } from '@samba/product-domain';
 import { AuthStore } from '@samba/user-domain';
-import { HorizontalDivider } from '@ng-mf/components';
+import { Page } from '../../../_partials/page/page';
+import { ImageUpload } from '../../../_components/image-upload/image-upload';
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
-    RouterModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
     MatCardModule,
     MatIconModule,
-    MatToolbarModule,
     MatProgressSpinnerModule,
-    MatMenuModule,
-    HorizontalDivider
+    Page,
+    ImageUpload
   ],
   templateUrl: './product-form.html',
   styleUrl: './product-form.scss',
@@ -48,8 +43,6 @@ export class ProductForm implements OnInit {
   isEditMode = signal(false);
   error = signal<string | null>(null);
   productId = signal<number | null>(null);
-
-  user = this.authStore.user;
 
   productForm = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(2)]],
@@ -132,7 +125,7 @@ export class ProductForm implements OnInit {
     this.error.set(null);
 
     const formValue = this.productForm.getRawValue();
-    const branchId = this.user()?.branchId || 1;
+    const branchId = this.authStore.user()?.branchId || 1;
 
     const productData: CreateProductDto = {
       ...formValue,
@@ -149,7 +142,7 @@ export class ProductForm implements OnInit {
         .subscribe({
           next: (product) => {
             this.productStore.updateProduct(product);
-            this.router.navigate(['/admin/products']);
+            this.router.navigate(['/products']);
           },
           error: (err) => {
             this.error.set(err?.error?.message || 'Failed to update product');
@@ -160,7 +153,7 @@ export class ProductForm implements OnInit {
       this.productService.create(productData).subscribe({
         next: (product) => {
           this.productStore.addProduct(product);
-          this.router.navigate(['/admin/products']);
+          this.router.navigate(['/products']);
         },
         error: (err) => {
           this.error.set(err?.error?.message || 'Failed to create product');
@@ -171,11 +164,7 @@ export class ProductForm implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/admin/products']);
-  }
-
-  logout(): void {
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/products']);
   }
 
   hasError(controlName: string, errorName: string): boolean {

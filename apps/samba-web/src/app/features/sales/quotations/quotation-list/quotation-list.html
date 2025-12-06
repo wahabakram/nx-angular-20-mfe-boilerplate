@@ -1,0 +1,27 @@
+<app-page>
+  <ng-container pageTitle>Quotations</ng-container>
+  <ng-container pageDescription>Manage customer quotations and convert to sales</ng-container>
+  <ng-container pageActions>
+    <button mat-stroked-button (click)="loadQuotations()">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+    <button mat-raised-button color="primary" (click)="createQuotation()">
+      <mat-icon>add</mat-icon>
+      New Quotation
+    </button>
+  </ng-container>
+
+  @if (isLoading()) {
+    <div class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    </div>
+  } @else {
+    <mf-datatable
+      [data]="quotations()"
+      [columns]="columns()"
+      (click)="onTableInteraction($event)"
+      class="w-full">
+    </mf-datatable>
+  }
+</app-page>

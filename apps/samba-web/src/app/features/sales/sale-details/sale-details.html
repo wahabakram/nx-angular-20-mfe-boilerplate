@@ -1,0 +1,176 @@
+<app-page>
+  <ng-container pageTitle>Sale Details</ng-container>
+  <ng-container pageDescription>
+    @if (sale()) {
+      Sale #{{ sale()!.id }} - {{ sale()!.saleDate | date:'medium' }}
+    }
+  </ng-container>
+  <ng-container pageActions>
+    <button mat-stroked-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Sales
+    </button>
+    <button mat-raised-button color="primary" (click)="printReceipt()">
+      <mat-icon>print</mat-icon>
+      Print Receipt
+    </button>
+  </ng-container>
+
+  @if (error()) {
+    <div class="rounded-md bg-error/10 p-4 mb-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <mat-icon class="text-error">error</mat-icon>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-error">{{ error() }}</h3>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (isLoading()) {
+    <div class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    </div>
+  } @else if (sale()) {
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Main Content -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Sale Items -->
+        <mat-card>
+          <mat-card-content class="p-6">
+            <h3 class="text-lg font-semibold mb-4">Items</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-surface-container">
+                  <tr>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-neutral-600 uppercase">Product</th>
+                    <th class="px-4 py-3 text-right text-xs font-medium text-neutral-600 uppercase">Qty</th>
+                    <th class="px-4 py-3 text-right text-xs font-medium text-neutral-600 uppercase">Price</th>
+                    <th class="px-4 py-3 text-right text-xs font-medium text-neutral-600 uppercase">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-surface-container">
+                  @for (item of sale()!.items; track item.productId) {
+                    <tr>
+                      <td class="px-4 py-4">
+                        <div class="text-sm font-medium text-neutral-900">Product #{{ item.productId }}</div>
+                      </td>
+                      <td class="px-4 py-4 text-right text-sm text-neutral-600">{{ item.quantity }}</td>
+                      <td class="px-4 py-4 text-right text-sm text-neutral-600">{{ item.unitPrice | currency }}</td>
+                      <td class="px-4 py-4 text-right text-sm font-medium text-neutral-900">{{ item.subtotal | currency }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Totals -->
+            <div class="mt-6 border-t border-surface-container pt-4">
+              <div class="space-y-2">
+                <div class="flex justify-between text-sm">
+                  <span class="text-neutral-600">Subtotal</span>
+                  <span class="font-medium">{{ sale()!.subtotal | currency }}</span>
+                </div>
+                @if (sale()!.discount > 0) {
+                  <div class="flex justify-between text-sm">
+                    <span class="text-neutral-600">Discount</span>
+                    <span class="font-medium text-success">-{{ sale()!.discount | currency }}</span>
+                  </div>
+                }
+                <div class="flex justify-between text-sm">
+                  <span class="text-neutral-600">Tax</span>
+                  <span class="font-medium">{{ sale()!.taxAmount | currency }}</span>
+                </div>
+                <div class="flex justify-between text-lg font-semibold border-t border-surface-container pt-2">
+                  <span>Total</span>
+                  <span class="text-primary">{{ sale()!.totalAmount | currency }}</span>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Payment Information -->
+        <mat-card>
+          <mat-card-content class="p-6">
+            <h3 class="text-lg font-semibold mb-4">Payment Information</h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm text-neutral-600">Payment Method</p>
+                <p class="text-sm font-medium mt-1">{{ getPaymentMethodLabel(sale()!.paymentMethod) }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-neutral-600">Amount Paid</p>
+                <p class="text-sm font-medium mt-1">{{ sale()!.amountPaid | currency }}</p>
+              </div>
+              @if (sale()!.changeDue && sale()!.changeDue! > 0) {
+                <div>
+                  <p class="text-sm text-neutral-600">Change Due</p>
+                  <p class="text-sm font-medium mt-1">{{ sale()!.changeDue! | currency }}</p>
+                </div>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="space-y-6">
+        <!-- Status Card -->
+        <mat-card>
+          <mat-card-content class="p-6">
+            <h3 class="text-lg font-semibold mb-4">Status</h3>
+            <div class="flex items-center justify-center">
+              <span class="inline-flex px-4 py-2 rounded-full text-sm font-medium {{ getStatusColor(sale()!.status) }}">
+                {{ sale()!.status | titlecase }}
+              </span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Sale Information -->
+        <mat-card>
+          <mat-card-content class="p-6">
+            <h3 class="text-lg font-semibold mb-4">Sale Information</h3>
+            <div class="space-y-3">
+              <div>
+                <p class="text-sm text-neutral-600">Sale ID</p>
+                <p class="text-sm font-medium mt-1">#{{ sale()!.id }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-neutral-600">Date & Time</p>
+                <p class="text-sm font-medium mt-1">{{ sale()!.saleDate | date:'medium' }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-neutral-600">Customer</p>
+                <p class="text-sm font-medium mt-1">
+                  @if (sale()!.customerId) {
+                    Customer #{{ sale()!.customerId }}
+                  } @else {
+                    Walk-in Customer
+                  }
+                </p>
+              </div>
+              <div>
+                <p class="text-sm text-neutral-600">Cashier</p>
+                <p class="text-sm font-medium mt-1">User #{{ sale()!.userId }}</p>
+              </div>
+              <div>
+                <p class="text-sm text-neutral-600">Branch</p>
+                <p class="text-sm font-medium mt-1">Branch #{{ sale()!.branchId }}</p>
+              </div>
+              @if (sale()!.notes) {
+                <div>
+                  <p class="text-sm text-neutral-600">Notes</p>
+                  <p class="text-sm mt-1">{{ sale()!.notes }}</p>
+                </div>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  }
+</app-page>

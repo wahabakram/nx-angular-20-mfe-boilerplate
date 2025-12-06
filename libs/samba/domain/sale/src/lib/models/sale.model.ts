@@ -8,14 +8,20 @@ export interface Sale {
   items: SaleItem[];
   subtotal: number;
   tax: number;
+  taxAmount: number; // Alias for tax
   taxRate: number;
   discount: number;
   discountRate: number;
   total: number;
+  totalAmount: number; // Alias for total
   paymentMethod: PaymentMethod;
   paymentStatus: PaymentStatus;
+  status: SaleStatus; // Overall sale status
+  amountPaid: number; // Amount customer paid
+  changeDue?: number; // Change to return to customer
   notes?: string;
   receiptNumber: string;
+  saleDate: Date; // Date of sale
   synced: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -34,6 +40,8 @@ export interface SaleItem {
 export type PaymentMethod = 'cash' | 'card' | 'bank-transfer' | 'credit';
 
 export type PaymentStatus = 'paid' | 'partial' | 'pending' | 'refunded';
+
+export type SaleStatus = 'completed' | 'pending' | 'cancelled' | 'refunded';
 
 export interface CreateSaleDto {
   branchId: number;

@@ -1,33 +1,8 @@
-<div class="min-h-screen bg-surface mat-typography">
-  <!-- Material Toolbar -->
-  <mat-toolbar color="primary" class="shadow-sm">
-    <mat-icon class="mr-2">point_of_sale</mat-icon>
-    <span class="text-xl font-semibold">Point of Sale</span>
-    <span class="flex-1"></span>
-    <span class="text-sm mr-4">
-      {{ user()?.firstName }} {{ user()?.lastName }} - {{ user()?.role | uppercase }}
-    </span>
-    <button mat-icon-button [matMenuTriggerFor]="userMenu">
-      <mat-icon>account_circle</mat-icon>
-    </button>
-    <mat-menu #userMenu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>person</mat-icon>
-        <span>Profile</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>settings</mat-icon>
-        <span>Settings</span>
-      </button>
-      <mf-h-divider></mf-h-divider>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Logout</span>
-      </button>
-    </mat-menu>
-  </mat-toolbar>
+<app-page>
+  <ng-container pageTitle>Point of Sale</ng-container>
+  <ng-container pageDescription>Process customer transactions</ng-container>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
     <!-- Left Panel - Product Search & Cart -->
     <div class="lg:col-span-2">
       @if (error()) {
@@ -51,6 +26,7 @@
                 matInput
                 [(ngModel)]="searchTerm"
                 (keyup.enter)="searchProduct(searchTerm())"
+                (input)="filterProducts(searchTerm())"
                 placeholder="Enter barcode or product name"
                 autofocus
               >
@@ -63,6 +39,41 @@
           </div>
         </mat-card-content>
       </mat-card>
+
+      <!-- Quick Product Selection -->
+      @if (filteredProducts().length > 0 && searchTerm()) {
+        <mat-card class="mb-4">
+          <mat-card-content class="p-4">
+            <h3 class="text-sm font-semibold mb-3 text-neutral-600">Quick Select</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-60 overflow-y-auto">
+              @for (product of filteredProducts().slice(0, 9); track product.id) {
+                <button
+                  class="flex items-center gap-2 p-2 border rounded-lg hover:bg-surface-container transition-colors text-left"
+                  [class.opacity-50]="product.stockLevel <= 0"
+                  [disabled]="product.stockLevel <= 0"
+                  (click)="addToCart(product)">
+                  <div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    @if (product.imageUrl) {
+                      <img [src]="product.imageUrl" [alt]="product.name" class="w-full h-full object-cover">
+                    } @else {
+                      <mat-icon class="text-neutral-400 !text-base">inventory_2</mat-icon>
+                    }
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="text-sm font-medium truncate">{{ product.name }}</div>
+                    <div class="text-xs text-success font-semibold">${{ product.price.toFixed(2) }}</div>
+                    @if (product.stockLevel <= 0) {
+                      <div class="text-xs text-error">Out of stock</div>
+                    } @else {
+                      <div class="text-xs text-neutral-500">Stock: {{ product.stockLevel }}</div>
+                    }
+                  </div>
+                </button>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
 
       <!-- Shopping Cart -->
       <mat-card>
@@ -91,9 +102,18 @@
                   @for (item of cart(); track item.product.id) {
                     <tr class="border-b">
                       <td class="py-3">
-                        <div>
-                          <div class="font-medium">{{ item.product.name }}</div>
-                          <div class="text-sm text-neutral-600">{{ item.product.sku }}</div>
+                        <div class="flex items-center gap-3">
+                          <div class="w-12 h-12 rounded bg-surface-container flex items-center justify-center flex-shrink-0 overflow-hidden">
+                            @if (item.product.imageUrl) {
+                              <img [src]="item.product.imageUrl" [alt]="item.product.name" class="w-full h-full object-cover">
+                            } @else {
+                              <mat-icon class="text-neutral-400">inventory_2</mat-icon>
+                            }
+                          </div>
+                          <div>
+                            <div class="font-medium">{{ item.product.name }}</div>
+                            <div class="text-sm text-neutral-600">{{ item.product.sku }}</div>
+                          </div>
                         </div>
                       </td>
                       <td class="text-center">${{ item.product.price.toFixed(2) }}</td>
@@ -269,4 +289,4 @@
       </mat-card>
     </div>
   </div>
-</div>
+</app-page>

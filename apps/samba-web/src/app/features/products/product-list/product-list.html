@@ -1,183 +1,42 @@
-<div class="min-h-screen bg-surface mat-typography">
-  <!-- Material Toolbar -->
-  <mat-toolbar color="primary" class="shadow-sm">
-    <button mat-icon-button routerLink="/admin/dashboard">
-      <mat-icon>arrow_back</mat-icon>
+<app-page>
+  <ng-container pageTitle>Products</ng-container>
+  <ng-container pageActions>
+    <button mat-flat-button color="primary" routerLink="/products/new">
+      <mat-icon>add</mat-icon>
+      Add Product
     </button>
-    <span class="text-xl font-semibold ml-2">Product Management</span>
-    <span class="flex-1"></span>
-    <span class="text-sm mr-4">
-      Welcome, {{ user()?.firstName }} {{ user()?.lastName }}
-    </span>
-    <button mat-icon-button [matMenuTriggerFor]="userMenu">
-      <mat-icon>account_circle</mat-icon>
-    </button>
-    <mat-menu #userMenu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>person</mat-icon>
-        <span>Profile</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>settings</mat-icon>
-        <span>Settings</span>
-      </button>
-      <mf-h-divider></mf-h-divider>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Logout</span>
-      </button>
-    </mat-menu>
-  </mat-toolbar>
+  </ng-container>
 
-  <!-- Main Content -->
-  <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-    <div class="px-4 py-6 sm:px-0">
-      <!-- Header Section -->
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-        <div>
-          <h2 class="text-2xl font-bold">Products</h2>
-          <p class="text-neutral-600 mt-1">Manage your product catalog</p>
-        </div>
-        <button mat-raised-button color="primary" routerLink="/admin/products/new">
-          <mat-icon>add</mat-icon>
-          Add Product
-        </button>
-      </div>
-
-      <!-- Search and Filters -->
-      <mat-card class="mb-6">
-        <mat-card-content class="p-4">
-          <div class="flex flex-col md:flex-row gap-4 items-start md:items-center">
-            <mat-form-field class="flex-1">
-              <mat-label>Search products</mat-label>
+  <div class="widget-container">
+    <mf-datatable
+      #dt="mfDatatable"
+      [columns]="columns()"
+      [data]="products()"
+      tableFixed
+      showHeader
+      showPagination
+      class="pin-actions-right">
+      <ng-container datatableToolbar>
+        <div class="h-full flex items-center justify-between px-7 gap-7">
+          <div class="flex items-center gap-7">
+            <h2 class="text-base font-semibold">All Products</h2>
+            <div>
               <input
-                matInput
                 type="text"
-                placeholder="Search by name, SKU, or barcode"
-                (input)="onSearch($event)"
-                [value]="searchTerm()"
-              >
-              <mat-icon matSuffix>search</mat-icon>
-            </mat-form-field>
-
-            <div class="flex gap-2 flex-wrap">
-              <button mat-stroked-button (click)="filterByStatus(null)">All</button>
-              <button mat-stroked-button (click)="filterByStatus('active')">Active</button>
-              <button mat-stroked-button (click)="filterByStatus('inactive')">Inactive</button>
-              <button mat-stroked-button (click)="filterLowStock()">
-                Low Stock
-              </button>
+                class="h-10 w-72 bg-surface-container text-sm focus:outline-2
+                       focus:outline-primary rounded-3xl px-4"
+                placeholder="Search products..."
+                (input)="dt.setGlobalFilter(($any($event.target)).value)">
             </div>
           </div>
-        </mat-card-content>
-      </mat-card>
-
-      <!-- Loading State -->
-      @if (isLoading()) {
-        <div class="flex justify-center items-center py-12">
-          <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+          <div class="flex gap-2">
+            <button mat-stroked-button (click)="filterByStatus(null)">All</button>
+            <button mat-stroked-button (click)="filterByStatus('active')">Active</button>
+            <button mat-stroked-button (click)="filterByStatus('inactive')">Inactive</button>
+            <button mat-stroked-button (click)="filterLowStock()">Low Stock</button>
+          </div>
         </div>
-      }
-
-      <!-- Products Grid -->
-      @if (!isLoading() && products().length > 0) {
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          @for (product of products(); track product.id) {
-            <mat-card class="product-card hover:shadow-lg transition-shadow">
-              <mat-card-content class="p-6">
-                <div class="flex justify-between items-start mb-4">
-                  <div class="flex-1">
-                    <h3 class="text-lg font-semibold mb-1">{{ product.name }}</h3>
-                    <p class="text-sm text-neutral-600">SKU: {{ product.sku }}</p>
-                    @if (product.barcode) {
-                      <p class="text-xs text-neutral-500">Barcode: {{ product.barcode }}</p>
-                    }
-                  </div>
-                  <button mat-icon-button [matMenuTriggerFor]="productMenu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #productMenu="matMenu">
-                    <button mat-menu-item (click)="editProduct(product)">
-                      <mat-icon>edit</mat-icon>
-                      <span>Edit</span>
-                    </button>
-                    <button mat-menu-item (click)="deleteProduct(product)">
-                      <mat-icon color="warn">delete</mat-icon>
-                      <span>Delete</span>
-                    </button>
-                  </mat-menu>
-                </div>
-
-                <div class="space-y-2 mb-4">
-                  <div class="flex justify-between text-sm">
-                    <span class="text-neutral-600">Price:</span>
-                    <span class="font-semibold">${{ product.price.toFixed(2) }}</span>
-                  </div>
-                  <div class="flex justify-between text-sm">
-                    <span class="text-neutral-600">Cost:</span>
-                    <span>${{ product.costPrice.toFixed(2) }}</span>
-                  </div>
-                  <div class="flex justify-between text-sm">
-                    <span class="text-neutral-600">Stock:</span>
-                    <span
-                      [class.text-error]="getStockStatus(product) === 'low'"
-                      [class.text-success]="getStockStatus(product) === 'high'"
-                      class="font-medium">
-                      {{ product.stockLevel }} {{ product.unit }}
-                    </span>
-                  </div>
-                </div>
-
-                <div class="flex gap-2 flex-wrap">
-                  <mat-chip-set>
-                    <mat-chip
-                      [class.bg-success-50]="product.status === 'active'"
-                      [class.bg-neutral-100]="product.status === 'inactive'"
-                      [class.bg-error-50]="product.status === 'discontinued'">
-                      {{ product.status }}
-                    </mat-chip>
-                    @if (getStockStatus(product) === 'low') {
-                      <mat-chip class="bg-error-50 text-error">
-                        <mat-icon class="text-sm">warning</mat-icon>
-                        Low Stock
-                      </mat-chip>
-                    }
-                  </mat-chip-set>
-                </div>
-
-                @if (product.description) {
-                  <p class="text-sm text-neutral-600 mt-4 line-clamp-2">
-                    {{ product.description }}
-                  </p>
-                }
-              </mat-card-content>
-            </mat-card>
-          }
-        </div>
-      }
-
-      <!-- Empty State -->
-      @if (!isLoading() && products().length === 0) {
-        <mat-card>
-          <mat-card-content class="p-12 text-center">
-            <mat-icon class="text-6xl text-neutral-400 mb-4">inventory_2</mat-icon>
-            <h3 class="text-xl font-medium mb-2">No products found</h3>
-            <p class="text-neutral-600 mb-6">
-              @if (searchTerm()) {
-                Try adjusting your search criteria
-              } @else {
-                Get started by adding your first product
-              }
-            </p>
-            @if (!searchTerm()) {
-              <button mat-raised-button color="primary" routerLink="/admin/products/new">
-                <mat-icon>add</mat-icon>
-                Add Product
-              </button>
-            }
-          </mat-card-content>
-        </mat-card>
-      }
-    </div>
-  </main>
-</div>
+      </ng-container>
+    </mf-datatable>
+  </div>
+</app-page>

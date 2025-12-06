@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+@media print {
+  :host ::ng-deep {
+    app-page > :not(.page-content) {
+      display: none;
+    }
+  }
+}

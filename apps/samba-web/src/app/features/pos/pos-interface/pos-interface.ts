@@ -1,17 +1,12 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
-import { MatToolbar } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
 import { MatCard, MatCardContent } from '@angular/material/card';
-import { MatMenu, MatMenuTrigger, MatMenuItem } from '@angular/material/menu';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatDialog } from '@angular/material/dialog';
 import { HorizontalDivider } from '@ng-mf/components';
 import { Product, ProductService, ProductStore } from '@samba/product-domain';
 import {
@@ -21,7 +16,8 @@ import {
   SaleService,
   SaleStore
 } from '@samba/sale-domain';
-import { AuthService, AuthStore } from '@samba/user-domain';
+import { AuthStore } from '@samba/user-domain';
+import { Page } from '../../../_partials/page/page';
 
 interface CartItem {
   product: Product;
@@ -33,17 +29,12 @@ interface CartItem {
 @Component({
   selector: 'app-pos-interface',
   imports: [
-    CommonModule,
     FormsModule,
     MatButton,
     MatIconButton,
-    MatToolbar,
     MatIcon,
     MatCard,
     MatCardContent,
-    MatMenu,
-    MatMenuTrigger,
-    MatMenuItem,
     HorizontalDivider,
     MatFormField,
     MatLabel,
@@ -51,22 +42,19 @@ interface CartItem {
     MatSelect,
     MatOption,
     MatProgressSpinner,
+    Page
   ],
   templateUrl: './pos-interface.html',
   styleUrl: './pos-interface.scss'
 })
 export class PosInterface implements OnInit {
-  private authService = inject(AuthService);
   private authStore = inject(AuthStore);
   private productService = inject(ProductService);
   private productStore = inject(ProductStore);
   private saleService = inject(SaleService);
   saleStore = inject(SaleStore);
-  private router = inject(Router);
-
-  user = this.authStore.user;
   products = this.productStore.products;
-
+  filteredProducts = signal<Product[]>([]);
   cart = signal<CartItem[]>([]);
   searchTerm = signal('');
   selectedPaymentMethod = signal<PaymentMethod>('cash');
@@ -103,6 +91,22 @@ export class PosInterface implements OnInit {
     });
   }
 
+  filterProducts(searchTerm: string): void {
+    if (!searchTerm.trim()) {
+      this.filteredProducts.set([]);
+      return;
+    }
+
+    const term = searchTerm.toLowerCase();
+    const filtered = this.products().filter(
+      (product) =>
+        product.name.toLowerCase().includes(term) ||
+        product.sku.toLowerCase().includes(term) ||
+        product.barcode?.toLowerCase().includes(term)
+    );
+    this.filteredProducts.set(filtered);
+  }
+
   searchProduct(barcode: string): void {
     if (!barcode.trim()) return;
 
@@ -111,6 +115,7 @@ export class PosInterface implements OnInit {
         if (product) {
           this.addToCart(product);
           this.searchTerm.set('');
+          this.filteredProducts.set([]);
         } else {
           this.error.set('Product not found');
           setTimeout(() => this.error.set(null), 3000);
@@ -156,6 +161,9 @@ export class PosInterface implements OnInit {
       ]);
     }
 
+    // Clear search and filtered products
+    this.searchTerm.set('');
+    this.filteredProducts.set([]);
     this.calculateTotals();
   }
 
@@ -210,7 +218,7 @@ export class PosInterface implements OnInit {
       return;
     }
 
-    const user = this.user();
+    const user = this.authStore.user();
     if (!user) {
       this.error.set('User not authenticated');
       return;
@@ -278,10 +286,5 @@ export class PosInterface implements OnInit {
   clearCart(): void {
     this.cart.set([]);
     this.calculateTotals();
-  }
-
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/auth/login']);
   }
 }

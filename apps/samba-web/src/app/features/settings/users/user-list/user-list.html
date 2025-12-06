@@ -1,0 +1,27 @@
+<app-page>
+  <ng-container pageTitle>User Management</ng-container>
+  <ng-container pageDescription>Manage system users and their permissions</ng-container>
+  <ng-container pageActions>
+    <button mat-stroked-button (click)="loadUsers()">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+    <button mat-raised-button color="primary" (click)="createUser()">
+      <mat-icon>add</mat-icon>
+      New User
+    </button>
+  </ng-container>
+
+  @if (isLoading()) {
+    <div class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    </div>
+  } @else {
+    <mf-datatable
+      [data]="users()"
+      [columns]="columns()"
+      (click)="onTableInteraction($event)"
+      class="w-full">
+    </mf-datatable>
+  }
+</app-page>

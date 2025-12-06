@@ -1,0 +1,27 @@
+<app-page>
+  <ng-container pageTitle>Category Management</ng-container>
+  <ng-container pageDescription>Manage product categories and classifications</ng-container>
+  <ng-container pageActions>
+    <button mat-stroked-button (click)="loadCategories()">
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+    <button mat-raised-button color="primary" (click)="createCategory()">
+      <mat-icon>add</mat-icon>
+      New Category
+    </button>
+  </ng-container>
+
+  @if (isLoading()) {
+    <div class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    </div>
+  } @else {
+    <mf-datatable
+      [data]="categories()"
+      [columns]="columns()"
+      (click)="onTableInteraction($event)"
+      class="w-full">
+    </mf-datatable>
+  }
+</app-page>

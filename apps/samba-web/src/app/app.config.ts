@@ -15,6 +15,7 @@ import {
 } from '@samba/infrastructure';
 import { authInterceptor, AuthStore } from '@samba/user-domain';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { MockDataService } from './_mock-data/mock-data.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -35,6 +36,14 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => {
       const authStore = inject(AuthStore);
       authStore.loadAuthFromStorage();
+    }),
+    provideAppInitializer(() => {
+      const mockDataService = inject(MockDataService);
+      // Seed mock data if not already seeded
+      mockDataService.seedAllData().subscribe({
+        next: () => console.log('Mock data initialization complete'),
+        error: (err) => console.error('Mock data initialization failed:', err)
+      });
     }),
   ],
 };

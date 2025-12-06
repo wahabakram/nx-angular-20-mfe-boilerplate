@@ -1,57 +1,104 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { MatToolbar } from '@angular/material/toolbar';
+import { RouterLink } from '@angular/router';
+import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { MatCard, MatCardContent } from '@angular/material/card';
-import { MatMenu, MatMenuTrigger, MatMenuItem } from '@angular/material/menu';
-import { HorizontalDivider } from '@ng-mf/components';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { MatChip, MatChipSet } from '@angular/material/chips';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Product, ProductService, ProductStore } from '@samba/product-domain';
-import { AuthService, AuthStore } from '@samba/user-domain';
+import { Page } from '../../../_partials/page/page';
+import { Datatable } from '@ng-mf/components';
+import { ColumnDef } from '@tanstack/angular-table';
+import { flexRenderComponent } from '@tanstack/angular-table';
+import { ProductActionsCell } from '../../../_cells/product-actions-cell/product-actions-cell';
+import { StatusCell } from '../../../_cells/status-cell/status-cell';
+import { StockCell } from '../../../_cells/stock-cell/stock-cell';
+import { ProductImageCell } from '../../../_cells/product-image-cell/product-image-cell';
 
 @Component({
   selector: 'app-product-list',
   imports: [
-    CommonModule,
     RouterLink,
-    FormsModule,
     MatButton,
-    MatIconButton,
-    MatToolbar,
     MatIcon,
-    MatCard,
-    MatCardContent,
-    MatMenu,
-    MatMenuTrigger,
-    MatMenuItem,
-    HorizontalDivider,
-    MatFormField,
-    MatLabel,
-    MatInput,
-    MatChip,
-    MatChipSet,
-    MatProgressSpinner
+    Page,
+    Datatable
   ],
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss'
 })
 export class ProductList implements OnInit {
-  private authService = inject(AuthService);
-  private authStore = inject(AuthStore);
   private productService = inject(ProductService);
   private productStore = inject(ProductStore);
-  private router = inject(Router);
-
-  user = this.authStore.user;
   products = this.productStore.filteredProducts;
   isLoading = this.productStore.isLoading;
   searchTerm = signal('');
+
+  columns = signal<ColumnDef<Product>[]>([
+    {
+      header: 'Product',
+      accessorKey: 'name',
+      size: 300,
+      cell: (info) => {
+        return flexRenderComponent(ProductImageCell, {
+          inputs: {
+            row: info.row.original,
+          },
+        });
+      },
+    },
+    {
+      header: 'SKU',
+      accessorKey: 'sku',
+      size: 120,
+    },
+    {
+      header: 'Barcode',
+      accessorKey: 'barcode',
+      size: 130,
+    },
+    {
+      header: 'Price',
+      accessorKey: 'price',
+      size: 120,
+      cell: (info) => {
+        return `$${info.getValue<number>().toFixed(2)}`;
+      },
+    },
+    {
+      header: 'Stock Level',
+      accessorKey: 'stockLevel',
+      size: 150,
+      cell: (info) => {
+        return flexRenderComponent(StockCell, {
+          inputs: {
+            row: info.row.original,
+          },
+        });
+      },
+    },
+    {
+      header: 'Status',
+      accessorKey: 'status',
+      size: 130,
+      cell: (info) => {
+        return flexRenderComponent(StatusCell, {
+          inputs: {
+            row: info.getValue<string>(),
+          },
+        });
+      },
+    },
+    {
+      header: 'Actions',
+      accessorKey: 'id',
+      size: 100,
+      cell: (info) => {
+        return flexRenderComponent(ProductActionsCell, {
+          inputs: {
+            row: info.row.original,
+          },
+        });
+      },
+    },
+  ]);
 
   ngOnInit(): void {
     this.loadProducts();
@@ -87,37 +134,5 @@ export class ProductList implements OnInit {
 
   filterLowStock(): void {
     this.productStore.setFilter({ lowStock: true });
-  }
-
-  editProduct(product: Product): void {
-    this.router.navigate(['/admin/products/edit', product.id]);
-  }
-
-  deleteProduct(product: Product): void {
-    if (confirm(`Are you sure you want to delete ${product.name}?`)) {
-      this.productService.delete(product.id).subscribe({
-        next: () => {
-          this.productStore.deleteProduct(product.id);
-        },
-        error: (error) => {
-          console.error('Error deleting product:', error);
-          alert('Failed to delete product');
-        }
-      });
-    }
-  }
-
-  getStockStatus(product: Product): 'low' | 'normal' | 'high' {
-    if (product.stockLevel <= product.lowStockThreshold) {
-      return 'low';
-    } else if (product.stockLevel >= product.maxStockLevel * 0.8) {
-      return 'high';
-    }
-    return 'normal';
-  }
-
-  async logout(): Promise<void> {
-    await this.authService.logout();
-    this.router.navigate(['/auth/login']);
   }
 }

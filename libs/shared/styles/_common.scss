@@ -150,7 +150,7 @@ $m3-dark-theme: mat.define-theme((
   --color-default-low: #{mat.get-theme-color($m3-light-theme, neutral, 90)};
   --color-default-high: #{mat.get-theme-color($m3-light-theme, neutral, 70)};
 
-  --emr-transition-transform: transform .15s linear;
+  --mf-transition-transform: transform .15s linear;
   --mat-button-protected-container-height: 2.375rem;
   --mat-menu-item-label-text-size: var(--text-tiny);
   --mat-option-label-text-size: var(--text-tiny);
@@ -196,7 +196,7 @@ body {
   background: var(--color-background);
   color: var(--color-on-background);
 
-  *:not(.emr-native-scroll) {
+  *:not(.mf-native-scroll) {
     &::-webkit-scrollbar {
       background: none;
       width: 8px;
@@ -218,7 +218,7 @@ body {
     }
   }
 
-  .emr-scroll-lg {
+  .mf-scroll-lg {
     &::-webkit-scrollbar {
       width: 11px;
       height: 11px;
@@ -238,7 +238,7 @@ app-root {
   max-width: none !important;
 }
 
-.emr-button-loading {
+.mf-button-loading {
   .mat-button-wrapper {
     visibility: hidden;
   }
@@ -254,13 +254,13 @@ app-root {
   border-right: none;
 }
 
-input.emr-number-input-no-spinners::-webkit-outer-spin-button,
-input.emr-number-input-no-spinners::-webkit-inner-spin-button {
+input.mf-number-input-no-spinners::-webkit-outer-spin-button,
+input.mf-number-input-no-spinners::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-input[type=number].emr-number-input-no-spinners {
+input[type=number].mf-number-input-no-spinners {
   -moz-appearance: textfield;
 }
 
@@ -274,7 +274,7 @@ input[type=number].emr-number-input-no-spinners {
   transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.emr-table {
+.mf-table {
   font-size: theme(--text-sm);
   width: 100%;
   margin-top: 0;
@@ -348,7 +348,7 @@ input[type=number].emr-number-input-no-spinners {
 html {
   min-height: 100vh;
 
-  &:has(emr-layout[windowmode]) {
+  &:has(mf-layout[windowmode]) {
     overflow: hidden;
   }
 
@@ -494,7 +494,7 @@ html {
     @include mat.system-level-colors($m3-dark-theme);
     @include mat.system-level-typography($m3-dark-theme);
 
-    .emr-table {
+    .mf-table {
       td {
         height: var(--mat-table-row-item-container-height);
       }
@@ -515,7 +515,7 @@ html {
     }
 
     body {
-      *:not(.emr-native-scroll) {
+      *:not(.mf-native-scroll) {
         &::-webkit-scrollbar-track {
           // background-color: var(--color-neutral-700);
         }
@@ -546,8 +546,8 @@ html.dark {
   }
 }
 
-.emr-country-select-panel,
-.emr-timezone-select-panel {
+.mf-country-select-panel,
+.mf-timezone-select-panel {
   padding-top: 0 !important;
 }
 

@@ -1,41 +1,165 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService, AuthStore } from '@samba/user-domain';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { MatToolbar } from '@angular/material/toolbar';
-import { MatIcon } from '@angular/material/icon';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
-import { MatMenu, MatMenuTrigger, MatMenuItem } from '@angular/material/menu';
-import { MatDivider } from '@angular/material/divider';
+import { Component, signal } from '@angular/core';
+import { Dashboard, WidgetConfig, WidgetItem } from '@ng-mf/components';
+import { Page } from '../../../_partials/page/page';
 
 @Component({
   selector: 'app-admin-dashboard',
   imports: [
-    CommonModule,
-    RouterLink,
-    MatIconButton,
-    MatToolbar,
-    MatIcon,
-    MatCard,
-    MatCardContent,
-    MatMenu,
-    MatMenuTrigger,
-    MatMenuItem,
-    MatDivider
+    Dashboard,
+    Page
   ],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.scss'
 })
 export class AdminDashboard {
-  private authService = inject(AuthService);
-  private authStore = inject(AuthStore);
-  private router = inject(Router);
+  configs = signal<WidgetConfig[]>([
+    {
+      type: 'total-sales-widget',
+      skeleton: null,
+      component: () =>
+        import('../../../widgets/_widgets/total-sales-widget/total-sales-widget').then(
+          (c) => c.TotalSalesWidget
+        ),
+    },
+    {
+      type: 'total-products-widget',
+      skeleton: null,
+      component: () =>
+        import('../../../widgets/_widgets/total-products-widget/total-products-widget').then(
+          (c) => c.TotalProductsWidget
+        ),
+    },
+    {
+      type: 'low-stock-widget',
+      skeleton: null,
+      component: () =>
+        import('../../../widgets/_widgets/low-stock-widget/low-stock-widget').then(
+          (c) => c.LowStockWidget
+        ),
+    },
+    {
+      type: 'revenue-widget',
+      skeleton: null,
+      component: () =>
+        import('../../../widgets/_widgets/revenue-widget/revenue-widget').then(
+          (c) => c.RevenueWidget
+        ),
+    },
+    {
+      type: 'recent-sales-widget',
+      skeleton: null,
+      component: () =>
+        import('../../../widgets/_widgets/recent-sales-widget/recent-sales-widget').then(
+          (c) => c.RecentSalesWidget
+        ),
+    },
+    {
+      type: 'quick-action-widget',
+      skeleton: null,
+      component: () =>
+        import('../../../widgets/_widgets/quick-action-widget/quick-action-widget').then(
+          (c) => c.QuickActionWidget
+        ),
+    },
+    {
+      type: 'heading-widget',
+      skeleton: null,
+      plain: true,
+      component: () =>
+        import('../../../widgets/_widgets/heading-widget/heading-widget').then(
+          (c) => c.HeadingWidget
+        ),
+    },
+    {
+      type: 'data-management-widget',
+      skeleton: null,
+      component: () =>
+        import('../../../widgets/_widgets/data-management-widget/data-management-widget').then(
+          (c) => c.DataManagementWidget
+        ),
+    },
+  ]);
 
-  user = this.authStore.user;
-
-  async logout() {
-    await this.authService.logout();
-    this.router.navigate(['/auth/login']);
-  }
+  items = signal<WidgetItem[]>([
+    {
+      id: 1,
+      type: 'total-sales-widget',
+      columns: 3,
+    },
+    {
+      id: 2,
+      type: 'total-products-widget',
+      columns: 3,
+    },
+    {
+      id: 3,
+      type: 'low-stock-widget',
+      columns: 3,
+    },
+    {
+      id: 4,
+      type: 'revenue-widget',
+      columns: 3,
+    },
+    {
+      id: 5,
+      type: 'recent-sales-widget',
+      columns: 12,
+      skeletonHeight: '400px',
+    },
+    {
+      id: 6,
+      type: 'heading-widget',
+      columns: 12,
+      widget: {
+        title: 'Quick Actions',
+      },
+    },
+    {
+      id: 7,
+      type: 'quick-action-widget',
+      columns: 4,
+      widget: {
+        iconName: 'inventory_2',
+        title: 'Manage Products',
+        description: 'Add, edit, and organize your product catalog',
+        route: '/products',
+      },
+    },
+    {
+      id: 8,
+      type: 'quick-action-widget',
+      columns: 4,
+      widget: {
+        iconName: 'manage_accounts',
+        title: 'Manage Users',
+        description: 'Control user access and permissions',
+        route: '/users',
+      },
+    },
+    {
+      id: 9,
+      type: 'quick-action-widget',
+      columns: 4,
+      widget: {
+        iconName: 'assessment',
+        title: 'View Reports',
+        description: 'Analyze sales and business metrics',
+        route: '/reports/sales',
+      },
+    },
+    {
+      id: 10,
+      type: 'heading-widget',
+      columns: 12,
+      widget: {
+        title: 'System Administration',
+      },
+    },
+    {
+      id: 11,
+      type: 'data-management-widget',
+      columns: 6,
+    },
+  ]);
 }

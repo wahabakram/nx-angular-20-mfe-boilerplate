@@ -1,0 +1,85 @@
+<mf-sidebar [compact]="compact()" class="border-r border-r-surface-container">
+  <mf-sidebar-header class="h-20 border-b border-b-surface-container">
+    <a mf-logo routerLink="/dashboard">
+      <span mfSidebarCompactViewMode>SA</span>
+      <span mfSidebarFullViewMode>SAMBA</span>
+    </a>
+    <button mat-icon-button (click)="toggleCompact()" class="sidebar-toggle">
+      @if (compact()) {
+        <mf-icon name="solar:double-alt-arrow-right-outline"/>
+      } @else {
+        <mf-icon name="solar:double-alt-arrow-left-outline"/>
+      }
+    </button>
+  </mf-sidebar-header>
+  <mf-sidebar-body>
+    <mf-sidebar-nav [activeKey]="activeKey()" autoScrollToActiveItem class="pb-4">
+      @for (navItem of visibleNavItems(); track navItem.key) {
+        @switch (navItem.type) {
+          @case ('link') {
+            <a mf-sidebar-nav-item [routerLink]="navItem.link" [key]="navItem.key">
+              <ng-container mfSidebarNavItemIcon>
+                @if (navItem.icon) {
+                  <mf-icon [name]="navItem.icon"/>
+                }
+              </ng-container>
+              {{ navItem.name }}
+            </a>
+          }
+          @case ('heading') {
+            <mf-sidebar-nav-heading>{{ navItem.name }}</mf-sidebar-nav-heading>
+          }
+          @case ('group') {
+            <mf-sidebar-nav-group>
+              <mf-sidebar-nav-group-toggle>
+                <ng-container mfSidebarNavItemIcon>
+                  @if (navItem.icon) {
+                    <mf-icon [name]="navItem.icon"/>
+                  }
+                </ng-container>
+                {{ navItem.name }}
+                <mat-icon mfSidebarNavGroupToggleIcon>arrow_drop_down</mat-icon>
+              </mf-sidebar-nav-group-toggle>
+              <mf-sidebar-nav-group-menu>
+                @for (childNavItem of navItem.children; track childNavItem.key) {
+                  <a mf-sidebar-nav-item
+                     [routerLink]="childNavItem.link"
+                     [key]="childNavItem.key">{{ childNavItem.name }}</a>
+                }
+              </mf-sidebar-nav-group-menu>
+            </mf-sidebar-nav-group>
+          }
+        }
+      }
+    </mf-sidebar-nav>
+  </mf-sidebar-body>
+  <mf-sidebar-footer class="border-t border-t-surface-container">
+    <div class="w-full">
+      <div mfSidebarFullViewMode>
+        <div class="px-2 py-1 h-full">
+          <div class="flex justify-between items-center">
+            @if (user(); as currentUser) {
+              <div class="flex items-center gap-2.5">
+                <mf-dicebear [key]="currentUser.id.toString()" class="size-10"/>
+                <div>
+                  <div class="text-sm font-semibold">{{ currentUser.firstName }} {{ currentUser.lastName }}</div>
+                  <div class="text-xs text-neutral-500">{{ currentUser.role }}</div>
+                </div>
+              </div>
+              <button mat-icon-button matTooltip="Logout" (click)="logout()">
+                <mat-icon>logout</mat-icon>
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+      <div mfSidebarCompactViewMode>
+        <div class="px-2 py-1 flex justify-center items-center h-full">
+          <button mat-icon-button matTooltip="Logout" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </mf-sidebar-footer>
+</mf-sidebar>

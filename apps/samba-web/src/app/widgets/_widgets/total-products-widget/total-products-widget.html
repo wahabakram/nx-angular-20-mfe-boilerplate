@@ -1,0 +1,21 @@
+<div class="relative overflow-hidden group h-full">
+  <div class="flex gap-5 p-6">
+    <div class="rounded-lg bg-blue-500 size-12 flex-none flex items-center justify-center text-white">
+      <mat-icon>inventory</mat-icon>
+    </div>
+    <div>
+      <div class="truncate text-sm font-medium text-neutral-500">Total Products</div>
+      <div class="flex items-center gap-2">
+        <div class="text-xl font-semibold text-neutral-800 dark:text-neutral-100">{{ products().length }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="absolute right-0 top-0 bottom-0">
+    <button matRipple matTooltip="View all products"
+            class="cursor-pointer h-full hover:bg-surface-container-high
+                 w-10 bg-surface-container flex
+                 items-center justify-center invisible group-hover:visible">
+      <mat-icon>arrow_right_alt</mat-icon>
+    </button>
+  </div>
+</div>

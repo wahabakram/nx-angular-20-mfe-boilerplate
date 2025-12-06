@@ -1,0 +1,45 @@
+<div class="h-20 w-full bg-background border-b border-b-surface-container">
+  <div class="h-full flex items-center px-7 mx-auto gap-7">
+    <div class="flex items-center gap-3 -ms-3">
+      <button mat-icon-button (click)="toggleSidebar()" matTooltip="Toggle sidebar">
+        @if (sidebarShown()) {
+          <mat-icon>menu_open</mat-icon>
+        } @else {
+          <mat-icon>menu</mat-icon>
+        }
+      </button>
+      <mf-breadcrumbs-global/>
+    </div>
+
+    <div class="ms-auto flex items-center gap-3">
+      @if (user(); as currentUser) {
+        <mf-dicebear
+          [key]="currentUser.id.toString()"
+          [clickable]="true"
+          [matMenuTriggerFor]="userMenu"
+          matTooltip="Account"
+          class="size-10"/>
+        <mat-menu #userMenu="matMenu" xPosition="before">
+          <div class="px-4 py-2 border-b">
+            <div class="text-sm font-semibold">{{ currentUser.firstName }} {{ currentUser.lastName }}</div>
+            <div class="text-xs text-neutral-500">{{ currentUser.email }}</div>
+            <div class="text-xs text-neutral-500">{{ currentUser.role }}</div>
+          </div>
+          <button mat-menu-item routerLink="/profile">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+          </button>
+          <button mat-menu-item routerLink="/settings">
+            <mat-icon>settings</mat-icon>
+            <span>Settings</span>
+          </button>
+          <mat-divider/>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      }
+    </div>
+  </div>
+</div>
