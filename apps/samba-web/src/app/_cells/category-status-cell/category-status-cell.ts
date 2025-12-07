@@ -1,15 +1,14 @@
 import { Component, input } from '@angular/core';
 
 @Component({
-  selector: 'app-status-cell',
+  selector: 'app-category-status-cell',
   imports: [],
   template: `
     <span
       class="status"
-      [class.active]="row() === 'active'"
-      [class.inactive]="row() === 'inactive'"
-      [class.discontinued]="row() === 'discontinued'">
-      {{ getStatusLabel() }}
+      [class.active]="isActive()"
+      [class.inactive]="!isActive()">
+      {{ isActive() ? 'Active' : 'Inactive' }}
     </span>
   `,
   styles: `
@@ -28,7 +27,6 @@ import { Component, input } from '@angular/core';
       border: 1px solid transparent;
       width: fit-content;
       height: 1.75rem;
-      text-transform: capitalize;
     }
 
     .status.active {
@@ -41,11 +39,6 @@ import { Component, input } from '@angular/core';
       color: white;
     }
 
-    .status.discontinued {
-      background-color: rgb(239 68 68);
-      color: white;
-    }
-
     @media (prefers-color-scheme: dark) {
       .status.active {
         background-color: #27ae60;
@@ -54,17 +47,9 @@ import { Component, input } from '@angular/core';
       .status.inactive {
         background-color: rgb(107 114 128);
       }
-
-      .status.discontinued {
-        background-color: rgb(220 38 38);
-      }
     }
   `,
 })
-export class StatusCell {
-  row = input.required<string>();
-
-  getStatusLabel(): string {
-    return this.row().charAt(0).toUpperCase() + this.row().slice(1);
-  }
+export class CategoryStatusCell {
+  isActive = input.required<boolean>();
 }

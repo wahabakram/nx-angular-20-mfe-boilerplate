@@ -1,10 +1,11 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { Datatable } from '@ng-mf/components';
-import { ColumnDef } from '@tanstack/angular-table';
-import { Page } from '../../../../_partials/page/page';
+import { Router, RouterLink } from '@angular/router';
+import { Datatable, Panel, PanelHeader, PanelBody } from '@ng-mf/components';
+import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { BranchActionsCell } from '../../../../_cells/branch-actions-cell/branch-actions-cell';
+import { BranchStatusCell } from '../../../../_cells/branch-status-cell/branch-status-cell';
 
 interface Branch {
   id: number;
@@ -20,7 +21,7 @@ interface Branch {
 
 @Component({
   selector: 'app-branch-list',
-  imports: [Datatable, Page, MatButton, MatIcon],
+  imports: [Datatable, Panel, PanelHeader, PanelBody, MatButton, MatIcon, RouterLink],
   templateUrl: './branch-list.html',
   styleUrl: './branch-list.scss'
 })
@@ -72,26 +73,28 @@ export class BranchList implements OnInit {
       accessorKey: 'isActive',
       size: 100,
       cell: (info) => {
-        const isActive = info.getValue() as boolean;
-        return isActive
-          ? '<span class="inline-flex px-2 py-1 rounded-full text-xs font-medium bg-success/10 text-success">Active</span>'
-          : '<span class="inline-flex px-2 py-1 rounded-full text-xs font-medium bg-neutral/10 text-neutral">Inactive</span>';
+        return flexRenderComponent(BranchStatusCell, {
+          inputs: {
+            isActive: info.getValue() as boolean,
+          },
+        });
       },
     },
     {
+      id: 'actions',
       header: 'Actions',
       accessorKey: 'id',
-      size: 150,
+      size: 120,
+      enableSorting: false,
+      meta: {
+        pinned: 'right'
+      },
       cell: (info) => {
-        return `
-          <div class="flex gap-2">
-            <button class="edit-btn p-1 rounded hover:bg-surface-container" data-id="${info.getValue()}" title="Edit">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-              </svg>
-            </button>
-          </div>
-        `;
+        return flexRenderComponent(BranchActionsCell, {
+          inputs: {
+            row: info.row.original,
+          },
+        });
       },
     },
   ]);

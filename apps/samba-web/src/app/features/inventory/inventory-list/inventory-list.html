@@ -1,89 +1,86 @@
-<app-page>
-  <ng-container pageTitle>Inventory Management</ng-container>
-  <ng-container pageDescription>Track and manage your product inventory levels</ng-container>
-
-  <!-- Summary Cards -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-    <mat-card>
-      <mat-card-content class="p-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm text-neutral-600 mb-1">Total Products</p>
-            <p class="text-3xl font-bold">{{ products().length }}</p>
-          </div>
-          <mat-icon class="text-5xl text-primary">inventory</mat-icon>
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 p-4">
+  <!-- Total Products -->
+  <div class="bg-white dark:bg-neutral-900 rounded-xl shadow-sm overflow-hidden">
+    <div class="flex gap-5 p-6">
+      <div class="rounded-lg bg-primary size-12 flex-none flex items-center justify-center text-white">
+        <mat-icon>inventory</mat-icon>
+      </div>
+      <div>
+        <div class="text-sm font-medium text-neutral-500 dark:text-neutral-400">Total Products</div>
+        <div class="text-2xl font-semibold text-neutral-800 dark:text-neutral-100 mt-1">
+          {{ products().length }}
         </div>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card class="bg-error-50">
-      <mat-card-content class="p-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm text-error mb-1">Low Stock Items</p>
-            <p class="text-3xl font-bold text-error">{{ lowStockCount().length }}</p>
-          </div>
-          <mat-icon class="text-5xl text-error">warning</mat-icon>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card class="bg-success-50">
-      <mat-card-content class="p-6">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm text-success mb-1">In Stock</p>
-            <p class="text-3xl font-bold text-success">
-              {{ products().length - lowStockCount().length }}
-            </p>
-          </div>
-          <mat-icon class="text-5xl text-success">check_circle</mat-icon>
-        </div>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
   </div>
 
-  <div class="widget-container">
-    <mf-datatable
-      #dt="mfDatatable"
-      [columns]="columns()"
-      [data]="products()"
-      tableFixed
-      showHeader
-      showPagination
-      class="pin-actions-right">
-      <ng-container datatableToolbar>
-        <div class="h-full flex items-center justify-between px-7 gap-7">
-          <div class="flex items-center gap-7">
-            <h2 class="text-base font-semibold">Inventory Items</h2>
-            <div>
-              <input
-                type="text"
-                class="h-10 w-72 bg-surface-container text-sm focus:outline-2
-                       focus:outline-primary rounded-3xl px-4"
-                placeholder="Search inventory..."
-                (input)="dt.setGlobalFilter(($any($event.target)).value)">
-            </div>
-          </div>
-          <div class="flex gap-2">
-            <button mat-stroked-button (click)="clearFilters()">
-              <mat-icon>clear_all</mat-icon>
-              All
-            </button>
-            <button
-              mat-stroked-button
-              (click)="filterLowStock()"
-              [matBadge]="lowStockCount().length.toString()"
-              matBadgeColor="warn"
-              [matBadgeHidden]="lowStockCount().length === 0">
-              <mat-icon>warning</mat-icon>
-              Low Stock
-            </button>
-            <button mat-stroked-button (click)="filterByStatus('active')">Active</button>
-            <button mat-stroked-button (click)="filterByStatus('inactive')">Inactive</button>
-          </div>
+  <!-- Low Stock Items -->
+  <div class="bg-white dark:bg-neutral-900 rounded-xl shadow-sm overflow-hidden">
+    <div class="flex gap-5 p-6">
+      <div class="rounded-lg bg-red-500 size-12 flex-none flex items-center justify-center text-white">
+        <mat-icon>warning</mat-icon>
+      </div>
+      <div>
+        <div class="text-sm font-medium text-neutral-500 dark:text-neutral-400">Low Stock Items</div>
+        <div class="text-2xl font-semibold text-red-600 dark:text-red-400 mt-1">
+          {{ lowStockCount().length }}
         </div>
-      </ng-container>
-    </mf-datatable>
+      </div>
+    </div>
   </div>
-</app-page>
+
+  <!-- In Stock -->
+  <div class="bg-white dark:bg-neutral-900 rounded-xl shadow-sm overflow-hidden">
+    <div class="flex gap-5 p-6">
+      <div class="rounded-lg bg-green-500 size-12 flex-none flex items-center justify-center text-white">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <div>
+        <div class="text-sm font-medium text-neutral-500 dark:text-neutral-400">In Stock</div>
+        <div class="text-2xl font-semibold text-green-600 dark:text-green-400 mt-1">
+          {{ products().length - lowStockCount().length }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Data Table -->
+<mf-panel>
+  <mf-panel-header class="h-18 border-b border-b-surface-container">
+    <div class="h-full flex items-center justify-between px-7 gap-7">
+      <div class="flex items-center gap-7">
+        <h2 class="text-base font-semibold">Inventory Items</h2>
+        <div>
+          <input type="text" class="h-10 w-72 bg-surface-container text-sm focus:outline-2
+                     focus:outline-primary rounded-3xl px-4" placeholder="Search inventory..."
+            (input)="dt.setGlobalFilter(($any($event.target)).value)">
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button mat-stroked-button (click)="clearFilters()">
+          <mat-icon>clear_all</mat-icon>
+          All
+        </button>
+        <button mat-stroked-button (click)="filterLowStock()" [matBadge]="lowStockCount().length.toString()"
+          matBadgeColor="warn" [matBadgeHidden]="lowStockCount().length === 0">
+          <mat-icon>warning</mat-icon>
+          Low Stock
+        </button>
+        <button mat-stroked-button (click)="filterByStatus('active')">Active</button>
+        <button mat-stroked-button (click)="filterByStatus('inactive')">Inactive</button>
+        <button mat-flat-button color="primary" routerLink="/products/new">
+          <mat-icon>add</mat-icon>
+          Add Product
+        </button>
+      </div>
+    </div>
+  </mf-panel-header>
+  <mf-panel-body class="relative">
+    <div class="absolute inset-4 rounded-3xl overflow-hidden">
+      <mf-datatable #dt="mfDatatable" [columns]="columns()" [data]="products()" tableFixed showHeader showPagination
+        class="pin-actions-right" />
+    </div>
+  </mf-panel-body>
+</mf-panel>

@@ -1,27 +1,39 @@
-<app-page>
-  <ng-container pageTitle>Branch Management</ng-container>
-  <ng-container pageDescription>Manage business locations and branches</ng-container>
-  <ng-container pageActions>
-    <button mat-stroked-button (click)="loadBranches()">
-      <mat-icon>refresh</mat-icon>
-      Refresh
-    </button>
-    <button mat-raised-button color="primary" (click)="createBranch()">
-      <mat-icon>add</mat-icon>
-      New Branch
-    </button>
-  </ng-container>
-
-  @if (isLoading()) {
-    <div class="flex justify-center items-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+<mf-panel>
+  <mf-panel-header class="h-18 border-b border-b-surface-container">
+    <div class="h-full flex items-center justify-between px-7 gap-7">
+      <div class="flex items-center gap-7">
+        <h2 class="text-base font-semibold">Branch Management</h2>
+      </div>
+      <div class="flex items-center gap-2">
+        <button mat-stroked-button (click)="loadBranches()">
+          <mat-icon>refresh</mat-icon>
+          Refresh
+        </button>
+        <button mat-flat-button color="primary" (click)="createBranch()">
+          <mat-icon>add</mat-icon>
+          New Branch
+        </button>
+      </div>
     </div>
-  } @else {
-    <mf-datatable
-      [data]="branches()"
-      [columns]="columns()"
-      (click)="onTableInteraction($event)"
-      class="w-full">
-    </mf-datatable>
-  }
-</app-page>
+  </mf-panel-header>
+  <mf-panel-body class="relative">
+    <div class="absolute inset-4 rounded-3xl overflow-hidden">
+      @if (isLoading()) {
+        <div class="flex justify-center items-center h-full">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+      } @else {
+        <mf-datatable
+          #dt="mfDatatable"
+          [data]="branches()"
+          [columns]="columns()"
+          tableFixed
+          showHeader
+          showPagination
+          (click)="onTableInteraction($event)"
+          class="pin-actions-right">
+        </mf-datatable>
+      }
+    </div>
+  </mf-panel-body>
+</mf-panel>

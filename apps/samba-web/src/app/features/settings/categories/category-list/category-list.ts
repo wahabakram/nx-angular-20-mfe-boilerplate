@@ -1,10 +1,11 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { Datatable } from '@ng-mf/components';
-import { ColumnDef } from '@tanstack/angular-table';
-import { Page } from '../../../../_partials/page/page';
+import { Router, RouterLink } from '@angular/router';
+import { Datatable, Panel, PanelHeader, PanelBody } from '@ng-mf/components';
+import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { CategoryActionsCell } from '../../../../_cells/category-actions-cell/category-actions-cell';
+import { CategoryStatusCell } from '../../../../_cells/category-status-cell/category-status-cell';
 
 interface Category {
   id: number;
@@ -17,7 +18,7 @@ interface Category {
 
 @Component({
   selector: 'app-category-list',
-  imports: [Datatable, Page, MatButton, MatIcon],
+  imports: [Datatable, Panel, PanelHeader, PanelBody, MatButton, MatIcon, RouterLink],
   templateUrl: './category-list.html',
   styleUrl: './category-list.scss'
 })
@@ -58,31 +59,28 @@ export class CategoryList implements OnInit {
       accessorKey: 'isActive',
       size: 100,
       cell: (info) => {
-        const isActive = info.getValue() as boolean;
-        return isActive
-          ? '<span class="inline-flex px-2 py-1 rounded-full text-xs font-medium bg-success/10 text-success">Active</span>'
-          : '<span class="inline-flex px-2 py-1 rounded-full text-xs font-medium bg-neutral/10 text-neutral">Inactive</span>';
+        return flexRenderComponent(CategoryStatusCell, {
+          inputs: {
+            isActive: info.getValue() as boolean,
+          },
+        });
       },
     },
     {
+      id: 'actions',
       header: 'Actions',
       accessorKey: 'id',
-      size: 150,
+      size: 120,
+      enableSorting: false,
+      meta: {
+        pinned: 'right'
+      },
       cell: (info) => {
-        return `
-          <div class="flex gap-2">
-            <button class="edit-btn p-1 rounded hover:bg-surface-container" data-id="${info.getValue()}" title="Edit">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-              </svg>
-            </button>
-            <button class="delete-btn p-1 rounded hover:bg-surface-container text-error" data-id="${info.getValue()}" title="Delete">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-              </svg>
-            </button>
-          </div>
-        `;
+        return flexRenderComponent(CategoryActionsCell, {
+          inputs: {
+            row: info.row.original,
+          },
+        });
       },
     },
   ]);

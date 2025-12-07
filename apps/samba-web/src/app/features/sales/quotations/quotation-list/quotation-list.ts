@@ -1,10 +1,10 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Datatable } from '@ng-mf/components';
-import { ColumnDef } from '@tanstack/angular-table';
-import { Page } from '../../../../_partials/page/page';
+import { Datatable, Panel, PanelBody, PanelHeader } from '@ng-mf/components';
+import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { QuotationActionsCell } from '../../../../_cells/quotation-actions-cell/quotation-actions-cell';
 
 interface Quotation {
   id: number;
@@ -22,9 +22,9 @@ interface Quotation {
 
 @Component({
   selector: 'app-quotation-list',
-  imports: [Datatable, Page, MatButton, MatIcon],
+  imports: [Datatable, Panel, PanelHeader, PanelBody, MatButton, MatIcon],
   templateUrl: './quotation-list.html',
-  styleUrl: './quotation-list.scss'
+  styleUrl: './quotation-list.scss',
 })
 export class QuotationList implements OnInit {
   private router = inject(Router);
@@ -52,7 +52,7 @@ export class QuotationList implements OnInit {
         return new Date(date).toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'short',
-          day: 'numeric'
+          day: 'numeric',
         });
       },
     },
@@ -65,7 +65,7 @@ export class QuotationList implements OnInit {
         return new Date(date).toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'short',
-          day: 'numeric'
+          day: 'numeric',
         });
       },
     },
@@ -95,32 +95,27 @@ export class QuotationList implements OnInit {
           sent: 'bg-primary/10 text-primary',
           accepted: 'bg-success/10 text-success',
           rejected: 'bg-error/10 text-error',
-          expired: 'bg-warning/10 text-warning'
+          expired: 'bg-warning/10 text-warning',
         };
         const color = colorMap[status] || 'bg-neutral/10 text-neutral';
         return `<span class="inline-flex px-2 py-1 rounded-full text-xs font-medium ${color}">${status}</span>`;
       },
     },
     {
+      id: 'actions',
       header: 'Actions',
       accessorKey: 'id',
-      size: 150,
+      size: 120,
+      enableSorting: false,
+      meta: {
+        pinned: 'right',
+      },
       cell: (info) => {
-        return `
-          <div class="flex gap-2">
-            <button class="view-btn p-1 rounded hover:bg-surface-container" data-id="${info.getValue()}" title="View">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-              </svg>
-            </button>
-            <button class="edit-btn p-1 rounded hover:bg-surface-container" data-id="${info.getValue()}" title="Edit">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-              </svg>
-            </button>
-          </div>
-        `;
+        return flexRenderComponent(QuotationActionsCell, {
+          inputs: {
+            row: info.row.original,
+          },
+        });
       },
     },
   ]);
@@ -137,16 +132,14 @@ export class QuotationList implements OnInit {
         quotationNumber: 'QT-2025-001',
         customerId: 1,
         customerName: 'ABC Electronics',
-        items: [
-          { productId: 1, quantity: 5, unitPrice: 45000 }
-        ],
+        items: [{ productId: 1, quantity: 5, unitPrice: 45000 }],
         subtotal: 225000,
         taxAmount: 38250,
         totalAmount: 263250,
         validUntil: '2025-02-15',
         status: 'sent',
-        createdAt: '2025-01-15'
-      }
+        createdAt: '2025-01-15',
+      },
     ]);
   }
 

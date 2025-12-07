@@ -1,16 +1,15 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProductService, ProductStore, CreateProductDto, ProductStatus } from '@samba/product-domain';
 import { AuthStore } from '@samba/user-domain';
-import { Page } from '../../../_partials/page/page';
+import { Panel, PanelHeader, PanelBody, OverlayScrollbar } from '@ng-mf/components';
 import { ImageUpload } from '../../../_components/image-upload/image-upload';
 
 @Component({
@@ -22,10 +21,13 @@ import { ImageUpload } from '../../../_components/image-upload/image-upload';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    MatCardModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    Page,
+    RouterLink,
+    Panel,
+    PanelHeader,
+    PanelBody,
+    OverlayScrollbar,
     ImageUpload
   ],
   templateUrl: './product-form.html',

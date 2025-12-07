@@ -1,7 +1,7 @@
 @reference 'tailwindcss';
 
 :host {
-  ---datatable-tbody-max-height: 99999px;
+  --mf-datatable-tbody-max-height: 99999px;
 
   display: block;
   width: 100%;
@@ -22,7 +22,7 @@
   }
 
   &.is-compact {
-    table.-table {
+    table.mf-table {
       td {
         padding-top: --spacing(0.5);
         padding-bottom: --spacing(0.5);
@@ -54,8 +54,8 @@
     table {
       tbody {
         display: block;
-        height: var(---datatable-tbody-max-height);
-        max-height: var(---datatable-tbody-max-height);
+        height: var(--mf-datatable-tbody-max-height);
+        max-height: var(--mf-datatable-tbody-max-height);
         overflow: hidden;
       }
 
@@ -71,7 +71,7 @@
 
 /* Sticky right last column for instances that opt-in via parent class */
 :host-context(.pin-actions-right) {
-  table.-table {
+  table.mf-table {
     th:last-child,
     td:last-child {
       position: sticky;
@@ -101,7 +101,7 @@
     }
   }
 
-  table.-table {
+  table.mf-table {
     th:last-child,
     td:last-child {
       background: var(--color-surface-container);

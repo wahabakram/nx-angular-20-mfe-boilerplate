@@ -1,11 +1,9 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatBadge } from '@angular/material/badge';
 import { MatButton } from '@angular/material/button';
 import { Product, ProductService, ProductStore } from '@samba/product-domain';
-import { Page } from '../../../_partials/page/page';
-import { Datatable } from '@ng-mf/components';
+import { Datatable, Panel, PanelHeader, PanelBody } from '@ng-mf/components';
 import { ColumnDef } from '@tanstack/angular-table';
 import { flexRenderComponent } from '@tanstack/angular-table';
 import { StatusCell } from '../../../_cells/status-cell/status-cell';
@@ -17,11 +15,11 @@ import { ProductImageCell } from '../../../_cells/product-image-cell/product-ima
   selector: 'app-inventory-list',
   imports: [
     MatIcon,
-    MatCard,
-    MatCardContent,
     MatBadge,
     MatButton,
-    Page,
+    Panel,
+    PanelHeader,
+    PanelBody,
     Datatable
   ],
   templateUrl: './inventory-list.html',
@@ -79,9 +77,14 @@ export class InventoryList implements OnInit {
       },
     },
     {
+      id: 'actions',
       header: 'Actions',
-      accessorKey: 'id',
-      size: 220,
+      accessorKey: 'actions',
+      size: 180,
+      enableSorting: false,
+      meta: {
+        pinned: 'right'
+      },
       cell: (info) => {
         return flexRenderComponent(InventoryActionsCell, {
           inputs: {

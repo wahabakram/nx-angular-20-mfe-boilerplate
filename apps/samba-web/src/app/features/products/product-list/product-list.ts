@@ -4,7 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Product, ProductService, ProductStore } from '@samba/product-domain';
 import { Page } from '../../../_partials/page/page';
-import { Datatable } from '@ng-mf/components';
+import { Datatable, Panel, PanelHeader, PanelBody } from '@ng-mf/components';
 import { ColumnDef } from '@tanstack/angular-table';
 import { flexRenderComponent } from '@tanstack/angular-table';
 import { ProductActionsCell } from '../../../_cells/product-actions-cell/product-actions-cell';
@@ -18,7 +18,9 @@ import { ProductImageCell } from '../../../_cells/product-image-cell/product-ima
     RouterLink,
     MatButton,
     MatIcon,
-    Page,
+    Panel,
+    PanelHeader,
+    PanelBody,
     Datatable
   ],
   templateUrl: './product-list.html',
@@ -87,9 +89,14 @@ export class ProductList implements OnInit {
       },
     },
     {
+      id: 'actions',
       header: 'Actions',
       accessorKey: 'id',
-      size: 100,
+      size: 130,
+      enableSorting: false,
+      meta: {
+        pinned: 'right'
+      },
       cell: (info) => {
         return flexRenderComponent(ProductActionsCell, {
           inputs: {
