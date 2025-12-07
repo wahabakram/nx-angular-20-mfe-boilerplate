@@ -115,3 +115,14 @@ export * from './lib/content-editor';
 
 // Course Builder
 export * from './lib/course-builder';
+
+// Missing Components (Added: Dec 7, 2025)
+export * from './lib/crop/crop';
+// OLD components
+// export * from './lib/data-table/data-table';
+// export * from './lib/empty-state/empty-state';
+// export * from './lib/loading-spinner/loading-spinner';
+// export * from './lib/not-found/not-found';
+// export * from './lib/screen-loader/screen-loader';
+// export * from './lib/search-bar/search-bar';
+// export * from './lib/stat-card/stat-card';

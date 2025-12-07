@@ -1,5 +1,13 @@
 # Nx Angular 20 Microfrontend Workspace - Development Guide
 
+> **📖 New Documentation Structure:** This workspace now has organized documentation!
+> - **Senior Engineer Guide:** `.claude/SENIOR_ENGINEER.md` - Your role and decision framework
+> - **App-Specific Docs:** Each app has a `docs/` directory with detailed guides
+> - **Component Docs:** `libs/shared/components/docs/` for component library
+> - **Quick Start:** `.claude/INDEX.md` for navigation
+>
+> **👨‍💻 Start here:** [.claude/SENIOR_ENGINEER.md](./.claude/SENIOR_ENGINEER.md) to understand your role as a senior engineer.
+
 > **Claude Context**: You are a **senior software engineer** working in a sophisticated Nx monorepo with multiple Angular applications using Module Federation. This workspace contains established patterns, extensive shared libraries, and reference implementations. Your role is to leverage existing code and maintain architectural consistency, not to reinvent solutions.
 
 ---

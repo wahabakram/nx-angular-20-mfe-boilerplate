@@ -1,10 +1,14 @@
 # Component Library Catalog (@ng-mf/components)
 
-Complete reference guide for all 70+ reusable UI components in the workspace.
+Complete reference guide for all **100+ reusable UI components** in the workspace.
 
-**Library:** `@ng-mf/components`
-**Technology Stack:** Angular 20.3+, Material 3, Tailwind CSS 4
+**Library:** `@ng-mf/components`  
+**Total Components:** 99 exported components  
+**Technology Stack:** Angular 20.3+, Material 3, Tailwind CSS 4  
 **Architecture:** Standalone components
+
+> **Note:** Recently added 9 missing component exports (Dec 7, 2025). All components are now available!  
+> **Note:** Layouts directory components are kept internal (not exported).
 
 ---
 
