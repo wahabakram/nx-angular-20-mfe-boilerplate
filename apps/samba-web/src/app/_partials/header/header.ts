@@ -5,8 +5,18 @@ import { MatIconButton } from '@angular/material/button';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatDivider } from '@angular/material/divider';
 import { MatTooltip } from '@angular/material/tooltip';
-import { Dicebear, LayoutApi, BreadcrumbsGlobal } from '@ng-mf/components';
+import {
+  Dicebear,
+  LayoutApi,
+  BreadcrumbsGlobal,
+  Icon,
+  ColorSchemeLightDirective,
+  ColorSchemeDarkDirective,
+  ColorSchemeSwitcher,
+  PopoverTriggerForDirective,
+} from '@ng-mf/components';
 import { AuthService, AuthStore } from '@samba/user-domain';
+import { NotificationsPopover } from '../../_components/notifications-popover/notifications-popover';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +30,13 @@ import { AuthService, AuthStore } from '@samba/user-domain';
     MatTooltip,
     RouterLink,
     Dicebear,
-    BreadcrumbsGlobal
+    BreadcrumbsGlobal,
+    Icon,
+    ColorSchemeDarkDirective,
+    ColorSchemeLightDirective,
+    ColorSchemeSwitcher,
+    PopoverTriggerForDirective,
+    NotificationsPopover
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss',

@@ -8,38 +8,55 @@
           <mat-icon>menu</mat-icon>
         }
       </button>
-      <mf-breadcrumbs-global/>
+      <mf-breadcrumbs-global>
+        <ng-template mfBreadcrumbItemNameDef let-breadcrumb>
+          {{ breadcrumb.name }}
+        </ng-template>
+      </mf-breadcrumbs-global>
     </div>
 
     <div class="ms-auto flex items-center gap-3">
-      @if (user(); as currentUser) {
+      <button mat-icon-button matTooltip="Notifications" [mfPopoverTriggerFor]="notificationsPopover" position="below-end"
+        matBadge="1">
+        <mf-icon name="solar:bell-bing-bold-duotone" />
+      </button>
+      <mf-color-scheme-switcher matTooltip="Color Theme" mfSoundEffect>
+        <mf-icon *mfColorSchemeLight name="solar:sun-2-bold-duotone" />
+        <mf-icon *mfColorSchemeDark name="solar:moon-bold-duotone" />
+      </mf-color-scheme-switcher>
         <mf-dicebear
-          [key]="currentUser.id.toString()"
+          [key]="user()?.id?.toString()"
           [clickable]="true"
           [matMenuTriggerFor]="userMenu"
           matTooltip="Account"
           class="size-10"/>
-        <mat-menu #userMenu="matMenu" xPosition="before">
-          <div class="px-4 py-2 border-b">
-            <div class="text-sm font-semibold">{{ currentUser.firstName }} {{ currentUser.lastName }}</div>
-            <div class="text-xs text-neutral-500">{{ currentUser.email }}</div>
-            <div class="text-xs text-neutral-500">{{ currentUser.role }}</div>
-          </div>
-          <button mat-menu-item routerLink="/profile">
-            <mat-icon>person</mat-icon>
-            <span>Profile</span>
-          </button>
-          <button mat-menu-item routerLink="/settings">
-            <mat-icon>settings</mat-icon>
-            <span>Settings</span>
-          </button>
-          <mat-divider/>
-          <button mat-menu-item (click)="logout()">
-            <mat-icon>logout</mat-icon>
-            <span>Logout</span>
-          </button>
-        </mat-menu>
-      }
     </div>
   </div>
 </div>
+
+<mat-menu #userMenu="matMenu" xPosition="before">
+  <div class="px-4 py-2 border-b">
+    <div class="text-sm font-semibold">{{ user()?.firstName }} {{ user()?.lastName }}</div>
+    <div class="text-xs text-neutral-500">{{ user()?.email }}</div>
+    <div class="text-xs text-neutral-500">{{ user()?.role }}</div>
+  </div>
+  <button mat-menu-item routerLink="/profile">
+    <mat-icon>person</mat-icon>
+    <span>Profile</span>
+  </button>
+  <button mat-menu-item routerLink="/settings">
+    <mat-icon>settings</mat-icon>
+    <span>Settings</span>
+  </button>
+  <mat-divider />
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>logout</mat-icon>
+    <span>Logout</span>
+  </button>
+</mat-menu>
+
+<ng-template #notificationsPopover>
+  @defer {
+  <app-notifications-popover />
+  }
+</ng-template>

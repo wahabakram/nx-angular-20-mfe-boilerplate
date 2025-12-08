@@ -16,10 +16,12 @@ import {
 import { authInterceptor, AuthStore } from '@samba/user-domain';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MockDataService } from './_mock-data/mock-data.service';
+import { ColorSchemeStore } from '@ng-mf/components';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    ColorSchemeStore,
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),
     provideHttpClient(

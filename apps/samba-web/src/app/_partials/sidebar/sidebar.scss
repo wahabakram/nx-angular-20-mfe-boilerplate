@@ -1,1 +1,89 @@
-// Sidebar styles
+@reference 'tailwindcss';
+
+:host {
+  display: block;
+  height: 100%;
+  position: relative;
+  min-width: var(--mf-layout-sidebar-compact-width);
+
+  mf-sidebar {
+    --mf-sidebar-width: 260px;
+    --mf-sidebar-bg: var(--color-surface-container-lowest);
+  }
+
+  mf-sidebar-body {
+    --mf-sidebar-body-padding: 0 --spacing(4) 0 0;
+  }
+
+  mf-sidebar-nav {
+    --mf-sidebar-nav-item-icon-color: #a2aebd;
+    --mf-sidebar-nav-item-hover-icon-color: var(--color-primary);
+    --mf-sidebar-nav-item-active-icon-color: var(--color-primary-700);
+    --mf-sidebar-nav-item-active-bg: var(--color-secondary-container);
+    --mf-sidebar-nav-item-hover-bg: var(--color-primary-200);
+    --mf-sidebar-nav-item-padding: 0 --spacing(6);
+    --mf-sidebar-nav-group-toggle-active-bg: var(--color-secondary-container);
+    --mf-sidebar-nav-nested-item-hover-bg: var(--color-primary-200);
+    --mf-sidebar-nav-nested-item-active-bg: var(--color-secondary-container);
+    --mf-sidebar-nav-group-tree-lines-color: var(--color-neutral-300);
+    --mf-sidebar-nav-group-toggle-active-icon-color: var(--color-primary-700);
+    --mf-sidebar-nav-group-toggle-icon-color: #a2aebd;
+    --mf-sidebar-nav-item-border-radius: 0 100px 100px 0;
+  }
+
+  mf-sidebar-footer {
+    --mf-sidebar-footer-padding: --spacing(2);
+  }
+
+  mf-sidebar-nav-group-menu {
+    --mf-sidebar-nav-item-border-radius: 100px;
+  }
+
+  mf-sidebar-nav-item {
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  .sidebar-toggle {
+    margin-inline-end: calc(--spacing(2) * -1);
+  }
+
+  &.compact {
+    &:not(:hover) {
+      mf-sidebar-body {
+        --mf-sidebar-body-padding: 0 0 0 0;
+      }
+
+      mf-sidebar-nav {
+        --mf-sidebar-nav-item-border-radius: 0;
+      }
+
+      mf-sidebar-footer {
+        --mf-sidebar-footer-compact-padding: --spacing(2);
+      }
+    }
+
+    .sidebar-toggle {
+      display: none;
+    }
+
+    &:hover {
+      .sidebar-toggle {
+        display: block;
+      }
+    }
+  }
+}
+
+:host-context(html.dark) {
+  mf-sidebar-nav {
+    --mf-sidebar-nav-group-toggle-active-bg: var(--color-primary-300);
+    --mf-sidebar-nav-group-toggle-active-color: var(--color-neutral-800);
+    --mf-sidebar-nav-item-active-icon-color: var(--color-primary-800);
+    --mf-sidebar-nav-group-tree-lines-color: var(--color-neutral-900);
+    --mf-sidebar-nav-group-toggle-active-icon-color: var(--color-primary-800);
+    --mf-sidebar-nav-nested-item-color: var(--color-secondary-200);
+    --mf-sidebar-nav-nested-item-active-bg: var(--color-secondary-fixed);
+    --mf-sidebar-nav-nested-item-hover-color: var(--color-secondary-200);
+    --mf-sidebar-nav-nested-item-active-color: var(--color-secondary-950);
+  }
+}
