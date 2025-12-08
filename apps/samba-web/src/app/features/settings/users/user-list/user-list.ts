@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Datatable, Panel, PanelHeader, PanelBody } from '@ng-mf/components';
+import { Datatable, Panel, PanelHeader, PanelBody, BreadcrumbsStore } from '@ng-mf/components';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -27,9 +27,32 @@ interface User {
 })
 export class UserList implements OnInit {
   private router = inject(Router);
+  private breadcrumbsStore = inject(BreadcrumbsStore);
 
   users = signal<User[]>([]);
   isLoading = signal(false);
+
+  constructor() {
+    this.breadcrumbsStore.setBreadcrumbs([
+      {
+        id: 'home',
+        name: 'Home',
+        route: '/',
+        type: 'link',
+      },
+      {
+        id: 'settings',
+        name: 'Settings',
+        route: '/settings',
+        type: 'link',
+      },
+      {
+        id: 'users',
+        name: 'Users',
+        type: null,
+      },
+    ]);
+  }
 
   columns = signal<ColumnDef<User>[]>([
     {

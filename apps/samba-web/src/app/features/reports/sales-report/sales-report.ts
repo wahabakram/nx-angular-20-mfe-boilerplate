@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core';
-import { Dashboard, WidgetConfig, WidgetItem } from '@ng-mf/components';
+import { Component, inject, signal } from '@angular/core';
+import { Dashboard, WidgetConfig, WidgetItem, BreadcrumbsStore } from '@ng-mf/components';
 import { Page } from '../../../_partials/page/page';
 
 @Component({
@@ -9,6 +9,30 @@ import { Page } from '../../../_partials/page/page';
   styleUrl: './sales-report.scss'
 })
 export class SalesReport {
+  private breadcrumbsStore = inject(BreadcrumbsStore);
+
+  constructor() {
+    this.breadcrumbsStore.setBreadcrumbs([
+      {
+        id: 'home',
+        name: 'Home',
+        route: '/',
+        type: 'link',
+      },
+      {
+        id: 'reports',
+        name: 'Reports',
+        route: '/reports',
+        type: 'link',
+      },
+      {
+        id: 'sales-report',
+        name: 'Sales Report',
+        type: null,
+      },
+    ]);
+  }
+
   configs = signal<WidgetConfig[]>([
     {
       type: 'total-sales-widget',

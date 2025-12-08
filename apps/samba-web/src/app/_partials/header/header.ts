@@ -9,6 +9,7 @@ import {
   Dicebear,
   LayoutApi,
   BreadcrumbsGlobal,
+  BreadcrumbItemNameDefDirective,
   Icon,
   ColorSchemeLightDirective,
   ColorSchemeDarkDirective,
@@ -17,6 +18,7 @@ import {
 } from '@ng-mf/components';
 import { AuthService, AuthStore } from '@samba/user-domain';
 import { NotificationsPopover } from '../../_components/notifications-popover/notifications-popover';
+import { MatBadge } from '@angular/material/badge';
 
 @Component({
   selector: 'app-header',
@@ -30,7 +32,9 @@ import { NotificationsPopover } from '../../_components/notifications-popover/no
     MatTooltip,
     RouterLink,
     Dicebear,
+    MatBadge,
     BreadcrumbsGlobal,
+    BreadcrumbItemNameDefDirective,
     Icon,
     ColorSchemeDarkDirective,
     ColorSchemeLightDirective,

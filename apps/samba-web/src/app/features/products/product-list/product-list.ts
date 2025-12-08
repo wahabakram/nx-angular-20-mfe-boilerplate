@@ -4,7 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { Product, ProductService, ProductStore } from '@samba/product-domain';
 import { Page } from '../../../_partials/page/page';
-import { Datatable, Panel, PanelHeader, PanelBody } from '@ng-mf/components';
+import { Datatable, Panel, PanelHeader, PanelBody, BreadcrumbsStore } from '@ng-mf/components';
 import { ColumnDef } from '@tanstack/angular-table';
 import { flexRenderComponent } from '@tanstack/angular-table';
 import { ProductActionsCell } from '../../../_cells/product-actions-cell/product-actions-cell';
@@ -29,9 +29,26 @@ import { ProductImageCell } from '../../../_cells/product-image-cell/product-ima
 export class ProductList implements OnInit {
   private productService = inject(ProductService);
   private productStore = inject(ProductStore);
+  private breadcrumbsStore = inject(BreadcrumbsStore);
   products = this.productStore.filteredProducts;
   isLoading = this.productStore.isLoading;
   searchTerm = signal('');
+
+  constructor() {
+    this.breadcrumbsStore.setBreadcrumbs([
+      {
+        id: 'home',
+        name: 'Home',
+        route: '/',
+        type: 'link',
+      },
+      {
+        id: 'products',
+        name: 'Products',
+        type: null,
+      },
+    ]);
+  }
 
   columns = signal<ColumnDef<Product>[]>([
     {

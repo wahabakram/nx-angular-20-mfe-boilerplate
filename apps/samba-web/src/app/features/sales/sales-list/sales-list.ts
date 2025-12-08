@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Datatable, Panel, PanelBody, PanelHeader } from '@ng-mf/components';
+import { Datatable, Panel, PanelBody, PanelHeader, BreadcrumbsStore } from '@ng-mf/components';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 import { SaleService, SaleStore, Sale } from '@samba/sale-domain';
 import { MatButton } from '@angular/material/button';
@@ -24,10 +24,27 @@ export class SalesList implements OnInit {
   private saleService = inject(SaleService);
   private saleStore = inject(SaleStore);
   private router = inject(Router);
+  private breadcrumbsStore = inject(BreadcrumbsStore);
 
   sales = this.saleStore.sales;
   isLoading = signal(false);
   error = signal<string | null>(null);
+
+  constructor() {
+    this.breadcrumbsStore.setBreadcrumbs([
+      {
+        id: 'home',
+        name: 'Home',
+        route: '/',
+        type: 'link',
+      },
+      {
+        id: 'sales',
+        name: 'Sales',
+        type: null,
+      },
+    ]);
+  }
 
   columns = signal<ColumnDef<Sale>[]>([
     {

@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProductService, ProductStore, CreateProductDto, ProductStatus } from '@samba/product-domain';
 import { AuthStore } from '@samba/user-domain';
-import { Panel, PanelHeader, PanelBody, OverlayScrollbar } from '@ng-mf/components';
+import { Panel, PanelHeader, PanelBody, OverlayScrollbar, BreadcrumbsStore } from '@ng-mf/components';
 import { ImageUpload } from '../../../_components/image-upload/image-upload';
 
 @Component({
@@ -40,6 +40,7 @@ export class ProductForm implements OnInit {
   private productService = inject(ProductService);
   private productStore = inject(ProductStore);
   private authStore = inject(AuthStore);
+  private breadcrumbsStore = inject(BreadcrumbsStore);
 
   isLoading = signal(false);
   isEditMode = signal(false);
@@ -84,6 +85,45 @@ export class ProductForm implements OnInit {
       this.isEditMode.set(true);
       this.productId.set(parseInt(id));
       this.loadProduct(parseInt(id));
+      this.breadcrumbsStore.setBreadcrumbs([
+        {
+          id: 'home',
+          name: 'Home',
+          route: '/',
+          type: 'link',
+        },
+        {
+          id: 'products',
+          name: 'Products',
+          route: '/products',
+          type: 'link',
+        },
+        {
+          id: 'edit-product',
+          name: 'Edit Product',
+          type: null,
+        },
+      ]);
+    } else {
+      this.breadcrumbsStore.setBreadcrumbs([
+        {
+          id: 'home',
+          name: 'Home',
+          route: '/',
+          type: 'link',
+        },
+        {
+          id: 'products',
+          name: 'Products',
+          route: '/products',
+          type: 'link',
+        },
+        {
+          id: 'new-product',
+          name: 'New Product',
+          type: null,
+        },
+      ]);
     }
   }
 

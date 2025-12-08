@@ -1,41 +1,40 @@
-import { Component, signal } from '@angular/core';
-import { Dashboard, WidgetConfig, WidgetItem } from '@ng-mf/components';
+import { Component, inject, signal } from '@angular/core';
+import { BreadcrumbsStore, Dashboard, WidgetConfig, WidgetItem } from '@ng-mf/components';
 import { Page } from '../../../_partials/page/page';
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [
-    Dashboard,
-    Page
-  ],
+  imports: [Dashboard, Page],
   templateUrl: './admin-dashboard.html',
-  styleUrl: './admin-dashboard.scss'
+  styleUrl: './admin-dashboard.scss',
 })
 export class AdminDashboard {
+  private breadcrumbsStore = inject(BreadcrumbsStore);
+
   configs = signal<WidgetConfig[]>([
     {
       type: 'total-sales-widget',
       skeleton: null,
       component: () =>
-        import('../../../widgets/_widgets/total-sales-widget/total-sales-widget').then(
-          (c) => c.TotalSalesWidget
-        ),
+        import(
+          '../../../widgets/_widgets/total-sales-widget/total-sales-widget'
+        ).then((c) => c.TotalSalesWidget),
     },
     {
       type: 'total-products-widget',
       skeleton: null,
       component: () =>
-        import('../../../widgets/_widgets/total-products-widget/total-products-widget').then(
-          (c) => c.TotalProductsWidget
-        ),
+        import(
+          '../../../widgets/_widgets/total-products-widget/total-products-widget'
+        ).then((c) => c.TotalProductsWidget),
     },
     {
       type: 'low-stock-widget',
       skeleton: null,
       component: () =>
-        import('../../../widgets/_widgets/low-stock-widget/low-stock-widget').then(
-          (c) => c.LowStockWidget
-        ),
+        import(
+          '../../../widgets/_widgets/low-stock-widget/low-stock-widget'
+        ).then((c) => c.LowStockWidget),
     },
     {
       type: 'revenue-widget',
@@ -49,17 +48,17 @@ export class AdminDashboard {
       type: 'recent-sales-widget',
       skeleton: null,
       component: () =>
-        import('../../../widgets/_widgets/recent-sales-widget/recent-sales-widget').then(
-          (c) => c.RecentSalesWidget
-        ),
+        import(
+          '../../../widgets/_widgets/recent-sales-widget/recent-sales-widget'
+        ).then((c) => c.RecentSalesWidget),
     },
     {
       type: 'quick-action-widget',
       skeleton: null,
       component: () =>
-        import('../../../widgets/_widgets/quick-action-widget/quick-action-widget').then(
-          (c) => c.QuickActionWidget
-        ),
+        import(
+          '../../../widgets/_widgets/quick-action-widget/quick-action-widget'
+        ).then((c) => c.QuickActionWidget),
     },
     {
       type: 'heading-widget',
@@ -74,9 +73,9 @@ export class AdminDashboard {
       type: 'data-management-widget',
       skeleton: null,
       component: () =>
-        import('../../../widgets/_widgets/data-management-widget/data-management-widget').then(
-          (c) => c.DataManagementWidget
-        ),
+        import(
+          '../../../widgets/_widgets/data-management-widget/data-management-widget'
+        ).then((c) => c.DataManagementWidget),
     },
   ]);
 
@@ -162,4 +161,20 @@ export class AdminDashboard {
       columns: 6,
     },
   ]);
+
+  constructor() {
+    this.breadcrumbsStore.setBreadcrumbs([
+      {
+        id: 'home',
+        name: 'Home',
+        route: '/',
+        type: 'link',
+      },
+      {
+        id: 'dashboard',
+        name: 'Dashboard',
+        type: null,
+      },
+    ]);
+  }
 }

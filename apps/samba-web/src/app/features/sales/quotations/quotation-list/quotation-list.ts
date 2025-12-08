@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Datatable, Panel, PanelBody, PanelHeader } from '@ng-mf/components';
+import { Datatable, Panel, PanelBody, PanelHeader, BreadcrumbsStore } from '@ng-mf/components';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -28,9 +28,32 @@ interface Quotation {
 })
 export class QuotationList implements OnInit {
   private router = inject(Router);
+  private breadcrumbsStore = inject(BreadcrumbsStore);
 
   quotations = signal<Quotation[]>([]);
   isLoading = signal(false);
+
+  constructor() {
+    this.breadcrumbsStore.setBreadcrumbs([
+      {
+        id: 'home',
+        name: 'Home',
+        route: '/',
+        type: 'link',
+      },
+      {
+        id: 'sales',
+        name: 'Sales',
+        route: '/sales',
+        type: 'link',
+      },
+      {
+        id: 'quotations',
+        name: 'Quotations',
+        type: null,
+      },
+    ]);
+  }
 
   columns = signal<ColumnDef<Quotation>[]>([
     {

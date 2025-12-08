@@ -6,6 +6,7 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { DatePipe, CurrencyPipe, TitleCasePipe } from '@angular/common';
+import { BreadcrumbsStore } from '@ng-mf/components';
 
 @Component({
   selector: 'app-sale-details',
@@ -17,6 +18,7 @@ export class SaleDetails implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private saleService = inject(SaleService);
+  private breadcrumbsStore = inject(BreadcrumbsStore);
 
   sale = signal<Sale | null>(null);
   isLoading = signal(false);
@@ -26,6 +28,25 @@ export class SaleDetails implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.loadSale(parseInt(id));
+      this.breadcrumbsStore.setBreadcrumbs([
+        {
+          id: 'home',
+          name: 'Home',
+          route: '/',
+          type: 'link',
+        },
+        {
+          id: 'sales',
+          name: 'Sales',
+          route: '/sales',
+          type: 'link',
+        },
+        {
+          id: 'sale-details',
+          name: `Sale #${id}`,
+          type: null,
+        },
+      ]);
     }
   }
 

@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { BreadcrumbsStore } from '@ng-mf/components';
 import { FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -52,6 +53,7 @@ export class PosInterface implements OnInit {
   private productService = inject(ProductService);
   private productStore = inject(ProductStore);
   private saleService = inject(SaleService);
+  private breadcrumbsStore = inject(BreadcrumbsStore);
   saleStore = inject(SaleStore);
   products = this.productStore.products;
   filteredProducts = signal<Product[]>([]);
@@ -63,6 +65,22 @@ export class PosInterface implements OnInit {
   customerNotes = signal('');
   isProcessing = signal(false);
   error = signal<string | null>(null);
+
+  constructor() {
+    this.breadcrumbsStore.setBreadcrumbs([
+      {
+        id: 'home',
+        name: 'Home',
+        route: '/',
+        type: 'link',
+      },
+      {
+        id: 'pos',
+        name: 'Point of Sale',
+        type: null,
+      },
+    ]);
+  }
 
   paymentMethods: { value: PaymentMethod; label: string }[] = [
     { value: 'cash', label: 'Cash' },

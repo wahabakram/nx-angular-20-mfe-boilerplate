@@ -3,7 +3,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatBadge } from '@angular/material/badge';
 import { MatButton } from '@angular/material/button';
 import { Product, ProductService, ProductStore } from '@samba/product-domain';
-import { Datatable, Panel, PanelHeader, PanelBody } from '@ng-mf/components';
+import { Datatable, Panel, PanelHeader, PanelBody, BreadcrumbsStore } from '@ng-mf/components';
 import { ColumnDef } from '@tanstack/angular-table';
 import { flexRenderComponent } from '@tanstack/angular-table';
 import { StatusCell } from '../../../_cells/status-cell/status-cell';
@@ -28,9 +28,26 @@ import { ProductImageCell } from '../../../_cells/product-image-cell/product-ima
 export class InventoryList implements OnInit {
   private productService = inject(ProductService);
   private productStore = inject(ProductStore);
+  private breadcrumbsStore = inject(BreadcrumbsStore);
   products = this.productStore.filteredProducts;
   isLoading = this.productStore.isLoading;
   searchTerm = signal('');
+
+  constructor() {
+    this.breadcrumbsStore.setBreadcrumbs([
+      {
+        id: 'home',
+        name: 'Home',
+        route: '/',
+        type: 'link',
+      },
+      {
+        id: 'inventory',
+        name: 'Inventory',
+        type: null,
+      },
+    ]);
+  }
 
   lowStockCount = this.productStore.lowStockProducts;
 
