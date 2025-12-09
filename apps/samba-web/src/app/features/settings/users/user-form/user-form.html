@@ -1,0 +1,186 @@
+<mf-panel>
+  <mf-panel-header class="h-16">
+    <div class="flex h-full border-b border-b-surface-container items-center justify-between gap-5 px-6">
+      <div class="flex items-center gap-3">
+        <a mat-icon-button routerLink="/settings/users">
+          <mat-icon>arrow_back</mat-icon>
+        </a>
+        <div class="text-lg font-semibold">
+          {{ isEditMode() ? 'Edit User' : 'New User' }}
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <button mat-button routerLink="/settings/users" [disabled]="isLoading()">
+          Cancel
+        </button>
+        <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="isLoading() || userForm.invalid">
+          @if (isLoading()) {
+            <mat-spinner diameter="20" class="mr-2"></mat-spinner>
+          }
+          {{ isEditMode() ? 'Update User' : 'Create User' }}
+        </button>
+      </div>
+    </div>
+  </mf-panel-header>
+
+  <mf-panel-body>
+    <mf-overlay-scrollbar [absolute]="true">
+      <div class="p-7 lg:w-[800px] lg:mx-auto">
+        @if (error()) {
+          <div class="mb-6 p-4 bg-error-50 dark:bg-error-900/20 text-error border-l-4 border-error rounded-r">
+            <div class="flex items-center">
+              <mat-icon class="mr-2">error</mat-icon>
+              <span>{{ error() }}</span>
+            </div>
+          </div>
+        }
+
+        <form [formGroup]="userForm" class="flex flex-col gap-6">
+          <!-- Account Information -->
+          <section class="card-container px-6 py-6 pb-1">
+            <header class="flex items-center gap-3">
+              <div class="size-11 rounded-lg flex items-center justify-center bg-primary-200 dark:bg-primary-900/30">
+                <mat-icon>account_circle</mat-icon>
+              </div>
+              <div class="font-semibold">Account Information</div>
+            </header>
+            
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <mat-form-field class="w-full">
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="username" required>
+                @if (userForm.get('username')?.invalid && userForm.get('username')?.touched) {
+                  <mat-error>{{ getErrorMessage('username') }}</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email" required>
+                @if (userForm.get('email')?.invalid && userForm.get('email')?.touched) {
+                  <mat-error>{{ getErrorMessage('email') }}</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </section>
+
+          <!-- Personal Information -->
+          <section class="card-container px-6 py-6 pb-1">
+            <header class="flex items-center gap-3">
+              <div class="size-11 rounded-lg flex items-center justify-center bg-blue-200 dark:bg-blue-900/30">
+                <mat-icon>person</mat-icon>
+              </div>
+              <div class="font-semibold">Personal Information</div>
+            </header>
+            
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <mat-form-field class="w-full">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName" required>
+                @if (userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched) {
+                  <mat-error>{{ getErrorMessage('firstName') }}</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="lastName" required>
+                @if (userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched) {
+                  <mat-error>{{ getErrorMessage('lastName') }}</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </section>
+
+          <!-- Password -->
+          @if (!isEditMode()) {
+            <section class="card-container px-6 py-6 pb-1">
+              <header class="flex items-center gap-3">
+                <div class="size-11 rounded-lg flex items-center justify-center bg-red-200 dark:bg-red-900/30">
+                  <mat-icon>lock</mat-icon>
+                </div>
+                <div class="font-semibold">Password</div>
+              </header>
+              
+              <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <mat-form-field class="w-full">
+                  <mat-label>Password</mat-label>
+                  <input matInput formControlName="password" type="password" required>
+                  @if (userForm.get('password')?.invalid && userForm.get('password')?.touched) {
+                    <mat-error>{{ getErrorMessage('password') }}</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                  <mat-label>Confirm Password</mat-label>
+                  <input matInput formControlName="confirmPassword" type="password">
+                </mat-form-field>
+              </div>
+            </section>
+          } @else {
+            <section class="card-container px-6 py-6 pb-1">
+              <header class="flex items-center gap-3">
+                <div class="size-11 rounded-lg flex items-center justify-center bg-red-200 dark:bg-red-900/30">
+                  <mat-icon>lock</mat-icon>
+                </div>
+                <div class="font-semibold">Password (Optional)</div>
+              </header>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mt-4 px-6">Leave blank to keep current password</p>
+              
+              <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 px-6">
+                <mat-form-field class="w-full">
+                  <mat-label>New Password</mat-label>
+                  <input matInput formControlName="password" type="password">
+                  @if (userForm.get('password')?.invalid && userForm.get('password')?.touched) {
+                    <mat-error>{{ getErrorMessage('password') }}</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                  <mat-label>Confirm New Password</mat-label>
+                  <input matInput formControlName="confirmPassword" type="password">
+                </mat-form-field>
+              </div>
+            </section>
+          }
+
+          <!-- Role & Branch -->
+          <section class="card-container px-6 py-6 pb-1">
+            <header class="flex items-center gap-3">
+              <div class="size-11 rounded-lg flex items-center justify-center bg-green-200 dark:bg-green-900/30">
+                <mat-icon>badge</mat-icon>
+              </div>
+              <div class="font-semibold">Role & Branch Assignment</div>
+            </header>
+            
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <mat-form-field class="w-full">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="role" required>
+                  @for (role of roles; track role.value) {
+                    <mat-option [value]="role.value">{{ role.label }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Branch</mat-label>
+                <mat-select formControlName="branchId" required>
+                  @for (branch of branches(); track branch.id) {
+                    <mat-option [value]="branch.id">{{ branch.name }} ({{ branch.code }})</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <div class="flex items-center gap-2 md:col-span-2">
+                <mat-slide-toggle formControlName="isActive" color="primary">
+                  Active User
+                </mat-slide-toggle>
+              </div>
+            </div>
+          </section>
+        </form>
+      </div>
+    </mf-overlay-scrollbar>
+  </mf-panel-body>
+</mf-panel>

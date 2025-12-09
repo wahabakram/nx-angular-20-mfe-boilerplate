@@ -3,6 +3,11 @@
     <div class="h-full flex items-center justify-between px-7 gap-7">
       <div class="flex items-center gap-7">
         <h2 class="text-base font-semibold">User Management</h2>
+        <div>
+          <input type="text" class="h-10 w-72 bg-surface-container text-sm focus:outline-2
+                     focus:outline-primary rounded-3xl px-4" placeholder="Search users..."
+            (input)="onSearch($event)">
+        </div>
       </div>
       <div class="flex items-center gap-2">
         <button mat-stroked-button (click)="loadUsers()">

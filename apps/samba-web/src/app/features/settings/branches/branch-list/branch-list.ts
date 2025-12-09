@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, viewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Datatable, Panel, PanelHeader, PanelBody, BreadcrumbsStore } from '@ng-mf/components';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
@@ -29,6 +29,7 @@ export class BranchList implements OnInit {
   private router = inject(Router);
   private breadcrumbsStore = inject(BreadcrumbsStore);
 
+  datatable = viewChild<Datatable<Branch>>('dt');
   branches = signal<Branch[]>([]);
   isLoading = signal(false);
 
@@ -187,5 +188,13 @@ export class BranchList implements OnInit {
 
   editBranch(id: number): void {
     this.router.navigate(['/settings/branches/edit', id]);
+  }
+
+  onSearch(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    const dt = this.datatable();
+    if (dt) {
+      dt.setGlobalFilter(value);
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, viewChild } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Datatable, Panel, PanelHeader, PanelBody, BreadcrumbsStore } from '@ng-mf/components';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
@@ -29,6 +29,7 @@ export class UserList implements OnInit {
   private router = inject(Router);
   private breadcrumbsStore = inject(BreadcrumbsStore);
 
+  datatable = viewChild<Datatable<User>>('dt');
   users = signal<User[]>([]);
   isLoading = signal(false);
 
@@ -203,6 +204,14 @@ export class UserList implements OnInit {
     if (confirm('Are you sure you want to delete this user?')) {
       // Delete logic here
       this.users.update(users => users.filter(u => u.id !== id));
+    }
+  }
+
+  onSearch(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
+    const dt = this.datatable();
+    if (dt) {
+      dt.setGlobalFilter(value);
     }
   }
 }

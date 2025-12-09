@@ -1,0 +1,210 @@
+<div class="max-w-6xl mx-auto p-6">
+  @if (isLoading()) {
+    <div class="flex items-center justify-center py-12">
+      <div class="text-center">
+        <mat-icon class="animate-spin text-4xl mb-2">refresh</mat-icon>
+        <p class="text-gray-600 dark:text-gray-400">Loading quotation...</p>
+      </div>
+    </div>
+  } @else if (error()) {
+    <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+      <div class="flex items-center gap-2 text-red-800 dark:text-red-200">
+        <mat-icon>error</mat-icon>
+        <span>{{ error() }}</span>
+      </div>
+    </div>
+  } @else if (quotation()) {
+    <!-- Header Actions -->
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-2xl font-bold">{{ quotation()!.quotationNumber }}</h1>
+        <p class="text-sm text-gray-600 dark:text-gray-400">Quotation Details</p>
+      </div>
+      <div class="flex gap-2">
+        <button mat-button (click)="printQuotation()">
+          <mat-icon>print</mat-icon>
+          Print
+        </button>
+        @if (quotation()!.status === 'draft' || quotation()!.status === 'sent') {
+          <button mat-stroked-button (click)="editQuotation()">
+            <mat-icon>edit</mat-icon>
+            Edit
+          </button>
+        }
+        @if (quotation()!.status === 'accepted') {
+          <button 
+            mat-flat-button 
+            color="primary" 
+            (click)="convertToSale()"
+            [disabled]="isConverting()">
+            <mat-icon>swap_horiz</mat-icon>
+            Convert to Sale
+          </button>
+        }
+        <a mat-button routerLink="/sales/quotations">
+          <mat-icon>arrow_back</mat-icon>
+          Back to List
+        </a>
+      </div>
+    </div>
+
+    <!-- Status Badge -->
+    <div class="mb-6">
+      <span [class]="'inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ' + getStatusColor(quotation()!.status)">
+        {{ quotation()!.status | titlecase }}
+      </span>
+      @if (isExpired()) {
+        <span class="ml-2 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+          <mat-icon class="!text-base mr-1">warning</mat-icon>
+          Expired
+        </span>
+      }
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Main Content -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Customer Information -->
+        <mat-card>
+          <mat-card-content class="p-6">
+            <h3 class="text-lg font-semibold mb-4">Customer Information</h3>
+            <div class="space-y-2">
+              <div class="flex justify-between">
+                <span class="text-gray-600 dark:text-gray-400">Customer:</span>
+                <span class="font-medium">{{ quotation()!.customerName }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600 dark:text-gray-400">Customer ID:</span>
+                <span class="font-medium">#{{ quotation()!.customerId }}</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Items -->
+        <mat-card>
+          <mat-card-content class="p-6">
+            <h3 class="text-lg font-semibold mb-4">Items</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr class="border-b">
+                    <th class="text-left py-3">Product</th>
+                    <th class="text-center py-3">Quantity</th>
+                    <th class="text-right py-3">Unit Price</th>
+                    <th class="text-right py-3">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of quotation()!.items; track item.productId) {
+                    <tr class="border-b">
+                      <td class="py-3">{{ item.productName }}</td>
+                      <td class="text-center py-3">{{ item.quantity }}</td>
+                      <td class="text-right py-3">{{ item.unitPrice | currency:'USD':'symbol':'1.2-2' }}</td>
+                      <td class="text-right py-3 font-medium">{{ item.subtotal | currency:'USD':'symbol':'1.2-2' }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Totals -->
+        <mat-card>
+          <mat-card-content class="p-6">
+            <div class="space-y-3">
+              <div class="flex justify-between text-gray-600 dark:text-gray-400">
+                <span>Subtotal:</span>
+                <span>{{ quotation()!.subtotal | currency:'USD':'symbol':'1.2-2' }}</span>
+              </div>
+              <div class="flex justify-between text-gray-600 dark:text-gray-400">
+                <span>Tax (10%):</span>
+                <span>{{ quotation()!.taxAmount | currency:'USD':'symbol':'1.2-2' }}</span>
+              </div>
+              <div class="flex justify-between text-xl font-bold border-t pt-3">
+                <span>Total:</span>
+                <span>{{ quotation()!.totalAmount | currency:'USD':'symbol':'1.2-2' }}</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        @if (quotation()!.notes) {
+          <mat-card>
+            <mat-card-content class="p-6">
+              <h3 class="text-lg font-semibold mb-2">Notes</h3>
+              <p class="text-gray-600 dark:text-gray-400">{{ quotation()!.notes }}</p>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+
+      <!-- Sidebar -->
+      <div class="space-y-6">
+        <!-- Quotation Info -->
+        <mat-card>
+          <mat-card-content class="p-6">
+            <h3 class="text-lg font-semibold mb-4">Quotation Information</h3>
+            <div class="space-y-3">
+              <div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Created</div>
+                <div class="font-medium">{{ quotation()!.createdAt | date:'medium' }}</div>
+              </div>
+              <div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Valid Until</div>
+                <div class="font-medium" [class.text-red-600]="isExpired()">
+                  {{ quotation()!.validUntil | date:'medium' }}
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Status Actions -->
+        @if (quotation()!.status === 'sent') {
+          <mat-card>
+            <mat-card-content class="p-6">
+              <h3 class="text-lg font-semibold mb-4">Update Status</h3>
+              <div class="space-y-2">
+                <button 
+                  mat-flat-button 
+                  color="primary" 
+                  class="w-full"
+                  (click)="updateStatus('accepted')">
+                  <mat-icon>check_circle</mat-icon>
+                  Mark as Accepted
+                </button>
+                <button 
+                  mat-stroked-button 
+                  color="warn" 
+                  class="w-full"
+                  (click)="updateStatus('rejected')">
+                  <mat-icon>cancel</mat-icon>
+                  Mark as Rejected
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        }
+
+        <!-- Danger Zone -->
+        @if (quotation()!.status === 'draft' || quotation()!.status === 'rejected') {
+          <mat-card class="border-red-200 dark:border-red-800">
+            <mat-card-content class="p-6">
+              <h3 class="text-lg font-semibold mb-4 text-red-600">Danger Zone</h3>
+              <button 
+                mat-stroked-button 
+                color="warn" 
+                class="w-full"
+                (click)="deleteQuotation()">
+                <mat-icon>delete</mat-icon>
+                Delete Quotation
+              </button>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    </div>
+  }
+</div>

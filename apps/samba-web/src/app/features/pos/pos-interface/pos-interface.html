@@ -19,6 +19,21 @@
       <!-- Barcode Scanner / Product Search -->
       <mat-card class="mb-4">
         <mat-card-content class="p-4">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <mat-icon class="text-primary">qr_code_scanner</mat-icon>
+              <span class="text-sm font-medium">Product Search</span>
+            </div>
+            @if (barcodeScanner.isListening()) {
+              <div class="flex items-center gap-2 text-xs text-success">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-success"></span>
+                </span>
+                <span>Scanner Active</span>
+              </div>
+            }
+          </div>
           <div class="flex gap-2">
             <mat-form-field class="flex-1">
               <mat-label>Scan Barcode or Search Product</mat-label>
@@ -28,14 +43,27 @@
                 (keyup.enter)="searchProduct(searchTerm())"
                 (input)="filterProducts(searchTerm())"
                 placeholder="Enter barcode or product name"
+                data-barcode-enabled="true"
                 autofocus
               >
               <mat-icon matPrefix>search</mat-icon>
+              <button 
+                mat-icon-button 
+                matSuffix 
+                [matTooltip]="barcodeScanner.isListening() ? 'Barcode scanner is active' : 'Barcode scanner is inactive'"
+                [class.text-success]="barcodeScanner.isListening()"
+                [class.text-neutral-400]="!barcodeScanner.isListening()">
+                <mat-icon>qr_code_scanner</mat-icon>
+              </button>
             </mat-form-field>
             <button mat-raised-button color="primary" (click)="searchProduct(searchTerm())">
               <mat-icon>search</mat-icon>
               Search
             </button>
+          </div>
+          <div class="text-xs text-neutral-500 mt-2">
+            <mat-icon class="!text-xs align-middle mr-1">info</mat-icon>
+            Tip: Use your USB barcode scanner to instantly add products to cart
           </div>
         </mat-card-content>
       </mat-card>

@@ -39,6 +39,51 @@ configs = signal<WidgetConfig[]>([
 // Create individual widgets instead
 ```
 
+### Widget Styling (MANDATORY - Updated Dec 7, 2025)
+
+**Chart Widgets** - MUST match Shell app pattern:
+```html
+<!-- ✅ CORRECT - Shell pattern (consistent padding & typography) -->
+<div class="p-5 flex items-center justify-between">
+  <h3 class="tracking-tight text-sm font-semibold">Widget Title</h3>
+</div>
+<div class="px-5 pb-5">
+  <div #chartContainer class="chart-container h-[300px]"></div>
+</div>
+
+<!-- ❌ WRONG - Old SAMBA pattern (inconsistent) -->
+<header class="flex justify-between items-center mb-4">
+  <div class="font-semibold">Widget Title</div>
+</header>
+<div #chartContainer class="chart-container h-[300px]"></div>
+```
+
+**Metric Widgets** - SAMBA custom pattern (with icon + action button):
+```html
+<div class="relative overflow-hidden group h-full">
+  <div class="flex gap-5 p-6">
+    <div class="rounded-lg bg-primary size-12 flex-none flex items-center justify-center text-white">
+      <mat-icon>icon_name</mat-icon>
+    </div>
+    <div>
+      <div class="truncate text-sm font-medium text-neutral-500">Metric Label</div>
+      <div class="text-xl font-semibold text-neutral-800 dark:text-neutral-100">{{ value }}</div>
+    </div>
+  </div>
+  <div class="absolute right-0 top-0 bottom-0">
+    <button matRipple matTooltip="Action" class="...">
+      <mat-icon>arrow_right_alt</mat-icon>
+    </button>
+  </div>
+</div>
+```
+
+**Key Rules:**
+- ✅ Chart widgets: Use Shell pattern (p-5 padding, tracking-tight text-sm font-semibold)
+- ✅ Metric widgets: Use SAMBA pattern (icon + value + action button)
+- ✅ Always include dark mode classes (dark:text-neutral-100, etc.)
+- ❌ NEVER use old `<header class="flex justify-between items-center mb-4">` pattern
+
 ### Domain Store Usage
 ```typescript
 // ✅ CORRECT - Import from domain libs

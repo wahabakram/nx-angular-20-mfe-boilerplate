@@ -108,6 +108,26 @@ export const appRoutes: Route[] = [
           import('./features/reports/reports.routes').then((m) => m.reportsRoutes),
       },
 
+      // Customers (Admin, Manager)
+      {
+        path: 'customers',
+        canActivate: [roleGuard(['admin', 'manager'])],
+        loadChildren: () =>
+          import('./features/customers/customers.routes').then(
+            (m) => m.customersRoutes
+          ),
+      },
+
+      // Stock Transfers (Admin, Manager)
+      {
+        path: 'stock-transfers',
+        canActivate: [roleGuard(['admin', 'manager'])],
+        loadChildren: () =>
+          import('./features/stock-transfers/stock-transfers.routes').then(
+            (m) => m.stockTransfersRoutes
+          ),
+      },
+
       // Settings & Administration (Admin only)
       {
         path: 'settings',

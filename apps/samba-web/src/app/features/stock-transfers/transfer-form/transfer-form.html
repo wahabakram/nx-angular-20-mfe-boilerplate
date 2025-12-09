@@ -1,0 +1,174 @@
+<mf-panel>
+  <mf-panel-header class="h-16">
+    <div class="flex h-full border-b border-b-surface-container items-center justify-between gap-5 px-6">
+      <div class="flex items-center gap-3">
+        <a mat-icon-button routerLink="/stock-transfers">
+          <mat-icon>arrow_back</mat-icon>
+        </a>
+        <div class="text-lg font-semibold">
+          {{ isViewMode() ? 'View Stock Transfer' : 'New Stock Transfer' }}
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <button mat-button routerLink="/stock-transfers" [disabled]="isLoading()">
+          {{ isViewMode() ? 'Close' : 'Cancel' }}
+        </button>
+        @if (!isViewMode()) {
+          <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="isLoading() || transferForm.invalid">
+            @if (isLoading()) {
+              <mat-spinner diameter="20" class="mr-2"></mat-spinner>
+            }
+            Submit Transfer Request
+          </button>
+        }
+      </div>
+    </div>
+  </mf-panel-header>
+
+  <mf-panel-body>
+    <mf-overlay-scrollbar [absolute]="true">
+      <div class="p-7 lg:w-[800px] lg:mx-auto">
+        @if (error()) {
+          <div class="mb-6 p-4 bg-error-50 dark:bg-error-900/20 text-error border-l-4 border-error rounded-r">
+            <div class="flex items-center">
+              <mat-icon class="mr-2">error</mat-icon>
+              <span>{{ error() }}</span>
+            </div>
+          </div>
+        }
+
+        <form [formGroup]="transferForm" class="flex flex-col gap-6">
+          <!-- Transfer Between Branches -->
+          <section class="card-container px-6 py-6 pb-1">
+            <header class="flex items-center gap-3">
+              <div class="size-11 rounded-lg flex items-center justify-center bg-primary-200 dark:bg-primary-900/30">
+                <mat-icon>swap_horiz</mat-icon>
+              </div>
+              <div class="font-semibold">Transfer Between Branches</div>
+            </header>
+            
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <mat-form-field class="w-full">
+                <mat-label>From Branch (Source)</mat-label>
+                <mat-select formControlName="fromBranchId" required>
+                  @for (branch of branches(); track branch.id) {
+                    <mat-option [value]="branch.id">{{ branch.name }} ({{ branch.code }})</mat-option>
+                  }
+                </mat-select>
+                @if (transferForm.get('fromBranchId')?.invalid && transferForm.get('fromBranchId')?.touched) {
+                  <mat-error>{{ getErrorMessage('fromBranchId') }}</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>To Branch (Destination)</mat-label>
+                <mat-select formControlName="toBranchId" required>
+                  @for (branch of availableToBranches(); track branch.id) {
+                    <mat-option [value]="branch.id">{{ branch.name }} ({{ branch.code }})</mat-option>
+                  }
+                </mat-select>
+                @if (transferForm.get('toBranchId')?.invalid && transferForm.get('toBranchId')?.touched) {
+                  <mat-error>{{ getErrorMessage('toBranchId') }}</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </section>
+
+          <!-- Product Information -->
+          <section class="card-container px-6 py-6 pb-1">
+            <header class="flex items-center gap-3">
+              <div class="size-11 rounded-lg flex items-center justify-center bg-blue-200 dark:bg-blue-900/30">
+                <mat-icon>inventory_2</mat-icon>
+              </div>
+              <div class="font-semibold">Product Information</div>
+            </header>
+            
+            <div class="mt-8 grid grid-cols-1 gap-4">
+              <mat-form-field class="w-full">
+                <mat-label>Select Product</mat-label>
+                <mat-select formControlName="productId" required>
+                  @for (product of products(); track product.id) {
+                    <mat-option [value]="product.id">
+                      {{ product.name }} (SKU: {{ product.sku }})
+                    </mat-option>
+                  }
+                </mat-select>
+                @if (transferForm.get('productId')?.invalid && transferForm.get('productId')?.touched) {
+                  <mat-error>{{ getErrorMessage('productId') }}</mat-error>
+                }
+              </mat-form-field>
+
+              @if (selectedProduct()) {
+                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                  <div class="flex items-start gap-3">
+                    <mat-icon class="text-blue-600 dark:text-blue-400">info</mat-icon>
+                    <div class="flex-1">
+                      <div class="font-medium text-blue-900 dark:text-blue-100">Selected Product Info</div>
+                      <div class="text-sm text-blue-700 dark:text-blue-300 mt-2 space-y-1">
+                        <div><strong>Name:</strong> {{ selectedProduct()!.name }}</div>
+                        <div><strong>SKU:</strong> {{ selectedProduct()!.sku }}</div>
+                        <div><strong>Available Stock:</strong> 
+                          <span [class.text-red-600]="availableStock() === 0" 
+                                [class.text-orange-600]="availableStock() > 0 && availableStock() <= selectedProduct()!.lowStockThreshold"
+                                [class.text-green-600]="availableStock() > selectedProduct()!.lowStockThreshold">
+                            {{ availableStock() }} {{ selectedProduct()!.unit }}(s)
+                          </span>
+                        </div>
+                        <div><strong>Price:</strong> Rs {{ selectedProduct()!.price.toLocaleString() }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+
+              <mat-form-field class="w-full">
+                <mat-label>Quantity to Transfer</mat-label>
+                <input matInput formControlName="quantity" type="number" min="1" required>
+                <span matTextSuffix>{{ selectedProduct()?.unit || 'units' }}</span>
+                @if (transferForm.get('quantity')?.invalid && transferForm.get('quantity')?.touched) {
+                  <mat-error>{{ getErrorMessage('quantity') }}</mat-error>
+                }
+                @if (selectedProduct()) {
+                  <mat-hint>Available: {{ availableStock() }} {{ selectedProduct()!.unit }}(s)</mat-hint>
+                }
+              </mat-form-field>
+            </div>
+          </section>
+
+          <!-- Additional Information -->
+          <section class="card-container px-6 py-6 pb-1">
+            <header class="flex items-center gap-3">
+              <div class="size-11 rounded-lg flex items-center justify-center bg-orange-200 dark:bg-orange-900/30">
+                <mat-icon>note</mat-icon>
+              </div>
+              <div class="font-semibold">Additional Information</div>
+            </header>
+            
+            <div class="mt-8 grid grid-cols-1 gap-4">
+              <mat-form-field class="w-full">
+                <mat-label>Notes</mat-label>
+                <textarea 
+                  matInput 
+                  formControlName="notes" 
+                  placeholder="Optional - Enter any additional notes or reason for transfer"
+                  rows="3"
+                ></textarea>
+              </mat-form-field>
+            </div>
+          </section>
+
+          @if (!isViewMode()) {
+            <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+              <div class="flex items-start gap-3">
+                <mat-icon class="text-yellow-600 dark:text-yellow-400">warning</mat-icon>
+                <div class="text-sm text-yellow-700 dark:text-yellow-300">
+                  <strong>Important:</strong> Stock transfer requests require approval from the source branch manager or admin before processing. Stock will be deducted from the source branch and added to the destination branch upon approval.
+                </div>
+              </div>
+            </div>
+          }
+        </form>
+      </div>
+    </mf-overlay-scrollbar>
+  </mf-panel-body>
+</mf-panel>

@@ -10,6 +10,10 @@ export const salesRoutes: Route[] = [
     loadComponent: () => import('./quotations/quotation-list/quotation-list').then(m => m.QuotationList),
   },
   {
+    path: 'quotations/:id',
+    loadComponent: () => import('./quotation-detail/quotation-detail').then(m => m.QuotationDetail),
+  },
+  {
     path: ':id',
     loadComponent: () => import('./sale-details/sale-details').then(m => m.SaleDetails),
   },

@@ -1,0 +1,148 @@
+<mf-panel>
+  <mf-panel-header class="h-16">
+    <div class="flex h-full border-b border-b-surface-container items-center justify-between gap-5 px-6">
+      <div class="flex items-center gap-3">
+        <a mat-icon-button routerLink="/settings/branches">
+          <mat-icon>arrow_back</mat-icon>
+        </a>
+        <div class="text-lg font-semibold">
+          {{ isEditMode() ? 'Edit Branch' : 'New Branch' }}
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <button mat-button routerLink="/settings/branches" [disabled]="isLoading()">
+          Cancel
+        </button>
+        <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="isLoading() || branchForm.invalid">
+          @if (isLoading()) {
+            <mat-spinner diameter="20" class="mr-2"></mat-spinner>
+          }
+          {{ isEditMode() ? 'Update Branch' : 'Create Branch' }}
+        </button>
+      </div>
+    </div>
+  </mf-panel-header>
+
+  <mf-panel-body>
+    <mf-overlay-scrollbar [absolute]="true">
+      <div class="p-7 lg:w-[800px] lg:mx-auto">
+        @if (error()) {
+          <div class="mb-6 p-4 bg-error-50 dark:bg-error-900/20 text-error border-l-4 border-error rounded-r">
+            <div class="flex items-center">
+              <mat-icon class="mr-2">error</mat-icon>
+              <span>{{ error() }}</span>
+            </div>
+          </div>
+        }
+
+        <form [formGroup]="branchForm" class="flex flex-col gap-6">
+          <!-- Basic Information -->
+          <section class="card-container px-6 py-6 pb-1">
+            <header class="flex items-center gap-3">
+              <div class="size-11 rounded-lg flex items-center justify-center bg-primary-200 dark:bg-primary-900/30">
+                <mat-icon>store</mat-icon>
+              </div>
+              <div class="font-semibold">Basic Information</div>
+            </header>
+            
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <mat-form-field class="w-full">
+                <mat-label>Branch Name</mat-label>
+                <input matInput formControlName="name" required>
+                @if (branchForm.get('name')?.invalid && branchForm.get('name')?.touched) {
+                  <mat-error>{{ getErrorMessage('name') }}</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Branch Code</mat-label>
+                <input matInput formControlName="code" required style="text-transform: uppercase;">
+                <mat-hint>Use uppercase letters and numbers only</mat-hint>
+                @if (branchForm.get('code')?.invalid && branchForm.get('code')?.touched) {
+                  <mat-error>{{ getErrorMessage('code') }}</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </section>
+
+          <!-- Location Information -->
+          <section class="card-container px-6 py-6 pb-1">
+            <header class="flex items-center gap-3">
+              <div class="size-11 rounded-lg flex items-center justify-center bg-blue-200 dark:bg-blue-900/30">
+                <mat-icon>location_on</mat-icon>
+              </div>
+              <div class="font-semibold">Location Information</div>
+            </header>
+            
+            <div class="mt-8 grid grid-cols-1 gap-4">
+              <mat-form-field class="w-full">
+                <mat-label>Address</mat-label>
+                <input matInput formControlName="address" required>
+                @if (branchForm.get('address')?.invalid && branchForm.get('address')?.touched) {
+                  <mat-error>{{ getErrorMessage('address') }}</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>City</mat-label>
+                <input matInput formControlName="city" required>
+                @if (branchForm.get('city')?.invalid && branchForm.get('city')?.touched) {
+                  <mat-error>{{ getErrorMessage('city') }}</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </section>
+
+          <!-- Contact Information -->
+          <section class="card-container px-6 py-6 pb-1">
+            <header class="flex items-center gap-3">
+              <div class="size-11 rounded-lg flex items-center justify-center bg-green-200 dark:bg-green-900/30">
+                <mat-icon>phone</mat-icon>
+              </div>
+              <div class="font-semibold">Contact Information</div>
+            </header>
+            
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <mat-form-field class="w-full">
+                <mat-label>Phone</mat-label>
+                <input matInput formControlName="phone" required>
+                @if (branchForm.get('phone')?.invalid && branchForm.get('phone')?.touched) {
+                  <mat-error>{{ getErrorMessage('phone') }}</mat-error>
+                }
+              </mat-form-field>
+
+              <mat-form-field class="w-full">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email" required>
+                @if (branchForm.get('email')?.invalid && branchForm.get('email')?.touched) {
+                  <mat-error>{{ getErrorMessage('email') }}</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </section>
+
+          <!-- Branch Settings -->
+          <section class="card-container px-6 py-6 pb-1">
+            <header class="flex items-center gap-3">
+              <div class="size-11 rounded-lg flex items-center justify-center bg-orange-200 dark:bg-orange-900/30">
+                <mat-icon>settings</mat-icon>
+              </div>
+              <div class="font-semibold">Branch Settings</div>
+            </header>
+            
+            <div class="mt-8 grid grid-cols-1 gap-4">
+              <mat-checkbox formControlName="isMainBranch" color="primary">
+                <span class="font-medium">Main Branch (Headquarters)</span>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Designate as the primary branch location</p>
+              </mat-checkbox>
+
+              <mat-slide-toggle formControlName="isActive" color="primary">
+                Active Branch
+              </mat-slide-toggle>
+            </div>
+          </section>
+        </form>
+      </div>
+    </mf-overlay-scrollbar>
+  </mf-panel-body>
+</mf-panel>

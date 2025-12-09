@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { BreadcrumbsStore } from '@ng-mf/components';
 import { FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
@@ -8,16 +8,19 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatTooltip } from '@angular/material/tooltip';
 import { HorizontalDivider } from '@ng-mf/components';
 import { Product, ProductService, ProductStore } from '@samba/product-domain';
 import {
   PaymentMethod,
+  Sale,
   CreateSaleDto,
   CreateSaleItemDto,
   SaleService,
   SaleStore
 } from '@samba/sale-domain';
 import { AuthStore } from '@samba/user-domain';
+import { BarcodeScanner, ReceiptPrinter, ReceiptData } from '@samba/infrastructure';
 import { Page } from '../../../_partials/page/page';
 
 interface CartItem {
@@ -43,17 +46,20 @@ interface CartItem {
     MatSelect,
     MatOption,
     MatProgressSpinner,
+    MatTooltip,
     Page
   ],
   templateUrl: './pos-interface.html',
   styleUrl: './pos-interface.scss'
 })
-export class PosInterface implements OnInit {
+export class PosInterface implements OnInit, OnDestroy {
   private authStore = inject(AuthStore);
   private productService = inject(ProductService);
   private productStore = inject(ProductStore);
   private saleService = inject(SaleService);
   private breadcrumbsStore = inject(BreadcrumbsStore);
+  barcodeScanner = inject(BarcodeScanner); // Public for template access
+  private receiptPrinter = inject(ReceiptPrinter);
   saleStore = inject(SaleStore);
   products = this.productStore.products;
   filteredProducts = signal<Product[]>([]);
@@ -96,6 +102,39 @@ export class PosInterface implements OnInit {
 
   ngOnInit(): void {
     this.loadProducts();
+    this.startBarcodeScanner();
+  }
+
+  ngOnDestroy(): void {
+    this.barcodeScanner.stopListening();
+  }
+
+  startBarcodeScanner(): void {
+    this.barcodeScanner.startListening();
+    
+    this.barcodeScanner.scannedBarcode$.subscribe((event) => {
+      console.log('Barcode scanned:', event.barcode);
+      this.searchByBarcode(event.barcode);
+    });
+  }
+
+  searchByBarcode(barcode: string): void {
+    if (!barcode.trim()) return;
+
+    // Search in local products first (faster)
+    const product = this.products().find(
+      (p) => p.barcode?.toLowerCase() === barcode.toLowerCase()
+    );
+
+    if (product) {
+      this.addToCart(product);
+      this.searchTerm.set('');
+      this.filteredProducts.set([]);
+    } else {
+      // Product not found in local cache
+      this.error.set(`Product with barcode "${barcode}" not found`);
+      setTimeout(() => this.error.set(null), 3000);
+    }
   }
 
   loadProducts(): void {
@@ -285,6 +324,9 @@ export class PosInterface implements OnInit {
             });
         });
 
+        // Print receipt
+        this.printReceipt(sale);
+
         // Clear cart and reset
         this.cart.set([]);
         this.discountRate.set(0);
@@ -292,7 +334,8 @@ export class PosInterface implements OnInit {
         this.calculateTotals();
         this.isProcessing.set(false);
 
-        alert(`Sale completed! Receipt #: ${sale.receiptNumber}`);
+        // Show success message
+        this.showSuccessMessage(`Sale completed! Receipt #: ${sale.receiptNumber}`);
       },
       error: (err) => {
         this.error.set(err?.error?.message || 'Failed to complete sale');
@@ -304,5 +347,23 @@ export class PosInterface implements OnInit {
   clearCart(): void {
     this.cart.set([]);
     this.calculateTotals();
+  }
+
+  printReceipt(sale: Sale): void {
+    const receiptData: ReceiptData = {
+      sale: sale,
+      storeName: 'Electric Store - Main Branch',
+      storeAddress: '123 Main Street, Plaza Center, Karachi',
+      storePhone: '+92-21-1234567',
+      taxId: 'STN-1234567890',
+    };
+
+    // Preview receipt (user can then print from the preview)
+    this.receiptPrinter.previewReceipt(receiptData);
+  }
+
+  showSuccessMessage(message: string): void {
+    // You could use a toast/snackbar service here
+    alert(message);
   }
 }

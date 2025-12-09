@@ -106,6 +106,22 @@ export class Sidebar {
       roles: ['admin', 'manager']
     },
     {
+      type: 'link',
+      key: 'stock-transfers',
+      name: 'Stock Transfers',
+      icon: 'solar:transfer-horizontal-outline',
+      link: '/stock-transfers',
+      roles: ['admin', 'manager']
+    },
+    {
+      type: 'link',
+      key: 'customers',
+      name: 'Customers',
+      icon: 'solar:users-group-rounded-outline',
+      link: '/customers',
+      roles: ['admin', 'manager']
+    },
+    {
       type: 'heading',
       key: 'sales',
       name: 'Sales',
