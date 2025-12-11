@@ -38,7 +38,7 @@
                   }
                 </ng-container>
                 {{ navItem.name }}
-                <mat-icon mfSidebarNavGroupToggleIcon>arrow_drop_down</mat-icon>
+                <mf-icon mfSidebarNavGroupToggleIcon name="solar:alt-arrow-down-bold" class="size-4" />
               </mf-sidebar-nav-group-toggle>
               <mf-sidebar-nav-group-menu>
                 @for (childNavItem of navItem.children; track childNavItem.key) {
@@ -67,7 +67,7 @@
                 </div>
               </div>
               <button mat-icon-button matTooltip="Logout" (click)="logout()">
-                <mat-icon>logout</mat-icon>
+                <mf-icon name="solar:logout-2-line-duotone" />
               </button>
             }
           </div>
@@ -76,7 +76,7 @@
       <div mfSidebarCompactViewMode>
         <div class="px-2 py-1 flex justify-center items-center h-full">
           <button mat-icon-button matTooltip="Logout" (click)="logout()">
-            <mat-icon>logout</mat-icon>
+            <mf-icon name="solar:logout-2-line-duotone" />
           </button>
         </div>
       </div>

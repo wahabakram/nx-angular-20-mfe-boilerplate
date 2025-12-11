@@ -2,9 +2,9 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Datatable, Panel, PanelBody, PanelHeader, BreadcrumbsStore } from '@ng-mf/components';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
-import { SaleService, SaleStore, Sale } from '@samba/sale-domain';
+import { SaleApi, SaleStore, Sale } from '@samba/sale-domain';
 import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { SalesActionsCell } from '../../../_cells/sales-actions-cell/sales-actions-cell';
 
 @Component({
@@ -15,13 +15,13 @@ import { SalesActionsCell } from '../../../_cells/sales-actions-cell/sales-actio
     PanelHeader,
     PanelBody,
     MatButton,
-    MatIcon,
+    Icon,
   ],
   templateUrl: './sales-list.html',
   styleUrl: './sales-list.scss',
 })
 export class SalesList implements OnInit {
-  private saleService = inject(SaleService);
+  private saleApi = inject(SaleApi);
   private saleStore = inject(SaleStore);
   private router = inject(Router);
   private breadcrumbsStore = inject(BreadcrumbsStore);
@@ -169,7 +169,7 @@ export class SalesList implements OnInit {
 
   loadSales(): void {
     this.isLoading.set(true);
-    this.saleService.getAll().subscribe({
+    this.saleApi.getAll().subscribe({
       next: (sales) => {
         this.saleStore.setSales(sales);
         this.isLoading.set(false);

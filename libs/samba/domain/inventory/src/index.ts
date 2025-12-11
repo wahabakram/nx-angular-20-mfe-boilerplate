@@ -5,4 +5,4 @@ export * from './lib/models/inventory.model';
 export * from './lib/store/inventory.store';
 
 // Services
-export * from './lib/services/inventory.service';
+export * from './lib/services/inventory-api';

@@ -16,4 +16,14 @@ export const customersRoutes: Routes = [
     loadComponent: () =>
       import('./customer-form/customer-form').then((m) => m.CustomerForm),
   },
+  {
+    path: ':id/ledger',
+    loadComponent: () =>
+      import('./customer-ledger/customer-ledger').then((m) => m.CustomerLedger),
+  },
+  {
+    path: ':id/payment',
+    loadComponent: () =>
+      import('./customer-payment/customer-payment').then((m) => m.CustomerPayment),
+  },
 ];

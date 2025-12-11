@@ -3,7 +3,7 @@
     <div class="flex h-full border-b border-b-surface-container items-center justify-between gap-5 px-6">
       <div class="flex items-center gap-3">
         <a mat-icon-button routerLink="/settings/branches">
-          <mat-icon>arrow_back</mat-icon>
+          <mf-icon name="solar:arrow-left-line-duotone" />
         </a>
         <div class="text-lg font-semibold">
           {{ isEditMode() ? 'Edit Branch' : 'New Branch' }}
@@ -29,7 +29,7 @@
         @if (error()) {
           <div class="mb-6 p-4 bg-error-50 dark:bg-error-900/20 text-error border-l-4 border-error rounded-r">
             <div class="flex items-center">
-              <mat-icon class="mr-2">error</mat-icon>
+              <mf-icon class="mr-2" name="solar:danger-circle-line-duotone" />
               <span>{{ error() }}</span>
             </div>
           </div>
@@ -40,7 +40,7 @@
           <section class="card-container px-6 py-6 pb-1">
             <header class="flex items-center gap-3">
               <div class="size-11 rounded-lg flex items-center justify-center bg-primary-200 dark:bg-primary-900/30">
-                <mat-icon>store</mat-icon>
+                <mf-icon name="solar:shop-line-duotone" />
               </div>
               <div class="font-semibold">Basic Information</div>
             </header>
@@ -69,7 +69,7 @@
           <section class="card-container px-6 py-6 pb-1">
             <header class="flex items-center gap-3">
               <div class="size-11 rounded-lg flex items-center justify-center bg-blue-200 dark:bg-blue-900/30">
-                <mat-icon>location_on</mat-icon>
+                <mf-icon name="solar:map-point-line-duotone" />
               </div>
               <div class="font-semibold">Location Information</div>
             </header>
@@ -97,7 +97,7 @@
           <section class="card-container px-6 py-6 pb-1">
             <header class="flex items-center gap-3">
               <div class="size-11 rounded-lg flex items-center justify-center bg-green-200 dark:bg-green-900/30">
-                <mat-icon>phone</mat-icon>
+                <mf-icon name="solar:phone-line-duotone" />
               </div>
               <div class="font-semibold">Contact Information</div>
             </header>
@@ -125,7 +125,7 @@
           <section class="card-container px-6 py-6 pb-1">
             <header class="flex items-center gap-3">
               <div class="size-11 rounded-lg flex items-center justify-center bg-orange-200 dark:bg-orange-900/30">
-                <mat-icon>settings</mat-icon>
+                <mf-icon name="solar:settings-line-duotone" />
               </div>
               <div class="font-semibold">Branch Settings</div>
             </header>

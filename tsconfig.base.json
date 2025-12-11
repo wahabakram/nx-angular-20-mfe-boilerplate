@@ -38,7 +38,11 @@
       "@samba/customer-domain": ["libs/samba/domain/customer/src/index.ts"],
       "@samba/category-domain": ["libs/samba/domain/category/src/index.ts"],
       "@samba/inventory-domain": ["libs/samba/domain/inventory/src/index.ts"],
-      "@samba/infrastructure": ["libs/samba/infrastructure/src/index.ts"]
+      "@samba/infrastructure": ["libs/samba/infrastructure/src/index.ts"],
+      "@samba/return-domain": ["libs/samba/domain/return/src/index.ts"],
+      "@samba/ledger-domain": ["libs/samba/domain/ledger/src/index.ts"],
+      "@samba/supplier-domain": ["libs/samba/domain/supplier/src/index.ts"],
+      "@samba/purchase-domain": ["libs/samba/domain/purchase/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

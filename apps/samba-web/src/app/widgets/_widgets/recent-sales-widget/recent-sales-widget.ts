@@ -1,5 +1,5 @@
 import { Component, inject, input, OnInit } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { MatTooltip } from '@angular/material/tooltip';
 import { DatePipe } from '@angular/common';
 import { Dashboard, DASHBOARD } from '@ng-mf/components';
@@ -8,7 +8,7 @@ import { SaleStore } from '@samba/sale-domain';
 @Component({
   selector: 'app-recent-sales-widget',
   imports: [
-    MatIcon,
+    Icon,
     MatTooltip,
     DatePipe
   ],

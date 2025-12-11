@@ -1,0 +1,115 @@
+<app-page>
+  <ng-container pageTitle>Receive Purchase Order</ng-container>
+  <ng-container pageDescription>Record the receipt of items from supplier</ng-container>
+
+  @if (isLoading()) {
+    <div class="flex items-center justify-center py-12">
+      <div class="text-neutral-500">Loading purchase order...</div>
+    </div>
+  } @else if (purchase()) {
+    <form [formGroup]="receiveForm" (ngSubmit)="onSubmit()" class="max-w-4xl">
+
+      @if (error()) {
+        <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          <div class="flex items-center gap-2 text-red-800 dark:text-red-200">
+            <mf-icon name="solar:danger-circle-line-duotone" />
+            <span class="font-medium">{{ error() }}</span>
+          </div>
+        </div>
+      }
+
+      <div class="grid gap-6">
+        <!-- Purchase Info -->
+        <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
+          <h3 class="text-lg font-semibold mb-4">Purchase Order Information</h3>
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <div class="text-neutral-500 mb-1">PO Number</div>
+              <div class="font-medium">{{ purchase()!.purchaseNumber }}</div>
+            </div>
+            <div>
+              <div class="text-neutral-500 mb-1">Supplier</div>
+              <div class="font-medium">{{ purchase()!.supplier?.name }}</div>
+            </div>
+            <div>
+              <div class="text-neutral-500 mb-1">Order Date</div>
+              <div class="font-medium">{{ purchase()!.purchaseDate | date: 'MMM d, yyyy' }}</div>
+            </div>
+            @if (purchase()!.expectedDeliveryDate) {
+              <div>
+                <div class="text-neutral-500 mb-1">Expected Delivery</div>
+                <div class="font-medium">{{ purchase()!.expectedDeliveryDate | date: 'MMM d, yyyy' }}</div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Delivery Details -->
+        <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
+          <h3 class="text-lg font-semibold mb-4">Delivery Details</h3>
+
+          <mat-form-field class="w-full">
+            <mat-label>Delivery Date</mat-label>
+            <input matInput [matDatepicker]="deliveryDatePicker" formControlName="deliveryDate" required>
+            <mat-datepicker-toggle matIconSuffix [for]="deliveryDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #deliveryDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <!-- Items to Receive -->
+        <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
+          <h3 class="text-lg font-semibold mb-4">Items to Receive</h3>
+
+          <div class="space-y-4" formArrayName="items">
+            @for (item of itemsArray.controls; track $index) {
+              <div [formGroupName]="$index" class="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="md:col-span-1">
+                    <div class="text-sm text-neutral-500 mb-1">Product</div>
+                    <div class="font-medium">{{ item.get('productName')?.value }}</div>
+                  </div>
+
+                  <div>
+                    <div class="text-sm text-neutral-500 mb-1">Ordered Qty</div>
+                    <div class="font-medium">{{ item.get('orderedQuantity')?.value }}</div>
+                  </div>
+
+                  <mat-form-field class="w-full">
+                    <mat-label>Received Qty</mat-label>
+                    <input matInput type="number" formControlName="receivedQuantity" min="0" required>
+                  </mat-form-field>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
+          <h3 class="text-lg font-semibold mb-4">Receiving Notes</h3>
+
+          <mat-form-field class="w-full">
+            <mat-label>Notes (Optional)</mat-label>
+            <textarea matInput formControlName="notes" rows="3"
+              placeholder="Add any notes about the delivery condition, damages, etc..."></textarea>
+          </mat-form-field>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex items-center justify-end gap-3 pt-4">
+          <button type="button" mat-stroked-button (click)="cancel()" [disabled]="isSaving()">
+            Cancel
+          </button>
+          <button type="submit" mat-raised-button color="primary" [disabled]="isSaving() || receiveForm.invalid">
+            @if (isSaving()) {
+              Processing...
+            } @else {
+              <mf-icon name="solar:box-minimalistic-line-duotone" />
+              Receive Purchase Order
+            }
+          </button>
+        </div>
+      </div>
+    </form>
+  }
+</app-page>

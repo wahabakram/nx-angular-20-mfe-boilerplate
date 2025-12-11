@@ -1,23 +1,23 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SaleService, Sale } from '@samba/sale-domain';
+import { SaleApi, Sale } from '@samba/sale-domain';
 import { Page } from '../../../_partials/page/page';
 import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { DatePipe, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { BreadcrumbsStore } from '@ng-mf/components';
 
 @Component({
   selector: 'app-sale-details',
-  imports: [Page, MatButton, MatIcon, MatCard, MatCardContent, DatePipe, CurrencyPipe, TitleCasePipe],
+  imports: [Page, MatButton, Icon, MatCard, MatCardContent, DatePipe, CurrencyPipe, TitleCasePipe],
   templateUrl: './sale-details.html',
   styleUrl: './sale-details.scss'
 })
 export class SaleDetails implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private saleService = inject(SaleService);
+  private saleApi = inject(SaleApi);
   private breadcrumbsStore = inject(BreadcrumbsStore);
 
   sale = signal<Sale | null>(null);
@@ -52,7 +52,7 @@ export class SaleDetails implements OnInit {
 
   loadSale(id: number): void {
     this.isLoading.set(true);
-    this.saleService.getById(id).subscribe({
+    this.saleApi.getById(id).subscribe({
       next: (sale) => {
         this.sale.set(sale);
         this.isLoading.set(false);

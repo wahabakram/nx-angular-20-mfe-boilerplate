@@ -1,32 +1,40 @@
 import { Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { Product, ProductService, ProductStore } from '@samba/product-domain';
+import { Product, ProductApi, ProductStore } from '@samba/product-domain';
+import { Icon } from '@ng-mf/components';
 
 @Component({
   selector: 'app-product-actions-cell',
-  imports: [
-    MatIconButton,
-    MatIcon
-  ],
+  imports: [MatIconButton, Icon],
   template: `
     <div class="flex gap-1">
       <button mat-icon-button (click)="editProduct()" matTooltip="Edit">
-        <mat-icon>edit</mat-icon>
+        <mf-icon
+          name="solar:pen-line-duotone"
+          class="text-blue-600 dark:text-blue-400"
+        />
       </button>
       <button mat-icon-button (click)="viewProduct()" matTooltip="View">
-        <mat-icon>visibility</mat-icon>
+        <mf-icon name="solar:eye-line-duotone" />
       </button>
-      <button mat-icon-button (click)="deleteProduct()" matTooltip="Delete" class="text-error">
-        <mat-icon>delete</mat-icon>
+      <button
+        mat-icon-button
+        (click)="deleteProduct()"
+        matTooltip="Delete"
+        class="text-error"
+      >
+        <mf-icon
+          name="solar:trash-bin-minimalistic-line-duotone"
+          class="text-error dark:text-red-400"
+        />
       </button>
     </div>
   `,
 })
 export class ProductActionsCell {
   private router = inject(Router);
-  private productService = inject(ProductService);
+  private productApi = inject(ProductApi);
   private productStore = inject(ProductStore);
 
   row = input.required<Product>();
@@ -42,14 +50,14 @@ export class ProductActionsCell {
   deleteProduct(): void {
     const product = this.row();
     if (confirm(`Are you sure you want to delete ${product.name}?`)) {
-      this.productService.delete(product.id).subscribe({
+      this.productApi.delete(product.id).subscribe({
         next: () => {
           this.productStore.deleteProduct(product.id);
         },
         error: (error) => {
           console.error('Error deleting product:', error);
           alert('Failed to delete product');
-        }
+        },
       });
     }
   }

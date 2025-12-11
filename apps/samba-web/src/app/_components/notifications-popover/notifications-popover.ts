@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatAnchor, MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 import { MatRipple } from '@angular/material/core';
 import { Popover } from '@ng-mf/components';
 import {
@@ -26,7 +25,6 @@ import { Icon } from '@ng-mf/components';
     NotificationList,
     RouterLink,
     MatAnchor,
-    MatIcon,
     MatIconButton,
     MatRipple,
     Dicebear,

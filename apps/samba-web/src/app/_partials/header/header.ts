@@ -1,6 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatDivider } from '@angular/material/divider';
@@ -16,14 +15,13 @@ import {
   ColorSchemeSwitcher,
   PopoverTriggerForDirective,
 } from '@ng-mf/components';
-import { AuthService, AuthStore } from '@samba/user-domain';
+import { AuthApi, AuthStore } from '@samba/user-domain';
 import { NotificationsPopover } from '../../_components/notifications-popover/notifications-popover';
 import { MatBadge } from '@angular/material/badge';
 
 @Component({
   selector: 'app-header',
   imports: [
-    MatIcon,
     MatIconButton,
     MatMenu,
     MatMenuTrigger,
@@ -40,7 +38,7 @@ import { MatBadge } from '@angular/material/badge';
     ColorSchemeLightDirective,
     ColorSchemeSwitcher,
     PopoverTriggerForDirective,
-    NotificationsPopover
+    NotificationsPopover,
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss',
@@ -50,7 +48,7 @@ import { MatBadge } from '@angular/material/badge';
 })
 export class Header {
   private layoutApi = inject(LayoutApi);
-  private authService = inject(AuthService);
+  private authApi = inject(AuthApi);
   private authStore = inject(AuthStore);
   private router = inject(Router);
 
@@ -69,7 +67,7 @@ export class Header {
   }
 
   logout(): void {
-    this.authService.logout();
+    this.authApi.logout();
     this.router.navigate(['/auth/login']);
   }
 }

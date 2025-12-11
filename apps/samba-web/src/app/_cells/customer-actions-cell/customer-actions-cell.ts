@@ -1,13 +1,13 @@
 import { Component, input } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
+import { Icon } from '@ng-mf/components';
 import { Customer } from '@samba/customer-domain';
 
 @Component({
   selector: 'app-customer-actions-cell',
   standalone: true,
-  imports: [MatIconButton, MatIcon, MatTooltip],
+  imports: [MatIconButton, Icon, MatTooltip],
   template: `
     <div class="flex gap-1">
       <button
@@ -16,7 +16,10 @@ import { Customer } from '@samba/customer-domain';
         matTooltip="Edit customer"
         class="hover:bg-blue-50 dark:hover:bg-blue-900/20"
       >
-        <mat-icon class="text-blue-600 dark:text-blue-400">edit</mat-icon>
+        <mf-icon
+          name="solar:pen-line-duotone"
+          class="text-blue-600 dark:text-blue-400"
+        />
       </button>
       <button
         mat-icon-button
@@ -24,7 +27,10 @@ import { Customer } from '@samba/customer-domain';
         matTooltip="Delete customer"
         class="hover:bg-red-50 dark:hover:bg-red-900/20"
       >
-        <mat-icon class="text-red-600 dark:text-red-400">delete</mat-icon>
+        <mf-icon
+          name="solar:trash-bin-minimalistic-line-duotone"
+          class="text-error dark:text-red-400"
+        />
       </button>
     </div>
   `,

@@ -3,7 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Datatable, Panel, PanelHeader, PanelBody, BreadcrumbsStore } from '@ng-mf/components';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { UserActionsCell } from '../../../../_cells/user-actions-cell/user-actions-cell';
 import { UserStatusCell } from '../../../../_cells/user-status-cell/user-status-cell';
 
@@ -21,7 +21,7 @@ interface User {
 
 @Component({
   selector: 'app-user-list',
-  imports: [Datatable, Panel, PanelHeader, PanelBody, MatButton, MatIcon],
+  imports: [Datatable, Panel, PanelHeader, PanelBody, MatButton, Icon],
   templateUrl: './user-list.html',
   styleUrl: './user-list.scss'
 })

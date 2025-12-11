@@ -1,0 +1,19 @@
+// Quotation Form Styles
+// Minimal custom styles - rely on Tailwind and Material Design
+
+:host {
+  display: block;
+}
+
+// Ensure Material form fields work well with our layout
+mat-form-field {
+  &.w-full {
+    width: 100%;
+  }
+}
+
+// Progress spinner inline with button
+mat-progress-spinner {
+  display: inline-block;
+  vertical-align: middle;
+}

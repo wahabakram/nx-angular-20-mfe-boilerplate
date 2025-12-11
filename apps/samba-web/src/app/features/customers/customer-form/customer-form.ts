@@ -5,10 +5,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { CustomerService, CustomerStore, CreateCustomerDto, CustomerType } from '@samba/customer-domain';
+import { CustomerApi, CustomerStore, CreateCustomerDto, CustomerType } from '@samba/customer-domain';
 import { Panel, PanelHeader, PanelBody, OverlayScrollbar, BreadcrumbsStore } from '@ng-mf/components';
 import { TitleCasePipe } from '@angular/common';
 
@@ -21,7 +21,7 @@ import { TitleCasePipe } from '@angular/common';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    MatIconModule,
+    Icon,
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     RouterLink,
@@ -38,7 +38,7 @@ export class CustomerForm implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private customerService = inject(CustomerService);
+  private customerApi = inject(CustomerApi);
   private customerStore = inject(CustomerStore);
   private breadcrumbsStore = inject(BreadcrumbsStore);
 
@@ -112,7 +112,7 @@ export class CustomerForm implements OnInit {
 
   loadCustomer(id: number): void {
     this.isLoading.set(true);
-    this.customerService.getById(id).subscribe({
+    this.customerApi.getById(id).subscribe({
       next: (customer) => {
         this.customerForm.patchValue({
           name: customer.name,
@@ -161,7 +161,7 @@ export class CustomerForm implements OnInit {
 
     if (this.isEditMode()) {
       const updateDto = { ...customerDto, id: this.customerId()! };
-      this.customerService.update(updateDto).subscribe({
+      this.customerApi.update(updateDto).subscribe({
         next: (customer) => {
           this.customerStore.updateCustomer(customer);
           this.router.navigate(['/customers']);
@@ -173,7 +173,7 @@ export class CustomerForm implements OnInit {
         },
       });
     } else {
-      this.customerService.create(customerDto).subscribe({
+      this.customerApi.create(customerDto).subscribe({
         next: (customer) => {
           this.customerStore.addCustomer(customer);
           this.router.navigate(['/customers']);

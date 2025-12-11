@@ -46,6 +46,30 @@ export class ManagerDashboard {
         ),
     },
     {
+      type: 'total-returns-widget',
+      skeleton: null,
+      component: () =>
+        import('../../../widgets/_widgets/total-returns-widget/total-returns-widget').then(
+          (c) => c.TotalReturnsWidget
+        ),
+    },
+    {
+      type: 'return-rate-widget',
+      skeleton: null,
+      component: () =>
+        import('../../../widgets/_widgets/return-rate-widget/return-rate-widget').then(
+          (c) => c.ReturnRateWidget
+        ),
+    },
+    {
+      type: 'outstanding-balances-widget',
+      skeleton: null,
+      component: () =>
+        import('../../../widgets/_widgets/outstanding-balances-widget/outstanding-balances-widget').then(
+          (c) => c.OutstandingBalancesWidget
+        ),
+    },
+    {
       type: 'recent-sales-widget',
       skeleton: null,
       component: () =>
@@ -90,17 +114,32 @@ export class ManagerDashboard {
     },
     {
       id: 4,
+      type: 'total-returns-widget',
+      columns: 4,
+    },
+    {
+      id: 5,
+      type: 'return-rate-widget',
+      columns: 4,
+    },
+    {
+      id: 6,
+      type: 'outstanding-balances-widget',
+      columns: 4,
+    },
+    {
+      id: 7,
       type: 'recent-sales-widget',
       columns: 8,
       skeletonHeight: '400px',
     },
     {
-      id: 5,
+      id: 8,
       type: 'revenue-widget',
       columns: 4,
     },
     {
-      id: 6,
+      id: 9,
       type: 'heading-widget',
       columns: 12,
       widget: {
@@ -108,33 +147,33 @@ export class ManagerDashboard {
       },
     },
     {
-      id: 7,
+      id: 10,
       type: 'quick-action-widget',
       columns: 4,
       widget: {
-        iconName: 'point_of_sale',
+        iconName: 'solar:calculator-line-duotone',
         title: 'Open POS',
         description: 'Start a new sales transaction',
         route: '/pos',
       },
     },
     {
-      id: 8,
+      id: 11,
       type: 'quick-action-widget',
       columns: 4,
       widget: {
-        iconName: 'sync_alt',
+        iconName: 'solar:transfer-horizontal-line-duotone',
         title: 'Stock Adjustment',
         description: 'Update inventory levels',
         route: '/inventory',
       },
     },
     {
-      id: 9,
+      id: 12,
       type: 'quick-action-widget',
       columns: 4,
       widget: {
-        iconName: 'receipt_long',
+        iconName: 'solar:bill-list-line-duotone',
         title: 'Sales Report',
         description: 'View daily sales summary',
         route: '/reports/sales',

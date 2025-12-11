@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+// Print styles
+@media print {
+  button {
+    display: none;
+  }
+
+  mat-card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}

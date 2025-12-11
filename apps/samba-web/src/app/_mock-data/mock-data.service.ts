@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { ProductService, ProductStore } from '@samba/product-domain';
+import { ProductApi, ProductStore } from '@samba/product-domain';
 import { generateMockProducts, PRODUCT_CATEGORIES } from './product-mock-data';
 import { forkJoin, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -8,7 +8,7 @@ import { catchError, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class MockDataService {
-  private productService = inject(ProductService);
+  private productApi = inject(ProductApi);
   private productStore = inject(ProductStore);
 
   private readonly STORAGE_KEY = 'samba_mock_data_seeded';
@@ -25,7 +25,7 @@ export class MockDataService {
     localStorage.removeItem(this.STORAGE_KEY);
   }
 
-  seedAllData(force: boolean = false) {
+  seedAllData(force = false) {
     // Check if data already seeded
     if (!force && this.isDataSeeded()) {
       console.log('Mock data already seeded. Use force=true to re-seed.');
@@ -52,7 +52,7 @@ export class MockDataService {
 
     // Create all products in parallel
     const createRequests = mockProducts.map((productDto) =>
-      this.productService.create(productDto).pipe(
+      this.productApi.create(productDto).pipe(
         catchError((err) => {
           console.error('Failed to create product:', productDto.name, err);
           return of(null);

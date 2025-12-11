@@ -3,7 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Datatable, Panel, PanelHeader, PanelBody, BreadcrumbsStore } from '@ng-mf/components';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { BranchActionsCell } from '../../../../_cells/branch-actions-cell/branch-actions-cell';
 import { BranchStatusCell } from '../../../../_cells/branch-status-cell/branch-status-cell';
 
@@ -21,7 +21,7 @@ interface Branch {
 
 @Component({
   selector: 'app-branch-list',
-  imports: [Datatable, Panel, PanelHeader, PanelBody, MatButton, MatIcon, RouterLink],
+  imports: [Datatable, Panel, PanelHeader, PanelBody, MatButton, Icon, RouterLink],
   templateUrl: './branch-list.html',
   styleUrl: './branch-list.scss'
 })

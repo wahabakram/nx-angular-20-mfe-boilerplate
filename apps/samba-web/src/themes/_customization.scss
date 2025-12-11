@@ -21,6 +21,7 @@
 }
 
 .single-fom-field {
+
   .mat-mdc-form-field-subscript-wrapper,
   .mat-mdc-form-field-bottom-align {
     display: none !important;
@@ -28,8 +29,20 @@
 }
 
 html.dark {
+
   .widget-container,
   .card-container {
     background: var(--color-surface-container);
   }
+}
+
+.mdc-button .mdc-button__label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: --spacing(1);
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
 }

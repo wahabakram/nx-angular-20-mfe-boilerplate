@@ -3,7 +3,7 @@
     <div class="flex h-full border-b border-b-surface-container items-center justify-between gap-5 px-6">
       <div class="flex items-center gap-3">
         <a mat-icon-button routerLink="/stock-transfers">
-          <mat-icon>arrow_back</mat-icon>
+          <mf-icon name="solar:arrow-left-line-duotone" />
         </a>
         <div class="text-lg font-semibold">
           {{ isViewMode() ? 'View Stock Transfer' : 'New Stock Transfer' }}
@@ -31,7 +31,7 @@
         @if (error()) {
           <div class="mb-6 p-4 bg-error-50 dark:bg-error-900/20 text-error border-l-4 border-error rounded-r">
             <div class="flex items-center">
-              <mat-icon class="mr-2">error</mat-icon>
+              <mf-icon class="mr-2" name="solar:danger-circle-line-duotone" />
               <span>{{ error() }}</span>
             </div>
           </div>
@@ -42,7 +42,7 @@
           <section class="card-container px-6 py-6 pb-1">
             <header class="flex items-center gap-3">
               <div class="size-11 rounded-lg flex items-center justify-center bg-primary-200 dark:bg-primary-900/30">
-                <mat-icon>swap_horiz</mat-icon>
+                <mf-icon name="solar:transfer-horizontal-line-duotone" />
               </div>
               <div class="font-semibold">Transfer Between Branches</div>
             </header>
@@ -78,7 +78,7 @@
           <section class="card-container px-6 py-6 pb-1">
             <header class="flex items-center gap-3">
               <div class="size-11 rounded-lg flex items-center justify-center bg-blue-200 dark:bg-blue-900/30">
-                <mat-icon>inventory_2</mat-icon>
+                <mf-icon name="solar:box-minimalistic-line-duotone" />
               </div>
               <div class="font-semibold">Product Information</div>
             </header>
@@ -101,7 +101,7 @@
               @if (selectedProduct()) {
                 <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                   <div class="flex items-start gap-3">
-                    <mat-icon class="text-blue-600 dark:text-blue-400">info</mat-icon>
+                    <mf-icon class="text-blue-600 dark:text-blue-400" name="solar:info-circle-line-duotone" />
                     <div class="flex-1">
                       <div class="font-medium text-blue-900 dark:text-blue-100">Selected Product Info</div>
                       <div class="text-sm text-blue-700 dark:text-blue-300 mt-2 space-y-1">
@@ -139,7 +139,7 @@
           <section class="card-container px-6 py-6 pb-1">
             <header class="flex items-center gap-3">
               <div class="size-11 rounded-lg flex items-center justify-center bg-orange-200 dark:bg-orange-900/30">
-                <mat-icon>note</mat-icon>
+                <mf-icon name="solar:document-text-line-duotone" />
               </div>
               <div class="font-semibold">Additional Information</div>
             </header>
@@ -160,7 +160,7 @@
           @if (!isViewMode()) {
             <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
               <div class="flex items-start gap-3">
-                <mat-icon class="text-yellow-600 dark:text-yellow-400">warning</mat-icon>
+                <mf-icon class="text-yellow-600 dark:text-yellow-400" name="solar:danger-triangle-line-duotone" />
                 <div class="text-sm text-yellow-700 dark:text-yellow-300">
                   <strong>Important:</strong> Stock transfer requests require approval from the source branch manager or admin before processing. Stock will be deducted from the source branch and added to the destination branch upon approval.
                 </div>

@@ -1,0 +1,143 @@
+<app-page>
+  <ng-container pageTitle>Customer Ledger</ng-container>
+  <ng-container pageDescription>
+    @if (customerName()) {
+    {{ customerName() }} - Account Statement
+    }
+  </ng-container>
+  <ng-container pageActions>
+    <button mat-stroked-button (click)="goBack()">
+      <mf-icon name="solar:arrow-left-line-duotone" />
+      Back to Customers
+    </button>
+    <button mat-raised-button color="accent" (click)="recordPayment()">
+      <mf-icon name="solar:wallet-money-line-duotone" />
+      Record Payment
+    </button>
+    <button mat-raised-button color="primary" (click)="exportToPDF()">
+      <mf-icon name="solar:document-line-duotone" />
+      Export PDF
+    </button>
+  </ng-container>
+
+  @if (error()) {
+  <div class="rounded-md bg-error/10 p-4 mb-4">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <mf-icon class="text-error" name="solar:danger-circle-line-duotone" />
+      </div>
+      <div class="ml-3">
+        <h3 class="text-sm font-medium text-error">{{ error() }}</h3>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- Account Summary -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <mat-card>
+      <mat-card-content class="p-4">
+        <div class="text-sm text-neutral-500">Total Debit</div>
+        <div class="text-xl font-semibold mt-1">
+          Rs {{ summary()?.totalDebit || 0 | number:'1.2-2' }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-content class="p-4">
+        <div class="text-sm text-neutral-500">Total Credit</div>
+        <div class="text-xl font-semibold mt-1">
+          Rs {{ summary()?.totalCredit || 0 | number:'1.2-2' }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-content class="p-4">
+        <div class="text-sm text-neutral-500">Current Balance</div>
+        <div class="text-xl font-semibold mt-1"
+             [class.text-error]="(summary()?.currentBalance || 0) > 0"
+             [class.text-success]="(summary()?.currentBalance || 0) < 0">
+          Rs {{ summary()?.currentBalance || 0 | number:'1.2-2' }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-content class="p-4">
+        <div class="text-sm text-neutral-500">Total Entries</div>
+        <div class="text-xl font-semibold mt-1">
+          {{ summary()?.entriesCount || 0 }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Filters -->
+  <mat-card class="mb-6">
+    <mat-card-content class="p-6">
+      <h3 class="text-lg font-semibold mb-4">Filters</h3>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <mat-form-field class="w-full">
+          <mat-label>Transaction Type</mat-label>
+          <mat-select [(ngModel)]="selectedType">
+            @for (type of transactionTypes; track type.value) {
+            <mat-option [value]="type.value">{{ type.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label>Start Date</mat-label>
+          <input matInput type="date" [(ngModel)]="startDate" />
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label>End Date</mat-label>
+          <input matInput type="date" [(ngModel)]="endDate" />
+        </mat-form-field>
+
+        <div class="flex gap-2 items-end">
+          <button mat-raised-button color="primary" (click)="applyFilters()">
+            <mf-icon name="solar:filter-line-duotone" />
+            Apply
+          </button>
+          <button mat-stroked-button (click)="clearFilters()">
+            Clear
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Ledger Entries -->
+  <mf-panel>
+    <mf-panel-header class="h-18 border-b border-b-surface-container">
+      <div class="h-full flex items-center justify-between px-7 gap-7">
+        <div class="flex items-center gap-7">
+          <h2 class="text-base font-semibold">Ledger Entries</h2>
+        </div>
+      </div>
+    </mf-panel-header>
+    <mf-panel-body class="relative">
+      <div class="absolute inset-4 rounded-3xl overflow-hidden">
+        @if (isLoading()) {
+        <div class="flex justify-center items-center py-12">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+        } @else {
+        <mf-datatable
+          #dt="mfDatatable"
+          [data]="entries()"
+          [columns]="columns()"
+          tableFixed
+          showHeader
+          showPagination
+        >
+        </mf-datatable>
+        }
+      </div>
+    </mf-panel-body>
+  </mf-panel>
+</app-page>

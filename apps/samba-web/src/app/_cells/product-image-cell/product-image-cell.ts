@@ -1,11 +1,11 @@
 import { Component, input } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
 import { Product } from '@samba/product-domain';
 import { NgOptimizedImage } from '@angular/common';
+import { Icon } from '@ng-mf/components';
 
 @Component({
   selector: 'app-product-image-cell',
-  imports: [MatIcon, NgOptimizedImage],
+  imports: [Icon, NgOptimizedImage],
   template: `
     <div class="flex items-center gap-3">
       <div class="size-20 rounded-lg overflow-hidden bg-surface-container flex items-center justify-center flex-shrink-0">
@@ -18,7 +18,7 @@ import { NgOptimizedImage } from '@angular/common';
             class="w-full h-full object-cover"
           />
         } @else {
-          <mat-icon class="text-neutral-400">inventory_2</mat-icon>
+          <mf-icon name="solar:clipboard-list-outline" class="text-neutral-400" />
         }
       </div>
       <div class="flex flex-col min-w-0">

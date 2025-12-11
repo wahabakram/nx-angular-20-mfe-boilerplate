@@ -1,10 +1,15 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { Product, ProductService, ProductStore } from '@samba/product-domain';
-import { Page } from '../../../_partials/page/page';
-import { Datatable, Panel, PanelHeader, PanelBody, BreadcrumbsStore } from '@ng-mf/components';
+import { Icon } from '@ng-mf/components';
+import { Product, ProductApi, ProductStore } from '@samba/product-domain';
+import {
+  Datatable,
+  Panel,
+  PanelHeader,
+  PanelBody,
+  BreadcrumbsStore,
+} from '@ng-mf/components';
 import { ColumnDef } from '@tanstack/angular-table';
 import { flexRenderComponent } from '@tanstack/angular-table';
 import { ProductActionsCell } from '../../../_cells/product-actions-cell/product-actions-cell';
@@ -17,17 +22,17 @@ import { ProductImageCell } from '../../../_cells/product-image-cell/product-ima
   imports: [
     RouterLink,
     MatButton,
-    MatIcon,
+    Icon,
     Panel,
     PanelHeader,
     PanelBody,
-    Datatable
+    Datatable,
   ],
   templateUrl: './product-list.html',
-  styleUrl: './product-list.scss'
+  styleUrl: './product-list.scss',
 })
 export class ProductList implements OnInit {
-  private productService = inject(ProductService);
+  private productApi = inject(ProductApi);
   private productStore = inject(ProductStore);
   private breadcrumbsStore = inject(BreadcrumbsStore);
   products = this.productStore.filteredProducts;
@@ -112,7 +117,7 @@ export class ProductList implements OnInit {
       size: 130,
       enableSorting: false,
       meta: {
-        pinned: 'right'
+        pinned: 'right',
       },
       cell: (info) => {
         return flexRenderComponent(ProductActionsCell, {
@@ -130,7 +135,7 @@ export class ProductList implements OnInit {
 
   loadProducts(): void {
     this.productStore.setLoading(true);
-    this.productService.getAll().subscribe({
+    this.productApi.getAll().subscribe({
       next: (products) => {
         this.productStore.setProducts(products);
         this.productStore.setLoading(false);
@@ -139,7 +144,7 @@ export class ProductList implements OnInit {
         this.productStore.setError('Failed to load products');
         this.productStore.setLoading(false);
         console.error('Error loading products:', error);
-      }
+      },
     });
   }
 
@@ -152,7 +157,7 @@ export class ProductList implements OnInit {
   filterByStatus(status: Product['status'] | null): void {
     this.productStore.setFilter({
       ...this.productStore.filter(),
-      status: status || undefined
+      status: status || undefined,
     });
   }
 

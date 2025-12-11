@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { Dashboard, DASHBOARD } from '@ng-mf/components';
 import { MockDataService } from '../../../_mock-data/mock-data.service';
@@ -11,7 +11,7 @@ export interface IDataManagementWidget {
 
 @Component({
   selector: 'app-data-management-widget',
-  imports: [MatButton, MatIcon, MatProgressSpinner],
+  imports: [MatButton, Icon, MatProgressSpinner],
   templateUrl: './data-management-widget.html',
   styleUrl: './data-management-widget.scss',
   host: {

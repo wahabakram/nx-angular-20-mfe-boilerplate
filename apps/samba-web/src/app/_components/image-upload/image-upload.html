@@ -10,7 +10,10 @@
           class="remove-btn"
           (click)="removeImage()"
           matTooltip="Remove image">
-          <mat-icon>delete</mat-icon>
+          <mf-icon
+          name="solar:trash-bin-minimalistic-line-duotone"
+          class="text-error dark:text-red-400"
+        />
         </button>
       </div>
     </div>
@@ -22,8 +25,9 @@
       (dragover)="onDragOver($event)"
       (dragleave)="onDragLeave($event)"
       (drop)="onDrop($event)"
-      (click)="triggerFileInput()">
-      <mat-icon class="upload-icon">cloud_upload</mat-icon>
+      (click)="triggerFileInput()"
+      role="presentation">
+      <mf-icon class="upload-icon" name="solar:cloud-upload-line-duotone" />
       <p class="upload-text">
         <strong>Click to upload</strong> or drag and drop
       </p>
@@ -36,7 +40,7 @@
   <!-- Error Message -->
   @if (error()) {
     <div class="error-message">
-      <mat-icon>error</mat-icon>
+      <mf-icon name="solar:danger-circle-line-duotone" />
       <span>{{ error() }}</span>
     </div>
   }

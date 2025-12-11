@@ -1,30 +1,36 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { Customer, CustomerService, CustomerStore } from '@samba/customer-domain';
-import { Datatable, Panel, PanelHeader, PanelBody, BreadcrumbsStore } from '@ng-mf/components';
+import { Icon } from '@ng-mf/components';
+import { Customer, CustomerApi, CustomerStore } from '@samba/customer-domain';
+import {
+  Datatable,
+  Panel,
+  PanelHeader,
+  PanelBody,
+  BreadcrumbsStore,
+} from '@ng-mf/components';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 import { CustomerActionsCell } from '../../../_cells/customer-actions-cell/customer-actions-cell';
 import { StatusCell } from '../../../_cells/status-cell/status-cell';
-import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-customer-list',
   imports: [
     RouterLink,
     MatButton,
-    MatIcon,
+    Icon,
     Panel,
     PanelHeader,
     PanelBody,
-    Datatable
+    Datatable,
   ],
   templateUrl: './customer-list.html',
-  styleUrl: './customer-list.scss'
+  styleUrl: './customer-list.scss',
 })
 export class CustomerList implements OnInit {
-  private customerService = inject(CustomerService);
+  private customerApi = inject(CustomerApi);
   private customerStore = inject(CustomerStore);
   private breadcrumbsStore = inject(BreadcrumbsStore);
   private router = inject(Router);
@@ -126,7 +132,7 @@ export class CustomerList implements OnInit {
 
   loadCustomers(): void {
     this.customerStore.setLoading(true);
-    this.customerService.getAll().subscribe({
+    this.customerApi.getAll().subscribe({
       next: (customers) => {
         this.customerStore.setCustomers(customers);
         this.customerStore.setLoading(false);
@@ -145,7 +151,7 @@ export class CustomerList implements OnInit {
 
   deleteCustomer(customer: Customer): void {
     if (confirm(`Are you sure you want to delete ${customer.name}?`)) {
-      this.customerService.delete(customer.id).subscribe({
+      this.customerApi.delete(customer.id).subscribe({
         next: () => {
           this.customerStore.deleteCustomer(customer.id);
         },

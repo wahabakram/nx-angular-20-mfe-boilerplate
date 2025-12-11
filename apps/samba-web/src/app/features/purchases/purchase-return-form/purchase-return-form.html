@@ -1,0 +1,183 @@
+<app-page>
+  <ng-container pageTitle>Create Purchase Return</ng-container>
+  <ng-container pageDescription>Return items to supplier</ng-container>
+
+  @if (isLoading()) {
+    <div class="flex items-center justify-center py-12">
+      <div class="text-neutral-500">Loading purchase order...</div>
+    </div>
+  } @else if (purchase()) {
+    <form [formGroup]="returnForm" (ngSubmit)="onSubmit()" class="max-w-6xl">
+
+      @if (error()) {
+        <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          <div class="flex items-center gap-2 text-red-800 dark:text-red-200">
+            <mf-icon name="solar:danger-circle-line-duotone" />
+            <span class="font-medium">{{ error() }}</span>
+          </div>
+        </div>
+      }
+
+      <div class="grid gap-6">
+        <!-- Purchase Info (Read-only) -->
+        <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
+          <h3 class="text-lg font-semibold mb-4">Original Purchase Order</h3>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div>
+              <div class="text-neutral-500 mb-1">PO Number</div>
+              <div class="font-medium">{{ purchase()!.purchaseNumber }}</div>
+            </div>
+            <div>
+              <div class="text-neutral-500 mb-1">Supplier</div>
+              <div class="font-medium">{{ purchase()!.supplier?.name }}</div>
+            </div>
+            <div>
+              <div class="text-neutral-500 mb-1">Purchase Date</div>
+              <div class="font-medium">{{ purchase()!.purchaseDate | date: 'MMM d, yyyy' }}</div>
+            </div>
+            <div>
+              <div class="text-neutral-500 mb-1">Total Amount</div>
+              <div class="font-medium">{{ purchase()!.total | currency: 'PKR ' }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Return Details -->
+        <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
+          <h3 class="text-lg font-semibold mb-4">Return Details</h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <mat-form-field class="w-full">
+              <mat-label>Return Date</mat-label>
+              <input matInput [matDatepicker]="returnDatePicker" formControlName="returnDate" required>
+              <mat-datepicker-toggle matIconSuffix [for]="returnDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #returnDatePicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="w-full">
+              <mat-label>Refund Method</mat-label>
+              <mat-select formControlName="refundMethod" required>
+                @for (method of refundMethods; track method) {
+                  <mat-option [value]="method">{{ method | titlecase }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Items to Return -->
+        <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">Items to Return</h3>
+            <div class="text-sm text-neutral-500">
+              {{ selectedItemsCount() }} item(s) selected
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-neutral-50 dark:bg-neutral-800 border-y border-neutral-200 dark:border-neutral-700">
+                <tr>
+                  <th class="px-4 py-3 text-left text-sm font-medium">Select</th>
+                  <th class="px-4 py-3 text-left text-sm font-medium">Product</th>
+                  <th class="px-4 py-3 text-center text-sm font-medium">Received Qty</th>
+                  <th class="px-4 py-3 text-center text-sm font-medium">Return Qty</th>
+                  <th class="px-4 py-3 text-center text-sm font-medium">Unit Cost</th>
+                  <th class="px-4 py-3 text-left text-sm font-medium">Reason</th>
+                  <th class="px-4 py-3 text-right text-sm font-medium">Subtotal</th>
+                </tr>
+              </thead>
+              <tbody formArrayName="items">
+                @for (item of itemsArray.controls; track $index) {
+                  <tr [formGroupName]="$index" class="border-b border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800/50">
+                    <td class="px-4 py-3">
+                      <mat-checkbox formControlName="selected" (change)="onItemSelectionChange($index)"></mat-checkbox>
+                    </td>
+                    <td class="px-4 py-3">
+                      <div class="font-medium">{{ item.get('productName')?.value }}</div>
+                    </td>
+                    <td class="px-4 py-3 text-center">
+                      <span class="text-neutral-600 dark:text-neutral-400">{{ item.get('receivedQuantity')?.value }}</span>
+                    </td>
+                    <td class="px-4 py-3">
+                      <mat-form-field class="w-24 [&_.mat-mdc-form-field-subscript-wrapper]:hidden">
+                        <input matInput type="number" formControlName="returnQuantity" min="1"
+                          [max]="item.get('receivedQuantity')?.value"
+                          [disabled]="!item.get('selected')?.value"
+                          (input)="onReturnQuantityChange($index)">
+                      </mat-form-field>
+                    </td>
+                    <td class="px-4 py-3 text-center">
+                      {{ item.get('unitCost')?.value | currency: 'PKR ' }}
+                    </td>
+                    <td class="px-4 py-3">
+                      <mat-form-field class="w-full [&_.mat-mdc-form-field-subscript-wrapper]:hidden">
+                        <mat-select formControlName="reason" [disabled]="!item.get('selected')?.value">
+                          @for (reason of returnReasons; track reason) {
+                            <mat-option [value]="reason">{{ reason | titlecase }}</mat-option>
+                          }
+                        </mat-select>
+                      </mat-form-field>
+                    </td>
+                    <td class="px-4 py-3 text-right font-medium">
+                      {{ item.get('subtotal')?.value | currency: 'PKR ' }}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Return Summary -->
+        <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
+          <h3 class="text-lg font-semibold mb-4">Return Summary</h3>
+
+          <div class="space-y-2 max-w-sm ml-auto">
+            <div class="flex justify-between text-sm">
+              <span class="text-neutral-600 dark:text-neutral-400">Subtotal:</span>
+              <span class="font-medium">{{ subtotal() | currency: 'PKR ' }}</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-neutral-600 dark:text-neutral-400">Tax ({{ purchase()!.taxRate * 100 }}%):</span>
+              <span class="font-medium">{{ tax() | currency: 'PKR ' }}</span>
+            </div>
+            <div class="flex justify-between pt-2 border-t border-neutral-200 dark:border-neutral-700">
+              <span class="font-semibold">Total Return Amount:</span>
+              <span class="text-xl font-bold text-primary-600 dark:text-primary-400">
+                {{ total() | currency: 'PKR ' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
+          <h3 class="text-lg font-semibold mb-4">Notes</h3>
+
+          <mat-form-field class="w-full">
+            <mat-label>Notes (Optional)</mat-label>
+            <textarea matInput formControlName="notes" rows="3"
+              placeholder="Add any notes about the return reason, condition, etc..."></textarea>
+          </mat-form-field>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex items-center justify-end gap-3 pt-4">
+          <button type="button" mat-stroked-button (click)="cancel()" [disabled]="isSaving()">
+            Cancel
+          </button>
+          <button type="submit" mat-raised-button color="warn"
+            [disabled]="isSaving() || returnForm.invalid || selectedItemsCount() === 0">
+            @if (isSaving()) {
+              Processing...
+            } @else {
+              <mf-icon name="solar:undo-left-line-duotone" />
+              Create Purchase Return
+            }
+          </button>
+        </div>
+      </div>
+    </form>
+  }
+</app-page>

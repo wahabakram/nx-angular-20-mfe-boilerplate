@@ -2,14 +2,14 @@
   @if (isLoading()) {
     <div class="flex items-center justify-center py-12">
       <div class="text-center">
-        <mat-icon class="animate-spin text-4xl mb-2">refresh</mat-icon>
+        <mf-icon class="animate-spin text-4xl mb-2" name="solar:refresh-line-duotone" />
         <p class="text-gray-600 dark:text-gray-400">Loading quotation...</p>
       </div>
     </div>
   } @else if (error()) {
     <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
       <div class="flex items-center gap-2 text-red-800 dark:text-red-200">
-        <mat-icon>error</mat-icon>
+        <mf-icon name="solar:danger-circle-line-duotone" />
         <span>{{ error() }}</span>
       </div>
     </div>
@@ -22,12 +22,12 @@
       </div>
       <div class="flex gap-2">
         <button mat-button (click)="printQuotation()">
-          <mat-icon>print</mat-icon>
+          <mf-icon name="solar:printer-line-duotone" />
           Print
         </button>
         @if (quotation()!.status === 'draft' || quotation()!.status === 'sent') {
           <button mat-stroked-button (click)="editQuotation()">
-            <mat-icon>edit</mat-icon>
+            <mf-icon name="solar:pen-line-duotone" />
             Edit
           </button>
         }
@@ -37,12 +37,12 @@
             color="primary" 
             (click)="convertToSale()"
             [disabled]="isConverting()">
-            <mat-icon>swap_horiz</mat-icon>
+            <mf-icon name="solar:transfer-horizontal-line-duotone" />
             Convert to Sale
           </button>
         }
         <a mat-button routerLink="/sales/quotations">
-          <mat-icon>arrow_back</mat-icon>
+          <mf-icon name="solar:arrow-left-line-duotone" />
           Back to List
         </a>
       </div>
@@ -55,7 +55,7 @@
       </span>
       @if (isExpired()) {
         <span class="ml-2 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
-          <mat-icon class="!text-base mr-1">warning</mat-icon>
+          <mf-icon class="!text-base mr-1" name="solar:danger-triangle-line-duotone" />
           Expired
         </span>
       }
@@ -172,7 +172,7 @@
                   color="primary" 
                   class="w-full"
                   (click)="updateStatus('accepted')">
-                  <mat-icon>check_circle</mat-icon>
+                  <mf-icon name="solar:check-circle-line-duotone" />
                   Mark as Accepted
                 </button>
                 <button 
@@ -180,7 +180,7 @@
                   color="warn" 
                   class="w-full"
                   (click)="updateStatus('rejected')">
-                  <mat-icon>cancel</mat-icon>
+                  <mf-icon name="solar:close-circle-line-duotone" />
                   Mark as Rejected
                 </button>
               </div>
@@ -198,7 +198,7 @@
                 color="warn" 
                 class="w-full"
                 (click)="deleteQuotation()">
-                <mat-icon>delete</mat-icon>
+                <mf-icon name="solar:trash-bin-minimalistic-line-duotone" />
                 Delete Quotation
               </button>
             </mat-card-content>

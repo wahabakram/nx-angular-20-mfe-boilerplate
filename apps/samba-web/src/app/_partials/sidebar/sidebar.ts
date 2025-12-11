@@ -1,7 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router, NavigationEnd, RouterLink } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import {
@@ -18,13 +17,12 @@ import {
   SidebarCompactViewModeDirective,
   SidebarFullViewModeDirective,
   SidebarNavItemIconDirective,
-  SidebarNavItemBadgeDirective,
   SidebarNavGroupToggleIconDirective,
   Logo,
   Icon,
-  Dicebear
+  Dicebear,
 } from '@ng-mf/components';
-import { AuthService, AuthStore } from '@samba/user-domain';
+import { AuthApi, AuthStore } from '@samba/user-domain';
 
 interface NavItem {
   type: 'link' | 'heading' | 'group';
@@ -39,7 +37,6 @@ interface NavItem {
 @Component({
   selector: 'app-sidebar',
   imports: [
-    MatIcon,
     MatIconButton,
     MatTooltip,
     RouterLink,
@@ -56,17 +53,16 @@ interface NavItem {
     SidebarCompactViewModeDirective,
     SidebarFullViewModeDirective,
     SidebarNavItemIconDirective,
-    SidebarNavItemBadgeDirective,
     SidebarNavGroupToggleIconDirective,
     Logo,
     Icon,
-    Dicebear
+    Dicebear,
   ],
   templateUrl: './sidebar.html',
-  styleUrl: './sidebar.scss'
+  styleUrl: './sidebar.scss',
 })
 export class Sidebar {
-  private authService = inject(AuthService);
+  private authApi = inject(AuthApi);
   private authStore = inject(AuthStore);
   private router = inject(Router);
 
@@ -76,18 +72,23 @@ export class Sidebar {
 
   private allNavItems: NavItem[] = [
     {
+      type: 'heading',
+      key: 'dashboard-heading',
+      name: 'Dashboard',
+    },
+    {
       type: 'link',
       key: 'dashboard',
       name: 'Dashboard',
       icon: 'solar:widget-2-outline',
       link: '/dashboard',
-      roles: ['admin', 'manager', 'cashier']
+      roles: ['admin', 'manager', 'cashier'],
     },
+    // Inventory Management Group
     {
       type: 'heading',
-      key: 'management',
-      name: 'Management',
-      roles: ['admin', 'manager']
+      key: 'inventory-heading',
+      name: 'Inventory Management',
     },
     {
       type: 'link',
@@ -95,37 +96,29 @@ export class Sidebar {
       name: 'Products',
       icon: 'solar:box-outline',
       link: '/products',
-      roles: ['admin', 'manager']
+      roles: ['admin', 'manager'],
     },
     {
       type: 'link',
       key: 'inventory',
-      name: 'Inventory',
+      name: 'Stock Levels',
       icon: 'solar:clipboard-list-outline',
       link: '/inventory',
-      roles: ['admin', 'manager']
+      roles: ['admin', 'manager'],
     },
     {
       type: 'link',
       key: 'stock-transfers',
-      name: 'Stock Transfers',
+      name: 'Transfers',
       icon: 'solar:transfer-horizontal-outline',
       link: '/stock-transfers',
-      roles: ['admin', 'manager']
+      roles: ['admin', 'manager'],
     },
-    {
-      type: 'link',
-      key: 'customers',
-      name: 'Customers',
-      icon: 'solar:users-group-rounded-outline',
-      link: '/customers',
-      roles: ['admin', 'manager']
-    },
+    // Sales Group
     {
       type: 'heading',
-      key: 'sales',
+      key: 'sales-heading',
       name: 'Sales',
-      roles: ['admin', 'manager', 'cashier']
     },
     {
       type: 'link',
@@ -133,7 +126,7 @@ export class Sidebar {
       name: 'Point of Sale',
       icon: 'solar:calculator-outline',
       link: '/pos',
-      roles: ['admin', 'manager', 'cashier']
+      roles: ['admin', 'manager', 'cashier'],
     },
     {
       type: 'link',
@@ -141,7 +134,7 @@ export class Sidebar {
       name: 'Sales History',
       icon: 'solar:history-outline',
       link: '/sales',
-      roles: ['admin', 'manager']
+      roles: ['admin', 'manager'],
     },
     {
       type: 'link',
@@ -149,13 +142,67 @@ export class Sidebar {
       name: 'Quotations',
       icon: 'solar:document-text-outline',
       link: '/sales/quotations',
-      roles: ['admin', 'manager']
+      roles: ['admin', 'manager'],
     },
     {
+      type: 'link',
+      key: 'returns',
+      name: 'Customer Returns',
+      icon: 'solar:undo-left-outline',
+      link: '/sales/returns',
+      roles: ['admin', 'manager'],
+    },
+
+    // Customers (standalone)
+    {
       type: 'heading',
-      key: 'reports',
+      key: 'customers-heading',
+      name: 'Customers',
+    },
+    {
+      type: 'link',
+      key: 'customers',
+      name: 'Customers',
+      icon: 'solar:users-group-rounded-outline',
+      link: '/customers',
+      roles: ['admin', 'manager'],
+    },
+
+    // Procurement Group
+    {
+      type: 'heading',
+      key: 'procurement-heading',
+      name: 'Procurement',
+    },
+    {
+      type: 'link',
+      key: 'suppliers',
+      name: 'Suppliers',
+      icon: 'solar:shop-2-outline',
+      link: '/suppliers',
+      roles: ['admin', 'manager'],
+    },
+    {
+      type: 'link',
+      key: 'purchases',
+      name: 'Purchases',
+      icon: 'solar:cart-large-2-outline',
+      link: '/purchases',
+      roles: ['admin', 'manager'],
+    },
+    {
+      type: 'link',
+      key: 'purchase-returns',
+      name: 'Purchase Returns',
+      icon: 'solar:undo-left-outline',
+      link: '/purchases/returns',
+      roles: ['admin', 'manager'],
+    },
+    // Reports Group
+    {
+      type: 'heading',
+      key: 'reports-heading',
       name: 'Reports',
-      roles: ['admin', 'manager']
     },
     {
       type: 'link',
@@ -163,7 +210,7 @@ export class Sidebar {
       name: 'Sales Report',
       icon: 'solar:chart-outline',
       link: '/reports/sales',
-      roles: ['admin', 'manager']
+      roles: ['admin', 'manager'],
     },
     {
       type: 'link',
@@ -171,13 +218,13 @@ export class Sidebar {
       name: 'Inventory Report',
       icon: 'solar:pie-chart-outline',
       link: '/reports/inventory',
-      roles: ['admin', 'manager']
+      roles: ['admin', 'manager'],
     },
+    // Settings Group
     {
       type: 'heading',
-      key: 'settings',
+      key: 'settings-heading',
       name: 'Settings',
-      roles: ['admin']
     },
     {
       type: 'link',
@@ -185,7 +232,7 @@ export class Sidebar {
       name: 'Users',
       icon: 'solar:user-outline',
       link: '/settings/users',
-      roles: ['admin']
+      roles: ['admin'],
     },
     {
       type: 'link',
@@ -193,7 +240,7 @@ export class Sidebar {
       name: 'Branches',
       icon: 'solar:home-outline',
       link: '/settings/branches',
-      roles: ['admin']
+      roles: ['admin'],
     },
     {
       type: 'link',
@@ -201,8 +248,8 @@ export class Sidebar {
       name: 'Categories',
       icon: 'solar:folder-outline',
       link: '/settings/categories',
-      roles: ['admin']
-    }
+      roles: ['admin'],
+    },
   ];
 
   // Filter navigation items based on user role
@@ -210,16 +257,38 @@ export class Sidebar {
     const currentUser = this.user();
     if (!currentUser) return [];
 
-    return this.allNavItems.filter(item => {
-      if (!item.roles) return true;
-      return item.roles.includes(currentUser.role);
-    });
+    const filterItems = (items: NavItem[]): NavItem[] => {
+      return items
+        .filter((item) => {
+          if (!item.roles) return true;
+          return item.roles.includes(currentUser.role);
+        })
+        .map((item) => {
+          // If item has children, filter them recursively
+          if (item.children) {
+            return {
+              ...item,
+              children: filterItems(item.children),
+            };
+          }
+          return item;
+        })
+        .filter((item) => {
+          // Remove groups that have no visible children
+          if (item.type === 'group' && item.children) {
+            return item.children.length > 0;
+          }
+          return true;
+        });
+    };
+
+    return filterItems(this.allNavItems);
   });
 
   constructor() {
     // Track active route
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+      .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
         this.updateActiveKey();
       });
@@ -230,23 +299,38 @@ export class Sidebar {
 
   private updateActiveKey(): void {
     const currentUrl = this.router.url;
-    const matchedItem = this.allNavItems.find(item => {
-      if (item.link) {
-        return currentUrl.startsWith(item.link);
+
+    // Check all items including children
+    const findMatchedItem = (items: NavItem[]): NavItem | undefined => {
+      for (const item of items) {
+        // Check if current item matches
+        if (item.link && currentUrl.startsWith(item.link)) {
+          return item;
+        }
+
+        // Check children if it's a group
+        if (item.children) {
+          const matchedChild = findMatchedItem(item.children);
+          if (matchedChild) {
+            return matchedChild;
+          }
+        }
       }
-      return false;
-    });
+      return undefined;
+    };
+
+    const matchedItem = findMatchedItem(this.allNavItems);
     if (matchedItem) {
       this.activeKey.set(matchedItem.key);
     }
   }
 
   toggleCompact(): void {
-    this.compact.update(value => !value);
+    this.compact.update((value) => !value);
   }
 
   logout(): void {
-    this.authService.logout();
+    this.authApi.logout();
     this.router.navigate(['/auth/login']);
   }
 }

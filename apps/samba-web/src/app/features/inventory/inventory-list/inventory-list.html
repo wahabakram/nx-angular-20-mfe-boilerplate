@@ -4,7 +4,7 @@
   <div class="bg-white dark:bg-neutral-900 rounded-xl shadow-sm overflow-hidden">
     <div class="flex gap-5 p-6">
       <div class="rounded-lg bg-primary size-12 flex-none flex items-center justify-center text-white">
-        <mat-icon>inventory</mat-icon>
+        <mf-icon name="solar:box-line-duotone" />
       </div>
       <div>
         <div class="text-sm font-medium text-neutral-500 dark:text-neutral-400">Total Products</div>
@@ -19,7 +19,7 @@
   <div class="bg-white dark:bg-neutral-900 rounded-xl shadow-sm overflow-hidden">
     <div class="flex gap-5 p-6">
       <div class="rounded-lg bg-red-500 size-12 flex-none flex items-center justify-center text-white">
-        <mat-icon>warning</mat-icon>
+        <mf-icon name="solar:danger-triangle-line-duotone" />
       </div>
       <div>
         <div class="text-sm font-medium text-neutral-500 dark:text-neutral-400">Low Stock Items</div>
@@ -34,7 +34,7 @@
   <div class="bg-white dark:bg-neutral-900 rounded-xl shadow-sm overflow-hidden">
     <div class="flex gap-5 p-6">
       <div class="rounded-lg bg-green-500 size-12 flex-none flex items-center justify-center text-white">
-        <mat-icon>check_circle</mat-icon>
+        <mf-icon name="solar:check-circle-line-duotone" />
       </div>
       <div>
         <div class="text-sm font-medium text-neutral-500 dark:text-neutral-400">In Stock</div>
@@ -60,18 +60,18 @@
       </div>
       <div class="flex items-center gap-2">
         <button mat-stroked-button (click)="clearFilters()">
-          <mat-icon>clear_all</mat-icon>
+          <mf-icon name="solar:trash-bin-trash-line-duotone" />
           All
         </button>
         <button mat-stroked-button (click)="filterLowStock()" [matBadge]="lowStockCount().length.toString()"
           matBadgeColor="warn" [matBadgeHidden]="lowStockCount().length === 0">
-          <mat-icon>warning</mat-icon>
+          <mf-icon name="solar:danger-triangle-line-duotone" />
           Low Stock
         </button>
         <button mat-stroked-button (click)="filterByStatus('active')">Active</button>
         <button mat-stroked-button (click)="filterByStatus('inactive')">Inactive</button>
         <button mat-flat-button color="primary" routerLink="/products/new">
-          <mat-icon>add</mat-icon>
+          <mf-icon name="solar:add-circle-line-duotone" />
           Add Product
         </button>
       </div>

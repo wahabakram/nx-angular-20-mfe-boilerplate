@@ -7,11 +7,11 @@
   </ng-container>
   <ng-container pageActions>
     <button mat-stroked-button (click)="goBack()">
-      <mat-icon>arrow_back</mat-icon>
+      <mf-icon name="solar:arrow-left-line-duotone" />
       Back to Sales
     </button>
     <button mat-raised-button color="primary" (click)="printReceipt()">
-      <mat-icon>print</mat-icon>
+      <mf-icon name="solar:printer-line-duotone" />
       Print Receipt
     </button>
   </ng-container>
@@ -20,7 +20,7 @@
     <div class="rounded-md bg-error/10 p-4 mb-4">
       <div class="flex">
         <div class="flex-shrink-0">
-          <mat-icon class="text-error">error</mat-icon>
+          <mf-icon class="text-error" name="solar:danger-circle-line-duotone" />
         </div>
         <div class="ml-3">
           <h3 class="text-sm font-medium text-error">{{ error() }}</h3>

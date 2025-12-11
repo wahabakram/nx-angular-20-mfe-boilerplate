@@ -1,6 +1,6 @@
 import {
   booleanAttribute,
-  ChangeDetectionStrategy,
+  // ChangeDetectionStrategy,
   Component,
   computed,
   input, numberAttribute,
@@ -45,7 +45,7 @@ import { OverlayScrollbar } from '../../overlay-scrollbar';
   ],
   templateUrl: './datatable.html',
   styleUrl: './datatable.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'mf-datatable',
     '[class.is-compact]': 'compact()',

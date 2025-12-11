@@ -5,11 +5,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Panel, PanelHeader, PanelBody, OverlayScrollbar, BreadcrumbsStore } from '@ng-mf/components';
-import { BranchService } from '@samba/branch-domain';
+import { BranchApi } from '@samba/branch-domain';
 
 interface User {
   id: number;
@@ -37,7 +37,7 @@ interface Branch {
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    MatIconModule,
+    Icon,
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     RouterLink,
@@ -53,7 +53,7 @@ export class UserForm implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private branchService = inject(BranchService);
+  private branchApi = inject(BranchApi);
   private breadcrumbsStore = inject(BreadcrumbsStore);
 
   isLoading = signal(false);
@@ -151,7 +151,7 @@ export class UserForm implements OnInit {
   }
 
   loadBranches(): void {
-    this.branchService.getAll().subscribe({
+    this.branchApi.getAll().subscribe({
       next: (branches) => {
         this.branches.set(branches.map(b => ({ id: b.id, name: b.name, code: b.code })));
       },

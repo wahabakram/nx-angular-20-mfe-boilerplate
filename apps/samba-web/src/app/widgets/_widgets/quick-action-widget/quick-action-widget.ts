@@ -1,6 +1,6 @@
 import { Component, inject, input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { MatRipple } from '@angular/material/core';
 import { DASHBOARD, Dashboard } from '@ng-mf/components';
 
@@ -13,7 +13,7 @@ export interface IQuickActionWidget {
 
 @Component({
   selector: 'app-quick-action-widget',
-  imports: [MatIcon, MatRipple],
+  imports: [Icon, MatRipple],
   templateUrl: './quick-action-widget.html',
   styleUrl: './quick-action-widget.scss',
   host: {

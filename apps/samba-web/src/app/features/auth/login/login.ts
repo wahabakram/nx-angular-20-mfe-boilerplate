@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService, AuthStore } from '@samba/user-domain';
+import { AuthApi, AuthStore } from '@samba/user-domain';
 import { MatButton } from '@angular/material/button';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -28,7 +28,7 @@ import { NgOptimizedImage } from '@angular/common';
 })
 export class Login {
   private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
+  private authApi = inject(AuthApi);
   private authStore = inject(AuthStore);
   private router = inject(Router);
 
@@ -51,7 +51,7 @@ export class Login {
 
     const { username, password } = this.loginForm.getRawValue();
 
-    this.authService.login({ username, password }).subscribe({
+    this.authApi.login({ username, password }).subscribe({
       next: () => {
         this.isLoading.set(false);
 

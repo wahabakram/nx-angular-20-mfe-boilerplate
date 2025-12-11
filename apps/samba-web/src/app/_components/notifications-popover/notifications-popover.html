@@ -16,7 +16,7 @@
                               [image]="notification.actor.avatarUrl" class="size-10"/>
                 <div class="flex absolute justify-center z-10 text-white items-center right-0
                   bottom-1 size-5 bg-green-400 rounded-full border border-default border-white ">
-                  <mat-icon class="filled action-icon">comment</mat-icon>
+                  <mf-icon class="filled action-icon" name="comment" />
                 </div>
               </div>
               <mf-notification-message>
@@ -39,7 +39,7 @@
                               [image]="notification.actor.avatarUrl" class="size-10"/>
                 <div class="flex absolute justify-center z-10 text-white items-center right-0
                   bottom-1 size-5 bg-blue-400 rounded-full border border-default border-white">
-                  <mat-icon class="filled action-icon">folder</mat-icon>
+                  <mf-icon class="filled action-icon" name="folder" />
                 </div>
               </div>
               <mf-notification-message>
@@ -51,7 +51,7 @@
               </mf-notification-message>
               <mf-notification-content>
                 <div class="border border-default border-primary rounded-lg px-3 py-2 mt-2 flex items-center gap-2 w-max">
-                  <mat-icon class="filled icon">folder</mat-icon>
+                  <mf-icon class="filled icon" name="folder" />
                   <span class="text-xs">{{ notification['payload']['folderName'] }}</span>
                 </div>
               </mf-notification-content>

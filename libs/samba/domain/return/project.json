@@ -1,0 +1,21 @@
+{
+  "name": "return",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/samba/domain/return/src",
+  "projectType": "library",
+  "tags": ["domain", "samba"],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/samba/domain/return",
+        "main": "libs/samba/domain/return/src/index.ts",
+        "tsConfig": "libs/samba/domain/return/tsconfig.lib.json",
+        "assets": ["libs/samba/domain/return/*.md"],
+        "format": ["cjs"],
+        "generatePackageJson": true
+      }
+    }
+  }
+}

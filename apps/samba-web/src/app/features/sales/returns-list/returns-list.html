@@ -1,0 +1,45 @@
+<mf-panel>
+  <mf-panel-header class="h-18 border-b border-b-surface-container">
+    <div class="h-full flex items-center justify-between px-7 gap-7">
+      <div class="flex items-center gap-7">
+        <h2 class="text-base font-semibold">Customer Returns</h2>
+      </div>
+      <div class="flex items-center gap-2">
+        <button mat-stroked-button (click)="loadReturns()">
+          <mf-icon name="solar:refresh-line-duotone" />
+          Refresh
+        </button>
+        <button mat-flat-button color="primary" (click)="navigateToNewReturn()">
+          <mf-icon name="solar:undo-left-line-duotone" />
+          Process Return
+        </button>
+      </div>
+    </div>
+  </mf-panel-header>
+  <mf-panel-body class="relative">
+    <div class="absolute inset-4 rounded-3xl overflow-hidden">
+      @if (error()) {
+      <div class="rounded-md bg-error/10 p-4 mb-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <mf-icon class="text-error" name="solar:danger-circle-line-duotone" />
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-error">{{ error() }}</h3>
+          </div>
+        </div>
+      </div>
+      }
+
+      @if (isLoading()) {
+      <div class="flex justify-center items-center py-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+      } @else {
+      <mf-datatable #dt="mfDatatable" [data]="returns()" [columns]="columns()" (click)="onTableInteraction($event)"
+        tableFixed showHeader showPagination class="pin-actions-right">
+      </mf-datatable>
+      }
+    </div>
+  </mf-panel-body>
+</mf-panel>

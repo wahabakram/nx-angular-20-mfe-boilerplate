@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { appRoutes } from './app.routes';
 import { environment } from '../environments/environment';
 import {
@@ -27,6 +28,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([authInterceptor, offlineInterceptor])
     ),
+    provideNativeDateAdapter(),
     {
       provide: API_CONFIG,
       useValue: { apiUrl: environment.apiUrl }

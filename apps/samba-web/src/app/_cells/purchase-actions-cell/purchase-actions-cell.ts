@@ -1,0 +1,58 @@
+import { Component, input } from '@angular/core';
+import { MatIconButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { Icon } from '@ng-mf/components';
+import { Purchase } from '@samba/purchase-domain';
+
+@Component({
+  selector: 'app-purchase-actions-cell',
+  standalone: true,
+  imports: [MatIconButton, Icon, MatTooltip],
+  template: `
+    <div class="flex gap-1">
+      <button
+        mat-icon-button
+        (click)="onView()()"
+        matTooltip="View details"
+        class="hover:bg-blue-50 dark:hover:bg-blue-900/20"
+      >
+        <mf-icon
+          name="solar:eye-line-duotone"
+          class="text-blue-600 dark:text-blue-400"
+        />
+      </button>
+
+      @if (purchase().status === 'ordered') {
+        <button
+          mat-icon-button
+          (click)="onReceive()()"
+          matTooltip="Receive purchase"
+          class="hover:bg-green-50 dark:hover:bg-green-900/20"
+        >
+          <mf-icon
+            name="solar:box-minimalistic-line-duotone"
+            class="text-success dark:text-green-400"
+          />
+        </button>
+      }
+
+      <button
+        mat-icon-button
+        (click)="onDelete()()"
+        matTooltip="Delete purchase"
+        class="hover:bg-red-50 dark:hover:bg-red-900/20"
+      >
+        <mf-icon
+          name="solar:trash-bin-minimalistic-line-duotone"
+          class="text-error dark:text-red-400"
+        />
+      </button>
+    </div>
+  `,
+})
+export class PurchaseActionsCell {
+  purchase = input.required<Purchase>();
+  onView = input.required<() => void>();
+  onReceive = input.required<() => void>();
+  onDelete = input.required<() => void>();
+}

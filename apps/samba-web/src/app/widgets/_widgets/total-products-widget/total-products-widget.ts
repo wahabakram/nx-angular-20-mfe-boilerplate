@@ -1,5 +1,5 @@
 import { Component, inject, input, OnInit } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { MatRipple } from '@angular/material/core';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Dashboard, DASHBOARD } from '@ng-mf/components';
@@ -8,7 +8,7 @@ import { ProductStore } from '@samba/product-domain';
 @Component({
   selector: 'app-total-products-widget',
   imports: [
-    MatIcon,
+    Icon,
     MatRipple,
     MatTooltip
   ],

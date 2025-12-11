@@ -4,7 +4,7 @@
       <h3 class="text-lg font-semibold">Mock Data Management</h3>
       <p class="text-sm text-neutral-500">Manage test data for the application</p>
     </div>
-    <mat-icon class="text-primary text-4xl">database</mat-icon>
+    <mf-icon class="text-primary text-4xl" name="database" />
   </div>
 
   @if (message()) {
@@ -36,7 +36,7 @@
         @if (isSeeding()) {
           <mat-progress-spinner diameter="20" mode="indeterminate" class="mr-2"></mat-progress-spinner>
         } @else {
-          <mat-icon>download</mat-icon>
+          <mf-icon name="solar:download-line-duotone" />
         }
         Seed Data
       </button>
@@ -49,7 +49,7 @@
         @if (isSeeding()) {
           <mat-progress-spinner diameter="20" mode="indeterminate" class="mr-2"></mat-progress-spinner>
         } @else {
-          <mat-icon>refresh</mat-icon>
+          <mf-icon name="solar:refresh-line-duotone" />
         }
         Re-seed (Force)
       </button>
@@ -58,7 +58,7 @@
         mat-stroked-button
         (click)="clearData()"
         [disabled]="isSeeding() || !isDataSeeded()">
-        <mat-icon>clear</mat-icon>
+        <mf-icon name="solar:close-circle-line-duotone" />
         Clear Flag
       </button>
 
@@ -66,7 +66,7 @@
         mat-stroked-button
         color="accent"
         (click)="refreshPage()">
-        <mat-icon>autorenew</mat-icon>
+        <mf-icon name="solar:refresh-line-duotone" />
         Refresh Page
       </button>
     </div>

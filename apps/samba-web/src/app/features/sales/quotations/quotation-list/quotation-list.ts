@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Datatable, Panel, PanelBody, PanelHeader, BreadcrumbsStore } from '@ng-mf/components';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { QuotationActionsCell } from '../../../../_cells/quotation-actions-cell/quotation-actions-cell';
 
 interface Quotation {
@@ -22,7 +22,7 @@ interface Quotation {
 
 @Component({
   selector: 'app-quotation-list',
-  imports: [Datatable, Panel, PanelHeader, PanelBody, MatButton, MatIcon],
+  imports: [Datatable, Panel, PanelHeader, PanelBody, MatButton, Icon],
   templateUrl: './quotation-list.html',
   styleUrl: './quotation-list.scss',
 })

@@ -1,12 +1,12 @@
 import { Component, inject, input } from '@angular/core';
 import { MatMiniFabButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
-import { Product, ProductService, ProductStore } from '@samba/product-domain';
+import { Icon } from '@ng-mf/components';
+import { Product, ProductApi, ProductStore } from '@samba/product-domain';
 
 @Component({
   selector: 'app-inventory-actions-cell',
-  imports: [MatMiniFabButton, MatIcon, MatTooltip],
+  imports: [MatMiniFabButton, Icon, MatTooltip],
   template: `
     <div class="flex gap-2">
       <button
@@ -14,27 +14,26 @@ import { Product, ProductService, ProductStore } from '@samba/product-domain';
         color="accent"
         (click)="adjustStock(-1)"
         [disabled]="row().stockLevel <= 0"
-        matTooltip="Remove 1">
-        <mat-icon>remove</mat-icon>
+        matTooltip="Remove 1"
+      >
+        <mf-icon name="ic:round-remove" />
       </button>
       <button
         mat-mini-fab
         color="primary"
         (click)="adjustStock(1)"
-        matTooltip="Add 1">
-        <mat-icon>add</mat-icon>
+        matTooltip="Add 1"
+      >
+      <mf-icon name="ic:round-plus" />
       </button>
-      <button
-        mat-mini-fab
-        (click)="adjustStock(10)"
-        matTooltip="Add 10">
-        <mat-icon>add_circle</mat-icon>
+      <button mat-mini-fab (click)="adjustStock(10)" matTooltip="Add 10">
+        <mf-icon name="ic:round-add-circle-outline" />
       </button>
     </div>
   `,
 })
 export class InventoryActionsCell {
-  private productService = inject(ProductService);
+  private productApi = inject(ProductApi);
   private productStore = inject(ProductStore);
 
   row = input.required<Product>();
@@ -52,7 +51,7 @@ export class InventoryActionsCell {
     this.productStore.updateStock(product.id, adjustment);
 
     // Update on server
-    this.productService
+    this.productApi
       .update({
         id: product.id,
         stockLevel: newStock,

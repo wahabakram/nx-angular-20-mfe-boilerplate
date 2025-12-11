@@ -1,0 +1,44 @@
+:host {
+  display: block;
+}
+
+// Make number inputs more compact
+input[type='number'] {
+  -moz-appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+// Table styling
+table {
+  min-width: 800px;
+
+  thead {
+    background-color: transparent;
+  }
+
+  th {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  td {
+    vertical-align: middle;
+  }
+}
+
+// Selected row highlight
+tr:has(mat-checkbox.mat-mdc-checkbox-checked) {
+  background-color: rgba(var(--primary-rgb), 0.05);
+}
+
+// Progress spinner in button
+mat-progress-spinner {
+  ::ng-deep circle {
+    stroke: currentColor;
+  }
+}

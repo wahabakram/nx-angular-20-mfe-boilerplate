@@ -1,5 +1,5 @@
 import { Component, inject, input, OnInit, signal } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { MatRipple } from '@angular/material/core';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Dashboard, DASHBOARD, WidgetItem } from '@ng-mf/components';
@@ -7,7 +7,7 @@ import { Dashboard, DASHBOARD, WidgetItem } from '@ng-mf/components';
 @Component({
   selector: 'app-total-profit-widget',
   imports: [
-    MatIcon,
+    Icon,
     MatRipple,
     MatTooltip
   ],

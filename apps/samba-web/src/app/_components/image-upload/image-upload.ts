@@ -1,10 +1,10 @@
 import { Component, input, output, signal, effect } from '@angular/core';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { Icon } from '@ng-mf/components';
 
 @Component({
   selector: 'app-image-upload',
-  imports: [MatButton, MatIcon, MatIconButton],
+  imports: [Icon, MatIconButton],
   templateUrl: './image-upload.html',
   styleUrl: './image-upload.scss',
 })

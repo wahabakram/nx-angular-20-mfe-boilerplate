@@ -5,7 +5,7 @@ export * from './lib/models/user.model';
 export * from './lib/store/auth.store';
 
 // Services
-export * from './lib/services/auth.service';
+export * from './lib/services/auth-api';
 
 // Guards
 export * from './lib/guards/auth.guard';

@@ -1,9 +1,15 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { MatBadge } from '@angular/material/badge';
 import { MatButton } from '@angular/material/button';
-import { Product, ProductService, ProductStore } from '@samba/product-domain';
-import { Datatable, Panel, PanelHeader, PanelBody, BreadcrumbsStore } from '@ng-mf/components';
+import { Product, ProductApi, ProductStore } from '@samba/product-domain';
+import {
+  Datatable,
+  Panel,
+  PanelHeader,
+  PanelBody,
+  BreadcrumbsStore,
+} from '@ng-mf/components';
 import { ColumnDef } from '@tanstack/angular-table';
 import { flexRenderComponent } from '@tanstack/angular-table';
 import { StatusCell } from '../../../_cells/status-cell/status-cell';
@@ -14,19 +20,19 @@ import { ProductImageCell } from '../../../_cells/product-image-cell/product-ima
 @Component({
   selector: 'app-inventory-list',
   imports: [
-    MatIcon,
+    Icon,
     MatBadge,
     MatButton,
     Panel,
     PanelHeader,
     PanelBody,
-    Datatable
+    Datatable,
   ],
   templateUrl: './inventory-list.html',
-  styleUrl: './inventory-list.scss'
+  styleUrl: './inventory-list.scss',
 })
 export class InventoryList implements OnInit {
-  private productService = inject(ProductService);
+  private productApi = inject(ProductApi);
   private productStore = inject(ProductStore);
   private breadcrumbsStore = inject(BreadcrumbsStore);
   products = this.productStore.filteredProducts;
@@ -100,7 +106,7 @@ export class InventoryList implements OnInit {
       size: 180,
       enableSorting: false,
       meta: {
-        pinned: 'right'
+        pinned: 'right',
       },
       cell: (info) => {
         return flexRenderComponent(InventoryActionsCell, {
@@ -118,7 +124,7 @@ export class InventoryList implements OnInit {
 
   loadProducts(): void {
     this.productStore.setLoading(true);
-    this.productService.getAll().subscribe({
+    this.productApi.getAll().subscribe({
       next: (products) => {
         this.productStore.setProducts(products);
         this.productStore.setLoading(false);

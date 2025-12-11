@@ -5,14 +5,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Panel, PanelHeader, PanelBody, OverlayScrollbar, BreadcrumbsStore } from '@ng-mf/components';
-import { BranchService } from '@samba/branch-domain';
-import { Product, ProductService, ProductStore } from '@samba/product-domain';
+import { BranchApi } from '@samba/branch-domain';
+import { Product, ProductApi, ProductStore } from '@samba/product-domain';
 import { AuthStore } from '@samba/user-domain';
 
-interface Branch {
+interface BranchMap {
   id: number;
   name: string;
   code: string;
@@ -27,7 +27,7 @@ interface Branch {
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    MatIconModule,
+    Icon,
     MatProgressSpinnerModule,
     RouterLink,
     Panel,
@@ -42,8 +42,8 @@ export class TransferForm implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private branchService = inject(BranchService);
-  private productService = inject(ProductService);
+  private branchApi = inject(BranchApi);
+  private productApi = inject(ProductApi);
   private productStore = inject(ProductStore);
   private authStore = inject(AuthStore);
   private breadcrumbsStore = inject(BreadcrumbsStore);
@@ -53,7 +53,7 @@ export class TransferForm implements OnInit {
   error = signal<string | null>(null);
   transferId = signal<number | null>(null);
   
-  branches = signal<Branch[]>([]);
+  branches = signal<BranchMap[]>([]);
   products = this.productStore.products;
   selectedProduct = signal<Product | null>(null);
 
@@ -150,7 +150,7 @@ export class TransferForm implements OnInit {
   }
 
   loadBranches(): void {
-    this.branchService.getAll().subscribe({
+    this.branchApi.getAll().subscribe({
       next: (branches) => {
         this.branches.set(branches.map(b => ({ id: b.id, name: b.name, code: b.code })));
       },
@@ -161,7 +161,7 @@ export class TransferForm implements OnInit {
   }
 
   loadProducts(): void {
-    this.productService.getAll().subscribe({
+    this.productApi.getAll().subscribe({
       next: (products) => {
         this.productStore.setProducts(products);
       },

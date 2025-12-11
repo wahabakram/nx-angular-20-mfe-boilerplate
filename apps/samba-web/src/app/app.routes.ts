@@ -51,25 +51,9 @@ export const appRoutes: Route[] = [
       {
         path: 'products',
         canActivate: [roleGuard(['admin', 'manager'])],
-        loadComponent: () =>
-          import('./features/products/product-list/product-list').then(
-            (m) => m.ProductList
-          ),
-      },
-      {
-        path: 'products/new',
-        canActivate: [roleGuard(['admin', 'manager'])],
-        loadComponent: () =>
-          import('./features/products/product-form/product-form').then(
-            (m) => m.ProductForm
-          ),
-      },
-      {
-        path: 'products/edit/:id',
-        canActivate: [roleGuard(['admin', 'manager'])],
-        loadComponent: () =>
-          import('./features/products/product-form/product-form').then(
-            (m) => m.ProductForm
+        loadChildren: () =>
+          import('./features/products/products.routes').then(
+            (m) => m.productsRoutes
           ),
       },
 
@@ -77,9 +61,9 @@ export const appRoutes: Route[] = [
       {
         path: 'inventory',
         canActivate: [roleGuard(['admin', 'manager'])],
-        loadComponent: () =>
-          import('./features/inventory/inventory-list/inventory-list').then(
-            (m) => m.InventoryList
+        loadChildren: () =>
+          import('./features/inventory/inventory.routes').then(
+            (m) => m.inventoryRoutes
           ),
       },
 
@@ -115,6 +99,26 @@ export const appRoutes: Route[] = [
         loadChildren: () =>
           import('./features/customers/customers.routes').then(
             (m) => m.customersRoutes
+          ),
+      },
+
+      // Suppliers (Admin, Manager)
+      {
+        path: 'suppliers',
+        canActivate: [roleGuard(['admin', 'manager'])],
+        loadChildren: () =>
+          import('./features/suppliers/suppliers.routes').then(
+            (m) => m.suppliersRoutes
+          ),
+      },
+
+      // Purchases (Admin, Manager)
+      {
+        path: 'purchases',
+        canActivate: [roleGuard(['admin', 'manager'])],
+        loadChildren: () =>
+          import('./features/purchases/purchases.routes').then(
+            (m) => m.purchasesRoutes
           ),
       },
 

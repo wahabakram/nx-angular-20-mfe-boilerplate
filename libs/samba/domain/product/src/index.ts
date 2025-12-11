@@ -5,4 +5,4 @@ export * from './lib/models/product.model';
 export * from './lib/store/product.store';
 
 // Services
-export * from './lib/services/product.service';
+export * from './lib/services/product-api';

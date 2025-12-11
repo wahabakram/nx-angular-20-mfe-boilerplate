@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { DatePipe, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { BreadcrumbsStore } from '@ng-mf/components';
@@ -33,7 +33,7 @@ interface Quotation {
 @Component({
   selector: 'app-quotation-detail',
   standalone: true,
-  imports: [RouterLink, MatButton, MatIcon, MatCard, MatCardContent, DatePipe, CurrencyPipe, TitleCasePipe],
+  imports: [RouterLink, MatButton, Icon, MatCard, MatCardContent, DatePipe, CurrencyPipe, TitleCasePipe],
   templateUrl: './quotation-detail.html',
   styleUrl: './quotation-detail.scss'
 })

@@ -5,7 +5,7 @@ export * from './lib/models/branch.model';
 export * from './lib/store/branch.store';
 
 // Services
-export * from './lib/services/branch.service';
+export * from './lib/services/branch-api';
 
 // Guards
 export * from './lib/guards/branch.guard';

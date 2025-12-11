@@ -1,0 +1,182 @@
+<mf-panel>
+  <mf-panel-header class="h-16">
+    <div class="flex h-full border-b border-b-surface-container items-center justify-between gap-5 px-6">
+      <div class="flex items-center gap-3">
+        <button mat-icon-button (click)="goBack()">
+          <mf-icon name="solar:arrow-left-line-duotone" />
+        </button>
+        <div class="text-lg font-semibold">Purchase Order Details</div>
+      </div>
+      <div class="flex items-center gap-2">
+        @if (purchase() && purchase()!.status === 'ordered') {
+          <button mat-flat-button color="primary" (click)="receivePurchase()">
+            <mf-icon name="solar:box-minimalistic-line-duotone" />
+            Receive Purchase
+          </button>
+        }
+      </div>
+    </div>
+  </mf-panel-header>
+
+  <mf-panel-body class="p-6">
+    @if (isLoading()) {
+      <div class="flex items-center justify-center h-64">
+        <div class="text-center">
+          <div class="text-neutral-500">Loading purchase order...</div>
+        </div>
+      </div>
+    }
+
+    @if (error()) {
+      <div class="p-4 bg-error-50 dark:bg-error-900/20 text-error border-l-4 border-error rounded-r">
+        <div class="flex items-center">
+          <mf-icon class="mr-2" name="solar:danger-circle-line-duotone" />
+          <span>{{ error() }}</span>
+        </div>
+      </div>
+    }
+
+    @if (purchase()) {
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Purchase Info -->
+          <mat-card>
+            <mat-card-content class="p-6">
+              <div class="flex items-start justify-between mb-4">
+                <div>
+                  <h2 class="text-xl font-semibold mb-2">{{ purchase()!.purchaseNumber }}</h2>
+                  @if (purchase()!.supplier) {
+                    <p class="text-neutral-600 dark:text-neutral-400">{{ purchase()!.supplier?.name }}</p>
+                  }
+                </div>
+                <div class="flex gap-2">
+                  <span [class]="'inline-flex px-3 py-1 rounded-full text-sm font-medium ' + getStatusColor(purchase()!.status)">
+                    {{ purchase()!.status | titlecase }}
+                  </span>
+                  <span [class]="'inline-flex px-3 py-1 rounded-full text-sm font-medium ' + getPaymentStatusColor(purchase()!.paymentStatus)">
+                    {{ purchase()!.paymentStatus | titlecase }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <div class="text-neutral-500 mb-1">Purchase Date</div>
+                  <div class="font-medium">{{ purchase()!.purchaseDate | date: 'MMM d, yyyy' }}</div>
+                </div>
+                @if (purchase()!.expectedDeliveryDate) {
+                  <div>
+                    <div class="text-neutral-500 mb-1">Expected Delivery</div>
+                    <div class="font-medium">{{ purchase()!.expectedDeliveryDate | date: 'MMM d, yyyy' }}</div>
+                  </div>
+                }
+                @if (purchase()!.invoiceNumber) {
+                  <div>
+                    <div class="text-neutral-500 mb-1">Invoice Number</div>
+                    <div class="font-medium">{{ purchase()!.invoiceNumber }}</div>
+                  </div>
+                }
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Items -->
+          <mat-card>
+            <mat-card-content class="p-6">
+              <h3 class="text-lg font-semibold mb-4">Items</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full">
+                  <thead class="border-b">
+                    <tr class="text-left text-sm text-neutral-500">
+                      <th class="pb-2">Product</th>
+                      <th class="pb-2 text-right">Qty</th>
+                      <th class="pb-2 text-right">Unit Cost</th>
+                      <th class="pb-2 text-right">Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (item of purchase()!.items; track item.id) {
+                      <tr class="border-b last:border-0">
+                        <td class="py-3">
+                          <div class="font-medium">{{ item.product?.name || 'Product' }}</div>
+                          @if (item.product?.sku) {
+                            <div class="text-xs text-neutral-500">SKU: {{ item.product?.sku }}</div>
+                          }
+                        </td>
+                        <td class="py-3 text-right">{{ item.quantity }}</td>
+                        <td class="py-3 text-right">{{ item.unitCost | currency }}</td>
+                        <td class="py-3 text-right font-medium">{{ item.subtotal | currency }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+          <!-- Summary -->
+          <mat-card>
+            <mat-card-content class="p-6">
+              <h3 class="text-lg font-semibold mb-4">Summary</h3>
+              <div class="space-y-3 text-sm">
+                <div class="flex justify-between">
+                  <span class="text-neutral-600 dark:text-neutral-400">Subtotal</span>
+                  <span class="font-medium">{{ purchase()!.subtotal | currency }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-neutral-600 dark:text-neutral-400">Tax</span>
+                  <span class="font-medium">{{ purchase()!.tax | currency }}</span>
+                </div>
+                @if (purchase()!.discount > 0) {
+                  <div class="flex justify-between text-green-600">
+                    <span>Discount</span>
+                    <span class="font-medium">- {{ purchase()!.discount | currency }}</span>
+                  </div>
+                }
+                @if (purchase()!.shippingCost > 0) {
+                  <div class="flex justify-between">
+                    <span class="text-neutral-600 dark:text-neutral-400">Shipping</span>
+                    <span class="font-medium">{{ purchase()!.shippingCost | currency }}</span>
+                  </div>
+                }
+                <div class="flex justify-between text-lg font-bold pt-3 border-t">
+                  <span>Total</span>
+                  <span>{{ purchase()!.total | currency }}</span>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Actions -->
+          <mat-card>
+            <mat-card-content class="p-6">
+              <h3 class="text-lg font-semibold mb-4">Actions</h3>
+              <div class="space-y-2">
+                @if (purchase()!.status === 'ordered') {
+                  <button mat-stroked-button class="w-full" (click)="receivePurchase()">
+                    <mf-icon name="solar:box-minimalistic-line-duotone" />
+                    Receive Purchase
+                  </button>
+                }
+                @if (purchase()!.status === 'received') {
+                  <button mat-stroked-button class="w-full" (click)="createReturn()">
+                    <mf-icon name="solar:undo-left-line-duotone" />
+                    Create Return
+                  </button>
+                }
+                <button mat-stroked-button class="w-full" routerLink="/purchases">
+                  <mf-icon name="solar:list-line-duotone" />
+                  Back to List
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    }
+  </mf-panel-body>
+</mf-panel>

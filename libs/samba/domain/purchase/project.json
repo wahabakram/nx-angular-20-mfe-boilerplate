@@ -1,0 +1,8 @@
+{
+  "name": "purchase",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/samba/domain/purchase/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {}
+}

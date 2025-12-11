@@ -3,7 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Datatable, Panel, PanelHeader, PanelBody, BreadcrumbsStore } from '@ng-mf/components';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { CategoryActionsCell } from '../../../../_cells/category-actions-cell/category-actions-cell';
 import { CategoryStatusCell } from '../../../../_cells/category-status-cell/category-status-cell';
 
@@ -18,7 +18,7 @@ interface Category {
 
 @Component({
   selector: 'app-category-list',
-  imports: [Datatable, Panel, PanelHeader, PanelBody, MatButton, MatIcon, RouterLink],
+  imports: [Datatable, Panel, PanelHeader, PanelBody, MatButton, Icon, RouterLink],
   templateUrl: './category-list.html',
   styleUrl: './category-list.scss'
 })

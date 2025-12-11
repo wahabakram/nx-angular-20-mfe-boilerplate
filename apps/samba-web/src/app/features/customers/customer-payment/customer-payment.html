@@ -1,0 +1,191 @@
+<mf-panel>
+  <mf-panel-header>
+    <div class="flex items-center justify-between w-full">
+      <div>
+        <h2 class="text-xl font-semibold">Record Payment from Customer</h2>
+        @if (customer()) {
+        <p class="text-sm text-neutral-500 mt-1">
+          {{ customer()!.name }}
+          @if (customer()!.phone) {
+          - {{ customer()!.phone }}
+          }
+        </p>
+        }
+      </div>
+    </div>
+  </mf-panel-header>
+
+  <mf-panel-body>
+    @if (isLoading()) {
+    <div class="flex items-center justify-center py-12">
+      <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+    </div>
+    } @else if (success()) {
+    <div class="flex flex-col items-center justify-center py-12">
+      <div
+        class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center mb-4">
+        <mf-icon class="!text-4xl text-green-600 dark:text-green-400"
+          name="solar:check-circle-line-duotone" />
+      </div>
+      <h3 class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
+        Payment Recorded Successfully
+      </h3>
+      <p class="text-neutral-500">Redirecting to customer details...</p>
+    </div>
+    } @else {
+    <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()" class="max-w-2xl mx-auto">
+      <!-- Error Message -->
+      @if (error()) {
+      <div
+        class="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+        <div class="flex items-center gap-2 text-red-800 dark:text-red-200">
+          <mf-icon name="solar:danger-circle-line-duotone" />
+          <span class="font-medium">{{ error() }}</span>
+        </div>
+      </div>
+      }
+
+      <!-- Customer Balance Info -->
+      @if (customer()) {
+      <div class="mb-6 p-6 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-sm text-neutral-500 mb-1">Outstanding Balance</div>
+            <div class="text-3xl font-bold"
+              [class]="{
+                'text-green-600 dark:text-green-400': customer()!.currentBalance <= 0,
+                'text-orange-600 dark:text-orange-400': customer()!.currentBalance > 0
+              }">
+              {{ customer()!.currentBalance | currency:'PKR ' }}
+            </div>
+          </div>
+          <div class="w-12 h-12 rounded-full flex items-center justify-center"
+            [class]="{
+              'bg-green-100 dark:bg-green-900/20': customer()!.currentBalance <= 0,
+              'bg-orange-100 dark:bg-orange-900/20': customer()!.currentBalance > 0
+            }">
+            <mf-icon class="!text-2xl"
+              [class]="{
+                'text-green-600 dark:text-green-400': customer()!.currentBalance <= 0,
+                'text-orange-600 dark:text-orange-400': customer()!.currentBalance > 0
+              }"
+              name="solar:wallet-money-line-duotone" />
+          </div>
+        </div>
+      </div>
+      }
+
+      <div class="space-y-6">
+        <!-- Payment Amount -->
+        <mat-form-field class="w-full">
+          <mat-label>Payment Amount</mat-label>
+          <input matInput type="number" formControlName="amount" min="0" step="0.01"
+            placeholder="0.00" required>
+          <span matTextPrefix>PKR </span>
+          @if (paymentForm.get('amount')?.hasError('required') &&
+          paymentForm.get('amount')?.touched) {
+          <mat-error>{{ getErrorMessage('amount') }}</mat-error>
+          }
+          @if (paymentForm.get('amount')?.hasError('min')) {
+          <mat-error>{{ getErrorMessage('amount') }}</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Payment Date -->
+        <mat-form-field class="w-full">
+          <mat-label>Payment Date</mat-label>
+          <input matInput [matDatepicker]="paymentDatePicker" formControlName="paymentDate"
+            required>
+          <mat-datepicker-toggle matIconSuffix [for]="paymentDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #paymentDatePicker></mat-datepicker>
+          @if (paymentForm.get('paymentDate')?.hasError('required') &&
+          paymentForm.get('paymentDate')?.touched) {
+          <mat-error>Payment date is required</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Payment Method -->
+        <mat-form-field class="w-full">
+          <mat-label>Payment Method</mat-label>
+          <mat-select formControlName="paymentMethod" required>
+            @for (method of paymentMethods; track method.value) {
+            <mat-option [value]="method.value">
+              <div class="flex items-center gap-2">
+                <mf-icon [name]="method.icon" />
+                <span>{{ method.label }}</span>
+              </div>
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Reference Number -->
+        <mat-form-field class="w-full">
+          <mat-label>Reference Number (Optional)</mat-label>
+          <input matInput formControlName="referenceNumber"
+            placeholder="Check number, transaction ID, etc.">
+          <mat-hint>e.g., Check #12345, TXN-ABC123</mat-hint>
+        </mat-form-field>
+
+        <!-- Notes -->
+        <mat-form-field class="w-full">
+          <mat-label>Notes (Optional)</mat-label>
+          <textarea matInput formControlName="notes" rows="3"
+            placeholder="Add any additional notes about this payment..."></textarea>
+        </mat-form-field>
+
+        <!-- Summary -->
+        <div class="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-6">
+          <h4 class="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-4">
+            Payment Summary
+          </h4>
+          <div class="space-y-3">
+            <div class="flex justify-between text-neutral-600 dark:text-neutral-400">
+              <span>Current Balance:</span>
+              <span class="font-semibold"
+                [class]="{
+                  'text-green-600 dark:text-green-400': customer()?.currentBalance! <= 0,
+                  'text-orange-600 dark:text-orange-400': customer()?.currentBalance! > 0
+                }">
+                {{ customer()?.currentBalance | currency:'PKR ' }}
+              </span>
+            </div>
+            <div class="flex justify-between text-neutral-600 dark:text-neutral-400">
+              <span>Payment Amount:</span>
+              <span class="font-semibold text-green-600 dark:text-green-400">
+                - {{ paymentForm.get('amount')?.value | currency:'PKR ' }}
+              </span>
+            </div>
+            <div
+              class="flex justify-between text-lg font-bold text-neutral-900 dark:text-neutral-100 pt-3 border-t border-neutral-200 dark:border-neutral-700">
+              <span>New Balance:</span>
+              <span [class]="{
+                  'text-green-600 dark:text-green-400': (customer()?.currentBalance || 0) - (paymentForm.get('amount')?.value || 0) <= 0,
+                  'text-orange-600 dark:text-orange-400': (customer()?.currentBalance || 0) - (paymentForm.get('amount')?.value || 0) > 0
+                }">
+                {{ (customer()?.currentBalance || 0) - (paymentForm.get('amount')?.value || 0) | currency:'PKR ' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex items-center justify-end gap-3 pt-4">
+          <button type="button" mat-stroked-button (click)="cancel()" [disabled]="isSaving()">
+            Cancel
+          </button>
+          <button type="submit" mat-raised-button color="primary"
+            [disabled]="isSaving() || paymentForm.invalid">
+            @if (isSaving()) {
+            <mat-progress-spinner mode="indeterminate" diameter="20"
+              class="inline-block mr-2"></mat-progress-spinner>
+            }
+            <mf-icon name="solar:check-circle-line-duotone" />
+            Record Payment
+          </button>
+        </div>
+      </div>
+    </form>
+    }
+  </mf-panel-body>
+</mf-panel>

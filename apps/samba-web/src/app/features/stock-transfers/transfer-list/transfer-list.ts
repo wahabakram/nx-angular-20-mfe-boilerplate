@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { Datatable, Panel, PanelHeader, PanelBody, BreadcrumbsStore } from '@ng-mf/components';
 import { ColumnDef, flexRenderComponent } from '@tanstack/angular-table';
 import { DatePipe, TitleCasePipe } from '@angular/common';
@@ -33,7 +33,7 @@ interface StockTransfer {
   imports: [
     RouterLink,
     MatButton,
-    MatIcon,
+    Icon,
     Panel,
     PanelHeader,
     PanelBody,

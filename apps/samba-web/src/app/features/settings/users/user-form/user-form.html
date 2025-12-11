@@ -3,7 +3,7 @@
     <div class="flex h-full border-b border-b-surface-container items-center justify-between gap-5 px-6">
       <div class="flex items-center gap-3">
         <a mat-icon-button routerLink="/settings/users">
-          <mat-icon>arrow_back</mat-icon>
+          <mf-icon name="solar:arrow-left-line-duotone" />
         </a>
         <div class="text-lg font-semibold">
           {{ isEditMode() ? 'Edit User' : 'New User' }}
@@ -29,7 +29,7 @@
         @if (error()) {
           <div class="mb-6 p-4 bg-error-50 dark:bg-error-900/20 text-error border-l-4 border-error rounded-r">
             <div class="flex items-center">
-              <mat-icon class="mr-2">error</mat-icon>
+              <mf-icon class="mr-2" name="solar:danger-circle-line-duotone" />
               <span>{{ error() }}</span>
             </div>
           </div>
@@ -40,7 +40,7 @@
           <section class="card-container px-6 py-6 pb-1">
             <header class="flex items-center gap-3">
               <div class="size-11 rounded-lg flex items-center justify-center bg-primary-200 dark:bg-primary-900/30">
-                <mat-icon>account_circle</mat-icon>
+                <mf-icon name="solar:user-circle-line-duotone" />
               </div>
               <div class="font-semibold">Account Information</div>
             </header>
@@ -68,7 +68,7 @@
           <section class="card-container px-6 py-6 pb-1">
             <header class="flex items-center gap-3">
               <div class="size-11 rounded-lg flex items-center justify-center bg-blue-200 dark:bg-blue-900/30">
-                <mat-icon>person</mat-icon>
+                <mf-icon name="solar:user-line-duotone" />
               </div>
               <div class="font-semibold">Personal Information</div>
             </header>
@@ -97,7 +97,7 @@
             <section class="card-container px-6 py-6 pb-1">
               <header class="flex items-center gap-3">
                 <div class="size-11 rounded-lg flex items-center justify-center bg-red-200 dark:bg-red-900/30">
-                  <mat-icon>lock</mat-icon>
+                  <mf-icon name="solar:lock-password-line-duotone" />
                 </div>
                 <div class="font-semibold">Password</div>
               </header>
@@ -121,7 +121,7 @@
             <section class="card-container px-6 py-6 pb-1">
               <header class="flex items-center gap-3">
                 <div class="size-11 rounded-lg flex items-center justify-center bg-red-200 dark:bg-red-900/30">
-                  <mat-icon>lock</mat-icon>
+                  <mf-icon name="solar:lock-password-line-duotone" />
                 </div>
                 <div class="font-semibold">Password (Optional)</div>
               </header>
@@ -148,7 +148,7 @@
           <section class="card-container px-6 py-6 pb-1">
             <header class="flex items-center gap-3">
               <div class="size-11 rounded-lg flex items-center justify-center bg-green-200 dark:bg-green-900/30">
-                <mat-icon>badge</mat-icon>
+                <mf-icon name="solar:square-academic-cap-line-duotone" />
               </div>
               <div class="font-semibold">Role & Branch Assignment</div>
             </header>

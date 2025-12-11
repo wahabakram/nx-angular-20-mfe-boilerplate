@@ -4,11 +4,11 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Panel, PanelHeader, PanelBody, OverlayScrollbar, BreadcrumbsStore } from '@ng-mf/components';
-import { CategoryService, CreateCategoryDto } from '@samba/category-domain';
+import { CategoryApi, CreateCategoryDto } from '@samba/category-domain';
 
 @Component({
   selector: 'app-category-form',
@@ -18,7 +18,7 @@ import { CategoryService, CreateCategoryDto } from '@samba/category-domain';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule,
+    Icon,
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     RouterLink,
@@ -34,7 +34,7 @@ export class CategoryForm implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private categoryService = inject(CategoryService);
+  private categoryApi = inject(CategoryApi);
   private breadcrumbsStore = inject(BreadcrumbsStore);
 
   isLoading = signal(false);
@@ -112,7 +112,7 @@ export class CategoryForm implements OnInit {
 
   loadCategory(id: number): void {
     this.isLoading.set(true);
-    this.categoryService.getById(id).subscribe({
+    this.categoryApi.getById(id).subscribe({
       next: (category) => {
         this.categoryForm.patchValue({
           name: category.name,
@@ -149,7 +149,7 @@ export class CategoryForm implements OnInit {
 
     if (this.isEditMode()) {
       const updateDto = { ...categoryDto, id: this.categoryId()! };
-      this.categoryService.update(updateDto).subscribe({
+      this.categoryApi.update(updateDto).subscribe({
         next: () => {
           this.router.navigate(['/settings/categories']);
         },
@@ -160,7 +160,7 @@ export class CategoryForm implements OnInit {
         },
       });
     } else {
-      this.categoryService.create(categoryDto).subscribe({
+      this.categoryApi.create(categoryDto).subscribe({
         next: () => {
           this.router.navigate(['/settings/categories']);
         },

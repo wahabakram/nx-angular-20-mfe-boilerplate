@@ -1,0 +1,246 @@
+<app-page>
+  <ng-container pageTitle>{{ isEdit() ? 'Edit Sale' : 'New Sale'}}</ng-container>
+  <ng-container pageDescription>{{ isEdit() ? 'Update sale details' : 'Create a new sale transaction' }}</ng-container>
+
+  @if (isLoading()) {
+  <div class="flex items-center justify-center py-12">
+    <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+  </div>
+  } @else {
+  <form [formGroup]="saleForm" (ngSubmit)="onSubmit()" class="max-w-5xl">
+
+    <!-- Error Message -->
+    @if (error()) {
+    <div class="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+      <div class="flex items-center gap-2 text-red-800 dark:text-red-200">
+        <mf-icon name="solar:danger-circle-line-duotone" />
+        <span class="font-medium">{{ error() }}</span>
+      </div>
+    </div>
+    }
+
+    <div class="grid gap-6">
+
+      <!-- Customer Selection -->
+      <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
+        <h3 class="text-lg font-semibold mb-4">Customer Information</h3>
+
+        <mat-form-field class="w-full">
+          <mat-label>Customer (Optional)</mat-label>
+          <mat-select formControlName="customerId">
+            <mat-option [value]="null">Walk-in Customer</mat-option>
+            @for (customer of customers(); track customer.id) {
+            <mat-option [value]="customer.id">
+              {{ customer.name }} - {{ customer.phone }}
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- Sale Items -->
+      <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold">Sale Items</h3>
+          <button type="button" mat-raised-button color="primary" (click)="addItem()">
+            <mf-icon name="solar:add-circle-line-duotone" />
+            Add Item
+          </button>
+        </div>
+
+        @if (itemsArray.controls.length === 0) {
+        <div class="text-center py-8 text-neutral-500">
+          <mf-icon class="!text-5xl !w-12 !h-12 mx-auto mb-2" name="solar:box-minimalistic-line-duotone" />
+          <p>No items added yet. Click "Add Item" to get started.</p>
+        </div>
+        } @else {
+        <div class="space-y-4" formArrayName="items">
+          @for (item of itemsArray.controls; track $index) {
+          <div [formGroupName]="$index" class="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-4">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+
+              <!-- Product Selection -->
+              <div class="md:col-span-5">
+                <mat-form-field class="w-full">
+                  <mat-label>Product</mat-label>
+                  <mat-select formControlName="productId" (selectionChange)="onProductSelected($event.value, $index)">
+                    @for (product of filteredProducts(); track product.id) {
+                    <mat-option [value]="product.id">
+                      {{ product.name }} ({{ product.sku }})
+                      - Rs {{ product.price }}
+                    </mat-option>
+                    }
+                  </mat-select>
+                  @if (item.get('productId')?.hasError('required') && item.get('productId')?.touched) {
+                  <mat-error>Product is required</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <!-- Quantity -->
+              <div class="md:col-span-2">
+                <mat-form-field class="w-full">
+                  <mat-label>Quantity</mat-label>
+                  <input matInput type="number" formControlName="quantity" min="1">
+                  @if (item.get('quantity')?.hasError('required') && item.get('quantity')?.touched) {
+                  <mat-error>Required</mat-error>
+                  }
+                  @if (item.get('quantity')?.hasError('min')) {
+                  <mat-error>Min 1</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <!-- Unit Price -->
+              <div class="md:col-span-2">
+                <mat-form-field class="w-full">
+                  <mat-label>Unit Price</mat-label>
+                  <input matInput type="number" formControlName="unitPrice" min="0" step="0.01">
+                  @if (item.get('unitPrice')?.hasError('required') && item.get('unitPrice')?.touched) {
+                  <mat-error>Required</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <!-- Subtotal -->
+              <div class="md:col-span-2 flex items-center">
+                <div class="text-right w-full">
+                  <div class="text-xs text-neutral-500 mb-1">Subtotal</div>
+                  <div class="text-lg font-semibold">
+                    Rs {{ item.get('subtotal')?.value | number:'1.2-2' }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Remove Button -->
+              <div class="md:col-span-1 flex items-center justify-end">
+                <button type="button" mat-icon-button color="warn" (click)="removeItem($index)"
+                  matTooltip="Remove item">
+                  <mf-icon name="solar:trash-bin-minimalistic-line-duotone" />
+                </button>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+        }
+      </div>
+
+      <!-- Calculations & Payment -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Left: Payment Details -->
+        <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
+          <h3 class="text-lg font-semibold mb-4">Payment Details</h3>
+
+          <div class="space-y-4">
+            <!-- Payment Method -->
+            <mat-form-field class="w-full">
+              <mat-label>Payment Method</mat-label>
+              <mat-select formControlName="paymentMethod">
+                @for (method of paymentMethods; track method.value) {
+                <mat-option [value]="method.value">{{ method.label }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Payment Status -->
+            <mat-form-field class="w-full">
+              <mat-label>Payment Status</mat-label>
+              <mat-select formControlName="paymentStatus">
+                @for (status of paymentStatuses; track status.value) {
+                <mat-option [value]="status.value">{{ status.label }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+
+            <!-- Sale Date -->
+            <mat-form-field class="w-full">
+              <mat-label>Sale Date</mat-label>
+              <input matInput type="datetime-local" formControlName="saleDate">
+            </mat-form-field>
+
+            <!-- Tax Rate -->
+            <mat-form-field class="w-full">
+              <mat-label>Tax Rate (%)</mat-label>
+              <input matInput type="number" formControlName="taxRate" min="0" max="100" step="0.01">
+              <span matTextSuffix>%</span>
+            </mat-form-field>
+
+            <!-- Discount Rate -->
+            <mat-form-field class="w-full">
+              <mat-label>Discount Rate (%)</mat-label>
+              <input matInput type="number" formControlName="discountRate" min="0" max="100" step="0.01">
+              <span matTextSuffix>%</span>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Right: Summary -->
+        <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
+          <h3 class="text-lg font-semibold mb-4">Summary</h3>
+
+          <div class="space-y-3">
+            <!-- Subtotal -->
+            <div class="flex justify-between text-neutral-600 dark:text-neutral-400">
+              <span>Subtotal:</span>
+              <span class="font-medium">Rs {{ subtotal() | number:'1.2-2' }}</span>
+            </div>
+
+            <!-- Tax -->
+            <div class="flex justify-between text-neutral-600 dark:text-neutral-400">
+              <span>Tax ({{ (saleForm.get('taxRate')?.value * 100) | number:'1.0-2' }}%):</span>
+              <span class="font-medium">Rs {{ taxAmount() | number:'1.2-2' }}</span>
+            </div>
+
+            <!-- Discount -->
+            @if (discountAmount() > 0) {
+            <div class="flex justify-between text-green-600 dark:text-green-400">
+              <span>Discount ({{ (saleForm.get('discountRate')?.value * 100) | number:'1.0-2' }}%):</span>
+              <span class="font-medium">- Rs {{ discountAmount() | number:'1.2-2' }}</span>
+            </div>
+            }
+
+            <!-- Total -->
+            <div
+              class="flex justify-between text-xl font-bold text-neutral-900 dark:text-neutral-100 pt-3 border-t border-neutral-200 dark:border-neutral-700">
+              <span>Total:</span>
+              <span>Rs {{ total() | number:'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
+        <h3 class="text-lg font-semibold mb-4">Additional Notes</h3>
+
+        <mat-form-field class="w-full">
+          <mat-label>Notes (Optional)</mat-label>
+          <textarea matInput formControlName="notes" rows="3"
+            placeholder="Add any additional notes about this sale..."></textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="flex items-center justify-end gap-3 pt-4">
+        <button type="button" mat-stroked-button (click)="onCancel()" [disabled]="isSaving()">
+          Cancel
+        </button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="isSaving() || saleForm.invalid">
+          @if (isSaving()) {
+          <mat-progress-spinner mode="indeterminate" diameter="20" class="mr-2"></mat-progress-spinner>
+          }
+          @if (isEdit()) {
+          <mf-icon name="solar:diskette-line-duotone" />
+          Update Sale
+          } @else {
+          <mf-icon name="solar:add-circle-line-duotone" />
+          Create Sale
+          }
+        </button>
+      </div>
+    </div>
+  </form>
+  }
+</app-page>

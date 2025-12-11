@@ -1,0 +1,135 @@
+<mf-panel>
+  <mf-panel-header class="h-16">
+    <div class="flex h-full border-b border-b-surface-container items-center justify-between gap-5 px-6">
+      <div class="flex items-center gap-3">
+        <button mat-icon-button (click)="goBack()">
+          <mf-icon name="solar:arrow-left-line-duotone" />
+        </button>
+        <div>
+          <div class="text-lg font-semibold">Supplier Ledger</div>
+          @if (supplier()) {
+            <div class="text-sm text-neutral-600 dark:text-neutral-400">{{ supplier()!.name }}</div>
+          }
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        @if (supplier() && currentBalance() > 0) {
+          <button mat-raised-button color="primary" (click)="makePayment()">
+            <mf-icon name="solar:wallet-money-line-duotone" />
+            Make Payment
+          </button>
+        }
+      </div>
+    </div>
+  </mf-panel-header>
+
+  <mf-panel-body class="p-6">
+    @if (error()) {
+      <div class="p-4 bg-error-50 dark:bg-error-900/20 text-error border-l-4 border-error rounded-r mb-6">
+        <div class="flex items-center">
+          <mf-icon class="mr-2" name="solar:danger-circle-line-duotone" />
+          <span>{{ error() }}</span>
+        </div>
+      </div>
+    }
+
+    <!-- Account Summary -->
+    @if (summary()) {
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <mat-card>
+          <mat-card-content class="p-4">
+            <div class="text-xs text-neutral-500 mb-1">Current Balance</div>
+            <div class="text-2xl font-bold text-red-600 dark:text-red-400">
+              {{ currentBalance() | currency: 'PKR ' }}
+            </div>
+            <div class="text-xs text-neutral-500 mt-1">Amount we owe</div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card>
+          <mat-card-content class="p-4">
+            <div class="text-xs text-neutral-500 mb-1">Total Credit</div>
+            <div class="text-2xl font-bold">
+              {{ summary()!.totalCredit | currency: 'PKR ' }}
+            </div>
+            <div class="text-xs text-neutral-500 mt-1">Total purchases</div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card>
+          <mat-card-content class="p-4">
+            <div class="text-xs text-neutral-500 mb-1">Total Debit</div>
+            <div class="text-2xl font-bold">
+              {{ summary()!.totalDebit | currency: 'PKR ' }}
+            </div>
+            <div class="text-xs text-neutral-500 mt-1">Total payments</div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card>
+          <mat-card-content class="p-4">
+            <div class="text-xs text-neutral-500 mb-1">Transactions</div>
+            <div class="text-2xl font-bold">
+              {{ summary()!.entriesCount }}
+            </div>
+            <div class="text-xs text-neutral-500 mt-1">Total entries</div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    }
+
+    <!-- Ledger Entries Table -->
+    <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800">
+      <div class="p-4 border-b border-neutral-200 dark:border-neutral-800">
+        <h3 class="text-lg font-semibold">Ledger Entries</h3>
+        <p class="text-sm text-neutral-600 dark:text-neutral-400">All transactions with this supplier</p>
+      </div>
+
+      @if (isLoading()) {
+        <div class="flex items-center justify-center py-12">
+          <div class="text-neutral-500">Loading ledger entries...</div>
+        </div>
+      } @else if (ledgerEntries().length === 0) {
+        <div class="flex flex-col items-center justify-center py-12">
+          <mf-icon name="solar:document-text-line-duotone" class="text-neutral-400 text-6xl mb-4" />
+          <div class="text-neutral-500 mb-2">No transactions found</div>
+          <div class="text-sm text-neutral-400">Ledger entries will appear here</div>
+        </div>
+      } @else {
+        <mf-datatable
+          [data]="ledgerEntries()"
+          [columns]="columns"
+          showHeader
+          showPagination
+        />
+      }
+    </div>
+
+    <!-- Legend -->
+    <div class="mt-6 p-4 bg-neutral-50 dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800">
+      <h4 class="text-sm font-semibold mb-3">Ledger Information</h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <div>
+          <div class="font-medium mb-2">Transaction Types:</div>
+          <ul class="space-y-1 text-neutral-600 dark:text-neutral-400">
+            <li><strong>Purchase:</strong> Items purchased from supplier (increases balance)</li>
+            <li><strong>Return:</strong> Items returned to supplier (decreases balance)</li>
+            <li><strong>Payment:</strong> Payment made to supplier (decreases balance)</li>
+            <li><strong>Credit Note:</strong> Credit given by supplier (decreases balance)</li>
+            <li><strong>Adjustment:</strong> Manual correction to balance</li>
+          </ul>
+        </div>
+        <div>
+          <div class="font-medium mb-2">Understanding Balance:</div>
+          <ul class="space-y-1 text-neutral-600 dark:text-neutral-400">
+            <li><strong>Debit:</strong> Amount we pay to supplier (payments, returns)</li>
+            <li><strong>Credit:</strong> Amount we owe to supplier (purchases)</li>
+            <li><strong>Positive Balance:</strong> We owe money to the supplier</li>
+            <li><strong>Negative Balance:</strong> Supplier owes us (rare)</li>
+            <li><strong>Zero Balance:</strong> Account is settled</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </mf-panel-body>
+</mf-panel>

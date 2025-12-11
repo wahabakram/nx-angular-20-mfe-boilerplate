@@ -1,8 +1,8 @@
 import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { BreadcrumbsStore } from '@ng-mf/components';
 import { FormsModule } from '@angular/forms';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { Icon } from '@ng-mf/components';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -10,13 +10,13 @@ import { MatSelect, MatOption } from '@angular/material/select';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatTooltip } from '@angular/material/tooltip';
 import { HorizontalDivider } from '@ng-mf/components';
-import { Product, ProductService, ProductStore } from '@samba/product-domain';
+import { Product, ProductApi, ProductStore } from '@samba/product-domain';
 import {
   PaymentMethod,
   Sale,
   CreateSaleDto,
   CreateSaleItemDto,
-  SaleService,
+  SaleApi,
   SaleStore
 } from '@samba/sale-domain';
 import { AuthStore } from '@samba/user-domain';
@@ -35,8 +35,7 @@ interface CartItem {
   imports: [
     FormsModule,
     MatButton,
-    MatIconButton,
-    MatIcon,
+    Icon,
     MatCard,
     MatCardContent,
     HorizontalDivider,
@@ -54,9 +53,9 @@ interface CartItem {
 })
 export class PosInterface implements OnInit, OnDestroy {
   private authStore = inject(AuthStore);
-  private productService = inject(ProductService);
+  private productApi = inject(ProductApi);
   private productStore = inject(ProductStore);
-  private saleService = inject(SaleService);
+  private saleApi = inject(SaleApi);
   private breadcrumbsStore = inject(BreadcrumbsStore);
   barcodeScanner = inject(BarcodeScanner); // Public for template access
   private receiptPrinter = inject(ReceiptPrinter);
@@ -138,7 +137,7 @@ export class PosInterface implements OnInit, OnDestroy {
   }
 
   loadProducts(): void {
-    this.productService.getAll().subscribe({
+    this.productApi.getAll().subscribe({
       next: (products) => {
         this.productStore.setProducts(products);
       },
@@ -167,7 +166,7 @@ export class PosInterface implements OnInit, OnDestroy {
   searchProduct(barcode: string): void {
     if (!barcode.trim()) return;
 
-    this.productService.searchByBarcode(barcode).subscribe({
+    this.productApi.searchByBarcode(barcode).subscribe({
       next: (product) => {
         if (product) {
           this.addToCart(product);
@@ -307,14 +306,14 @@ export class PosInterface implements OnInit, OnDestroy {
       notes: this.customerNotes() || undefined,
     };
 
-    this.saleService.create(saleDto).subscribe({
+    this.saleApi.create(saleDto).subscribe({
       next: (sale) => {
         this.saleStore.addSale(sale);
 
         // Update stock levels for each product
         currentCart.forEach((item) => {
           this.productStore.updateStock(item.product.id, -item.quantity);
-          this.productService
+          this.productApi
             .update({
               id: item.product.id,
               stockLevel: item.product.stockLevel - item.quantity,
@@ -337,7 +336,7 @@ export class PosInterface implements OnInit, OnDestroy {
         // Show success message
         this.showSuccessMessage(`Sale completed! Receipt #: ${sale.receiptNumber}`);
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error.set(err?.error?.message || 'Failed to complete sale');
         this.isProcessing.set(false);
       },

@@ -1,10 +1,10 @@
 import { Component, input } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { Product } from '@samba/product-domain';
 
 @Component({
   selector: 'app-stock-cell',
-  imports: [MatIcon],
+  imports: [Icon],
   template: `
     <div class="flex flex-col gap-1">
       <div class="flex items-center gap-2">
@@ -16,7 +16,7 @@ import { Product } from '@samba/product-domain';
           {{ row().stockLevel }} {{ row().unit }}
         </span>
         @if (getStockStatus() === 'low') {
-          <mat-icon class="text-error text-sm">warning</mat-icon>
+          <mf-icon name="solar:shield-warning-line-duotone" class="text-error text-sm" />
         }
       </div>
       <div class="w-full bg-neutral-200 dark:bg-neutral-700 rounded-full h-2">

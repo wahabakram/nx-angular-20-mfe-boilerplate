@@ -9,7 +9,7 @@
         <mat-card class="mb-4 bg-error-50 text-error border-l-4 border-error">
           <mat-card-content class="p-4">
             <div class="flex items-center">
-              <mat-icon class="mr-2">error</mat-icon>
+              <mf-icon class="mr-2" name="solar:danger-circle-line-duotone" />
               <span>{{ error() }}</span>
             </div>
           </mat-card-content>
@@ -21,7 +21,7 @@
         <mat-card-content class="p-4">
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center gap-2">
-              <mat-icon class="text-primary">qr_code_scanner</mat-icon>
+              <mf-icon class="text-primary" name="solar:qr-code-line-duotone" />
               <span class="text-sm font-medium">Product Search</span>
             </div>
             @if (barcodeScanner.isListening()) {
@@ -44,25 +44,25 @@
                 (input)="filterProducts(searchTerm())"
                 placeholder="Enter barcode or product name"
                 data-barcode-enabled="true"
-                autofocus
+                autoFocus
               >
-              <mat-icon matPrefix>search</mat-icon>
+              <mf-icon matPrefix name="solar:magnifer-line-duotone" />
               <button 
                 mat-icon-button 
                 matSuffix 
                 [matTooltip]="barcodeScanner.isListening() ? 'Barcode scanner is active' : 'Barcode scanner is inactive'"
                 [class.text-success]="barcodeScanner.isListening()"
                 [class.text-neutral-400]="!barcodeScanner.isListening()">
-                <mat-icon>qr_code_scanner</mat-icon>
+                <mf-icon name="solar:qr-code-line-duotone" />
               </button>
             </mat-form-field>
             <button mat-raised-button color="primary" (click)="searchProduct(searchTerm())">
-              <mat-icon>search</mat-icon>
+              <mf-icon name="solar:magnifer-line-duotone" />
               Search
             </button>
           </div>
           <div class="text-xs text-neutral-500 mt-2">
-            <mat-icon class="!text-xs align-middle mr-1">info</mat-icon>
+            <mf-icon class="!text-xs align-middle mr-1" name="solar:info-circle-line-duotone" />
             Tip: Use your USB barcode scanner to instantly add products to cart
           </div>
         </mat-card-content>
@@ -84,7 +84,7 @@
                     @if (product.imageUrl) {
                       <img [src]="product.imageUrl" [alt]="product.name" class="w-full h-full object-cover">
                     } @else {
-                      <mat-icon class="text-neutral-400 !text-base">inventory_2</mat-icon>
+                      <mf-icon class="text-neutral-400 !text-base" name="solar:box-minimalistic-line-duotone" />
                     }
                   </div>
                   <div class="flex-1 min-w-0">
@@ -110,7 +110,7 @@
 
           @if (cart().length === 0) {
             <div class="text-center py-12 text-neutral-500">
-              <mat-icon class="text-6xl mb-2">shopping_cart</mat-icon>
+              <mf-icon class="text-6xl mb-2" name="solar:cart-large-2-line-duotone" />
               <p>Cart is empty</p>
               <p class="text-sm">Scan or search products to add them</p>
             </div>
@@ -135,7 +135,7 @@
                             @if (item.product.imageUrl) {
                               <img [src]="item.product.imageUrl" [alt]="item.product.name" class="w-full h-full object-cover">
                             } @else {
-                              <mat-icon class="text-neutral-400">inventory_2</mat-icon>
+                              <mf-icon class="text-neutral-400" name="solar:box-minimalistic-line-duotone" />
                             }
                           </div>
                           <div>
@@ -152,7 +152,7 @@
                             (click)="updateQuantity(item.product.id, item.quantity - 1)"
                             [disabled]="item.quantity <= 1"
                           >
-                            <mat-icon>remove</mat-icon>
+                            <mf-icon name="solar:minus-circle-line-duotone" />
                           </button>
                           <input
                             type="number"
@@ -167,7 +167,7 @@
                             (click)="updateQuantity(item.product.id, item.quantity + 1)"
                             [disabled]="item.quantity >= item.product.stockLevel"
                           >
-                            <mat-icon>add</mat-icon>
+                            <mf-icon name="solar:add-circle-line-duotone" />
                           </button>
                         </div>
                         <div class="text-xs text-neutral-600 mt-1">
@@ -181,7 +181,7 @@
                           color="warn"
                           (click)="removeFromCart(item.product.id)"
                         >
-                          <mat-icon>delete</mat-icon>
+                          <mf-icon name="solar:trash-bin-minimalistic-line-duotone" />
                         </button>
                       </td>
                     </tr>
@@ -192,7 +192,7 @@
 
             <div class="mt-4 flex justify-end">
               <button mat-stroked-button color="warn" (click)="clearCart()">
-                <mat-icon>clear</mat-icon>
+                <mf-icon name="solar:close-circle-line-duotone" />
                 Clear Cart
               </button>
             </div>
@@ -296,7 +296,7 @@
               <mat-spinner diameter="20" class="mr-2"></mat-spinner>
             }
             @if (!isProcessing()) {
-              <mat-icon>check_circle</mat-icon>
+              <mf-icon name="solar:check-circle-line-duotone" />
             }
             Complete Sale
           </button>

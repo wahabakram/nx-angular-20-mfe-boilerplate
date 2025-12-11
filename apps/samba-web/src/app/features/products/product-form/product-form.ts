@@ -5,11 +5,22 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ProductService, ProductStore, CreateProductDto, ProductStatus } from '@samba/product-domain';
+import {
+  ProductApi,
+  ProductStore,
+  CreateProductDto,
+  ProductStatus,
+} from '@samba/product-domain';
 import { AuthStore } from '@samba/user-domain';
-import { Panel, PanelHeader, PanelBody, OverlayScrollbar, BreadcrumbsStore } from '@ng-mf/components';
+import {
+  Panel,
+  PanelHeader,
+  PanelBody,
+  OverlayScrollbar,
+  BreadcrumbsStore,
+} from '@ng-mf/components';
 import { ImageUpload } from '../../../_components/image-upload/image-upload';
 
 @Component({
@@ -21,14 +32,14 @@ import { ImageUpload } from '../../../_components/image-upload/image-upload';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    MatIconModule,
+    Icon,
     MatProgressSpinnerModule,
     RouterLink,
     Panel,
     PanelHeader,
     PanelBody,
     OverlayScrollbar,
-    ImageUpload
+    ImageUpload,
   ],
   templateUrl: './product-form.html',
   styleUrl: './product-form.scss',
@@ -37,7 +48,7 @@ export class ProductForm implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private productService = inject(ProductService);
+  private productApi = inject(ProductApi);
   private productStore = inject(ProductStore);
   private authStore = inject(AuthStore);
   private breadcrumbsStore = inject(BreadcrumbsStore);
@@ -129,7 +140,7 @@ export class ProductForm implements OnInit {
 
   loadProduct(id: number): void {
     this.isLoading.set(true);
-    this.productService.getById(id).subscribe({
+    this.productApi.getById(id).subscribe({
       next: (product) => {
         this.productForm.patchValue({
           name: product.name,
@@ -179,7 +190,7 @@ export class ProductForm implements OnInit {
     };
 
     if (this.isEditMode() && this.productId()) {
-      this.productService
+      this.productApi
         .update({ ...productData, id: this.productId()! })
         .subscribe({
           next: (product) => {
@@ -192,7 +203,7 @@ export class ProductForm implements OnInit {
           },
         });
     } else {
-      this.productService.create(productData).subscribe({
+      this.productApi.create(productData).subscribe({
         next: (product) => {
           this.productStore.addProduct(product);
           this.router.navigate(['/products']);

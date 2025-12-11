@@ -4,12 +4,12 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { Icon } from '@ng-mf/components';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Panel, PanelHeader, PanelBody, OverlayScrollbar, BreadcrumbsStore } from '@ng-mf/components';
-import { BranchService, CreateBranchDto } from '@samba/branch-domain';
+import { BranchApi, CreateBranchDto } from '@samba/branch-domain';
 
 @Component({
   selector: 'app-branch-form',
@@ -19,7 +19,7 @@ import { BranchService, CreateBranchDto } from '@samba/branch-domain';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule,
+    Icon,
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     MatCheckboxModule,
@@ -36,7 +36,7 @@ export class BranchForm implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private branchService = inject(BranchService);
+  private branchApi = inject(BranchApi);
   private breadcrumbsStore = inject(BreadcrumbsStore);
 
   isLoading = signal(false);
@@ -118,7 +118,7 @@ export class BranchForm implements OnInit {
 
   loadBranch(id: number): void {
     this.isLoading.set(true);
-    this.branchService.getById(id).subscribe({
+    this.branchApi.getById(id).subscribe({
       next: (branch) => {
         this.branchForm.patchValue({
           name: branch.name,
@@ -163,7 +163,7 @@ export class BranchForm implements OnInit {
 
     if (this.isEditMode()) {
       const updateDto = { ...branchDto, id: this.branchId()! };
-      this.branchService.update(updateDto).subscribe({
+      this.branchApi.update(updateDto).subscribe({
         next: () => {
           this.router.navigate(['/settings/branches']);
         },
@@ -174,7 +174,7 @@ export class BranchForm implements OnInit {
         },
       });
     } else {
-      this.branchService.create(branchDto).subscribe({
+      this.branchApi.create(branchDto).subscribe({
         next: () => {
           this.router.navigate(['/settings/branches']);
         },

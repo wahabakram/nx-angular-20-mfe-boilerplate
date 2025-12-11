@@ -1,0 +1,225 @@
+<mf-panel>
+  <mf-panel-header class="h-16">
+    <div class="flex h-full border-b border-b-surface-container items-center justify-between gap-5 px-6">
+      <div class="flex items-center gap-3">
+        <button mat-icon-button (click)="goBack()">
+          <mf-icon name="solar:arrow-left-line-duotone" />
+        </button>
+        <div class="text-lg font-semibold">Supplier Details</div>
+      </div>
+      <div class="flex items-center gap-2">
+        @if (supplier()) {
+          <button mat-flat-button color="primary" (click)="editSupplier()">
+            <mf-icon name="solar:pen-line-duotone" />
+            Edit Supplier
+          </button>
+        }
+      </div>
+    </div>
+  </mf-panel-header>
+
+  <mf-panel-body class="p-6">
+    @if (isLoading()) {
+      <div class="flex items-center justify-center h-64">
+        <div class="text-center">
+          <div class="text-neutral-500">Loading supplier details...</div>
+        </div>
+      </div>
+    }
+
+    @if (error()) {
+      <div class="p-4 bg-error-50 dark:bg-error-900/20 text-error border-l-4 border-error rounded-r">
+        <div class="flex items-center">
+          <mf-icon class="mr-2" name="solar:danger-circle-line-duotone" />
+          <span>{{ error() }}</span>
+        </div>
+      </div>
+    }
+
+    @if (supplier()) {
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column: Main Information -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Basic Information -->
+          <mat-card>
+            <mat-card-content class="p-6">
+              <div class="flex items-start justify-between mb-6">
+                <div>
+                  <h2 class="text-xl font-semibold mb-2">{{ supplier()!.name }}</h2>
+                  @if (supplier()!.companyName) {
+                    <p class="text-neutral-600 dark:text-neutral-400">{{ supplier()!.companyName }}</p>
+                  }
+                </div>
+                <span [class]="'inline-flex px-3 py-1 rounded-full text-sm font-medium ' + getStatusColor(supplier()!.status)">
+                  {{ supplier()!.status | titlecase }}
+                </span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Contact Information -->
+                <div>
+                  <h3 class="text-sm font-semibold text-neutral-600 dark:text-neutral-400 mb-3">Contact Information</h3>
+                  <div class="space-y-3">
+                    <div class="flex items-start gap-3">
+                      <mf-icon name="solar:phone-line-duotone" class="text-neutral-500 mt-0.5" />
+                      <div>
+                        <div class="text-xs text-neutral-500">Phone</div>
+                        <div class="font-medium">{{ supplier()!.phone }}</div>
+                      </div>
+                    </div>
+
+                    @if (supplier()!.email) {
+                      <div class="flex items-start gap-3">
+                        <mf-icon name="solar:letter-line-duotone" class="text-neutral-500 mt-0.5" />
+                        <div>
+                          <div class="text-xs text-neutral-500">Email</div>
+                          <div class="font-medium">{{ supplier()!.email }}</div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <!-- Address Information -->
+                @if (supplier()!.address || supplier()!.city || supplier()!.country) {
+                  <div>
+                    <h3 class="text-sm font-semibold text-neutral-600 dark:text-neutral-400 mb-3">Address</h3>
+                    <div class="flex items-start gap-3">
+                      <mf-icon name="solar:map-point-line-duotone" class="text-neutral-500 mt-0.5" />
+                      <div>
+                        @if (supplier()!.address) {
+                          <div>{{ supplier()!.address }}</div>
+                        }
+                        @if (supplier()!.city || supplier()!.country) {
+                          <div>{{ supplier()!.city }}{{ supplier()!.city && supplier()!.country ? ', ' : '' }}{{ supplier()!.country }}</div>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Financial Information -->
+          <mat-card>
+            <mat-card-content class="p-6">
+              <h3 class="text-lg font-semibold mb-4">Financial Information</h3>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <div class="text-xs text-neutral-500 mb-1">Current Balance</div>
+                  <div class="text-2xl font-bold text-primary">
+                    {{ supplier()!.currentBalance | currency }}
+                  </div>
+                  <div class="text-xs text-neutral-500 mt-1">Amount we owe</div>
+                </div>
+
+                @if (supplier()!.creditLimit) {
+                  <div>
+                    <div class="text-xs text-neutral-500 mb-1">Credit Limit</div>
+                    <div class="text-2xl font-bold">
+                      {{ supplier()!.creditLimit | currency }}
+                    </div>
+                  </div>
+                }
+
+                @if (supplier()!.paymentTerms) {
+                  <div>
+                    <div class="text-xs text-neutral-500 mb-1">Payment Terms</div>
+                    <div class="text-lg font-semibold">
+                      {{ supplier()!.paymentTerms }}
+                    </div>
+                  </div>
+                }
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Additional Information -->
+          @if (supplier()!.taxId || supplier()!.notes) {
+            <mat-card>
+              <mat-card-content class="p-6">
+                <h3 class="text-lg font-semibold mb-4">Additional Information</h3>
+                <div class="space-y-4">
+                  @if (supplier()!.taxId) {
+                    <div>
+                      <div class="text-xs text-neutral-500 mb-1">Tax ID</div>
+                      <div class="font-medium">{{ supplier()!.taxId }}</div>
+                    </div>
+                  }
+
+                  @if (supplier()!.notes) {
+                    <div>
+                      <div class="text-xs text-neutral-500 mb-1">Notes</div>
+                      <div class="whitespace-pre-wrap">{{ supplier()!.notes }}</div>
+                    </div>
+                  }
+                </div>
+              </mat-card-content>
+            </mat-card>
+          }
+        </div>
+
+        <!-- Right Column: Summary & Actions -->
+        <div class="space-y-6">
+          <!-- Quick Stats -->
+          <mat-card>
+            <mat-card-content class="p-6">
+              <h3 class="text-lg font-semibold mb-4">Quick Stats</h3>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <span class="text-neutral-600 dark:text-neutral-400">Status</span>
+                  <span [class]="'inline-flex px-2 py-1 rounded-full text-xs font-medium ' + getStatusColor(supplier()!.status)">
+                    {{ supplier()!.status | titlecase }}
+                  </span>
+                </div>
+
+                <div class="flex items-center justify-between">
+                  <span class="text-neutral-600 dark:text-neutral-400">Account Balance</span>
+                  <span class="font-semibold text-primary">
+                    {{ supplier()!.currentBalance | currency }}
+                  </span>
+                </div>
+
+                <div class="flex items-center justify-between">
+                  <span class="text-neutral-600 dark:text-neutral-400">Member Since</span>
+                  <span class="font-medium">
+                    {{ supplier()!.createdAt | date: 'MMM d, yyyy' }}
+                  </span>
+                </div>
+
+                <div class="flex items-center justify-between">
+                  <span class="text-neutral-600 dark:text-neutral-400">Last Updated</span>
+                  <span class="text-sm text-neutral-500">
+                    {{ supplier()!.updatedAt | date: 'MMM d, yyyy' }}
+                  </span>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <!-- Actions -->
+          <mat-card>
+            <mat-card-content class="p-6">
+              <h3 class="text-lg font-semibold mb-4">Actions</h3>
+              <div class="space-y-2">
+                <button mat-stroked-button class="w-full" (click)="viewLedger()">
+                  <mf-icon name="solar:document-text-line-duotone" />
+                  View Ledger
+                </button>
+                <button mat-stroked-button class="w-full" (click)="editSupplier()">
+                  <mf-icon name="solar:pen-line-duotone" />
+                  Edit Supplier
+                </button>
+                <button mat-stroked-button class="w-full" routerLink="/suppliers">
+                  <mf-icon name="solar:list-line-duotone" />
+                  View All Suppliers
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    }
+  </mf-panel-body>
+</mf-panel>

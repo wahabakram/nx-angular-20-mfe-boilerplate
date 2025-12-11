@@ -1,11 +1,11 @@
 import { Component, inject, input } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { Icon } from '@ng-mf/components';
 
 @Component({
   selector: 'app-sales-actions-cell',
-  imports: [MatIconButton, MatIcon],
+  imports: [MatIconButton, Icon],
   templateUrl: './sales-actions-cell.html',
   styleUrl: './sales-actions-cell.scss',
 })

@@ -1,0 +1,26 @@
+<app-page>
+  <ng-container pageTitle>Purchase Returns</ng-container>
+  <ng-container pageDescription>Manage items returned to suppliers</ng-container>
+
+  <ng-container pageActions>
+    <button mat-raised-button color="primary" (click)="createReturn()">
+      <mf-icon name="solar:undo-left-line-duotone" />
+      Create Return
+    </button>
+  </ng-container>
+
+  <div class="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800">
+    @if (isLoading()) {
+      <div class="flex items-center justify-center py-12">
+        <div class="text-neutral-500">Loading purchase returns...</div>
+      </div>
+    } @else {
+      <mf-datatable
+        [data]="returns()"
+        [columns]="columns"
+        showHeader
+        showPagination
+      />
+    }
+  </div>
+</app-page>

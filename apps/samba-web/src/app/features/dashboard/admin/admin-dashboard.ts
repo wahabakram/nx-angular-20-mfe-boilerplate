@@ -45,6 +45,30 @@ export class AdminDashboard {
         ),
     },
     {
+      type: 'total-returns-widget',
+      skeleton: null,
+      component: () =>
+        import(
+          '../../../widgets/_widgets/total-returns-widget/total-returns-widget'
+        ).then((c) => c.TotalReturnsWidget),
+    },
+    {
+      type: 'return-rate-widget',
+      skeleton: null,
+      component: () =>
+        import(
+          '../../../widgets/_widgets/return-rate-widget/return-rate-widget'
+        ).then((c) => c.ReturnRateWidget),
+    },
+    {
+      type: 'outstanding-balances-widget',
+      skeleton: null,
+      component: () =>
+        import(
+          '../../../widgets/_widgets/outstanding-balances-widget/outstanding-balances-widget'
+        ).then((c) => c.OutstandingBalancesWidget),
+    },
+    {
       type: 'recent-sales-widget',
       skeleton: null,
       component: () =>
@@ -102,12 +126,27 @@ export class AdminDashboard {
     },
     {
       id: 5,
+      type: 'total-returns-widget',
+      columns: 4,
+    },
+    {
+      id: 6,
+      type: 'return-rate-widget',
+      columns: 4,
+    },
+    {
+      id: 7,
+      type: 'outstanding-balances-widget',
+      columns: 4,
+    },
+    {
+      id: 8,
       type: 'recent-sales-widget',
       columns: 12,
       skeletonHeight: '400px',
     },
     {
-      id: 6,
+      id: 9,
       type: 'heading-widget',
       columns: 12,
       widget: {
@@ -115,40 +154,40 @@ export class AdminDashboard {
       },
     },
     {
-      id: 7,
+      id: 10,
       type: 'quick-action-widget',
       columns: 4,
       widget: {
-        iconName: 'inventory_2',
+        iconName: 'solar:box-minimalistic-line-duotone',
         title: 'Manage Products',
         description: 'Add, edit, and organize your product catalog',
         route: '/products',
       },
     },
     {
-      id: 8,
+      id: 11,
       type: 'quick-action-widget',
       columns: 4,
       widget: {
-        iconName: 'manage_accounts',
+        iconName: 'solar:users-group-rounded-line-duotone',
         title: 'Manage Users',
         description: 'Control user access and permissions',
         route: '/users',
       },
     },
     {
-      id: 9,
+      id: 12,
       type: 'quick-action-widget',
       columns: 4,
       widget: {
-        iconName: 'assessment',
+        iconName: 'solar:chart-line-duotone',
         title: 'View Reports',
         description: 'Analyze sales and business metrics',
         route: '/reports/sales',
       },
     },
     {
-      id: 10,
+      id: 13,
       type: 'heading-widget',
       columns: 12,
       widget: {
@@ -156,7 +195,7 @@ export class AdminDashboard {
       },
     },
     {
-      id: 11,
+      id: 14,
       type: 'data-management-widget',
       columns: 6,
     },
